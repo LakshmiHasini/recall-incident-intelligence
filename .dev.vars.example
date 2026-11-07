@@ -1,0 +1,5 @@
+# Copy to .dev.vars and fill in private values. Never commit .dev.vars.
+HINDSIGHT_BASE_URL=https://api.hindsight.vectorize.io
+HINDSIGHT_API_KEY=
+HINDSIGHT_BANK_ID=
+WEBHOOK_SECRET=
