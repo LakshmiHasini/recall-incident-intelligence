@@ -118,10 +118,6 @@ Private hosting additionally requires platform service access. A generic receive
 - [Accuracy evaluation and limitations](evaluation/REPORT.md)
 - [Starter-specific tooling notes](docs/STARTER.md)
 
-## Remaining submission work
-
-Publish the clean source to the team's GitHub repository, record the working project, verify judge access, and complete each member's required article, social post and video. Obtain the organizers' separate content guide before finalizing those materials.
-
 ## Visual design
 
 The full website shares one premium glass material system: the supplied iridescent video, native system typography, translucent surfaces, soft specular edges, capsule controls and floating navigation. The landing page retains live canvas/SVG refraction; the dashboard, incidents, memory library, connections and dialogs use a shared backdrop-filter theme in `app/glass-theme.css`. The workspace orb is an original SVG/CSS implementation. Desktop and mobile layouts support reduced motion and reduced transparency where available.
