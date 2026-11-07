@@ -124,7 +124,7 @@ Publish the clean source to the team's GitHub repository, record the working pro
 
 ## Visual design
 
-The interface adapts the airy lavender, glass orb, ripple effects and navy typography of the user-supplied Nexa Talent reference. The orb is an original SVG/CSS implementation. No paid MotionSites prompt or source code is included. Desktop and mobile layouts support reduced motion.
+The full website shares one premium glass material system: the supplied iridescent video, native system typography, translucent surfaces, soft specular edges, capsule controls and floating navigation. The landing page retains live canvas/SVG refraction; the dashboard, incidents, memory library, connections and dialogs use a shared backdrop-filter theme in `app/glass-theme.css`. The workspace orb is an original SVG/CSS implementation. Desktop and mobile layouts support reduced motion and reduced transparency where available.
 
 ## Liquid-glass landing page
 

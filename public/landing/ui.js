@@ -25,3 +25,14 @@ document.addEventListener('keydown', event => {
     else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
   }
 });
+const glassSurface = document.querySelector('[data-glass-card]');
+glassSurface.addEventListener('pointermove', event => {
+  if (event.pointerType === 'touch') return;
+  const bounds = glassSurface.getBoundingClientRect();
+  glassSurface.style.setProperty('--shine-x', `${100 * (event.clientX - bounds.left) / bounds.width}%`);
+  glassSurface.style.setProperty('--shine-y', `${100 * (event.clientY - bounds.top) / bounds.height}%`);
+});
+glassSurface.addEventListener('pointerleave', () => {
+  glassSurface.style.removeProperty('--shine-x');
+  glassSurface.style.removeProperty('--shine-y');
+});
