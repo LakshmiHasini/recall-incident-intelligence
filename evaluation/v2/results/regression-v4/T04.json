@@ -1,0 +1,459 @@
+{
+  "id": "T04",
+  "category": "recurrence",
+  "input": {
+    "id": "T04",
+    "title": "Valid users get unauthorized",
+    "service": "auth",
+    "environment": "production",
+    "description": "Signing keys rotated this morning. Transport is healthy, but the cached key set lacks the new key identifier.",
+    "logs": "JWT unknown kid=new-2026; cached JWKS contains old-2025; TLS valid"
+  },
+  "events": [],
+  "startedAt": "2026-11-07T15:22:05.925Z",
+  "success": true,
+  "durationMs": 16007,
+  "schemaValid": true,
+  "result": {
+    "text": "The authentication service is rejecting JWTs because the cached JWKS lacks the current signing key identifier following a rotation. Incoming requests show 'unknown kid=new-2026' while the local cache retains 'old-2025'.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "992df75a-3fed-4715-bb23-e5da8dfb6186",
+          "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior. | When: 2026-10-24 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+          "document_id": "HIST-AUTH-JWKS",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-AUTH-JWKS",
+            "service": "auth",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1d602575-a244-4798-a9df-36acf8a925e6",
+          "text": "Production incident HIST-AUTH-JWKS occurred where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation. | When: 2026-10-24 | Where: production | The application cached an obsolete JWKS.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00+00:00",
+          "occurred_end": "2026-10-24T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+          "document_id": "HIST-AUTH-JWKS",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-AUTH-JWKS",
+            "service": "auth",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "8ea9617d-5ab3-4643-84d2-306e0910d6a4",
+          "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior on 2026-10-24.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "89496b7c-2fa4-48be-bef1-4564bcff69fa",
+          "text": "Production incident HIST-AUTH-JWKS occurred on 2026-10-24 where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00+00:00",
+          "occurred_end": "2026-10-24T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The authentication service is rejecting JWTs because the cached JWKS does not contain the current signing key identifier. Incoming requests specify 'new-2026', while the local cache only holds 'old-2025'.",
+      "hypotheses": [
+        {
+          "title": "JWKS cache contains stale signing key identifier",
+          "basis": "current_observations",
+          "reasoning": "Observed: Incoming requests show 'unknown kid=new-2026' while the local cache retains 'old-2025'. Historical match: None. Unverified: The mechanism causing the failure to update the JWKS cache with the new signing key.",
+          "evidenceIds": []
+        }
+      ],
+      "checks": [
+        "Inspect the current JWKS endpoint response to verify the presence of 'new-2026'.",
+        "Check the service logs for any errors related to JWKS refresh or cache update attempts.",
+        "Verify the TTL configuration for the JWKS cache."
+      ],
+      "avoid": [
+        "Do not manually clear the cache until the refresh mechanism is understood.",
+        "Avoid assuming the key rotation process itself is faulty without checking the cache update logic."
+      ],
+      "missing": [
+        "The timestamp of the last successful JWKS cache refresh.",
+        "The configured refresh interval for the JWKS cache.",
+        "Logs indicating if the service attempted to fetch the new key."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 48283,
+      "output_tokens": 619,
+      "total_tokens": 48902,
+      "cached_tokens": 21354,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The authentication service is rejecting JWTs because the cached JWKS does not contain the current signing key identifier. Incoming requests specify 'new-2026', while the local cache only holds 'old-2025'.",
+      "hypotheses": [
+        {
+          "title": "JWKS cache contains stale signing key identifier",
+          "reasoning": "Observed: Incoming requests show 'unknown kid=new-2026' while the local cache retains 'old-2025'. Historical match: None. Unverified: The mechanism causing the failure to update the JWKS cache with the new signing key.",
+          "basis": "current_observations",
+          "evidenceIds": []
+        }
+      ],
+      "checks": [
+        "Inspect the current JWKS endpoint response to verify the presence of 'new-2026'.",
+        "Check the service logs for any errors related to JWKS refresh or cache update attempts.",
+        "Verify the TTL configuration for the JWKS cache."
+      ],
+      "avoid": [
+        "Do not manually clear the cache until the refresh mechanism is understood.",
+        "Avoid assuming the key rotation process itself is faulty without checking the cache update logic."
+      ],
+      "missing": [
+        "The timestamp of the last successful JWKS cache refresh.",
+        "The configured refresh interval for the JWKS cache.",
+        "Logs indicating if the service attempted to fetch the new key."
+      ]
+    },
+    "facts": [],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "992df75a-3fed-4715-bb23-e5da8dfb6186",
+          "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior. | When: 2026-10-24 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+          "document_id": "HIST-AUTH-JWKS",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-AUTH-JWKS",
+            "service": "auth",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1d602575-a244-4798-a9df-36acf8a925e6",
+          "text": "Production incident HIST-AUTH-JWKS occurred where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation. | When: 2026-10-24 | Where: production | The application cached an obsolete JWKS.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00+00:00",
+          "occurred_end": "2026-10-24T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+          "document_id": "HIST-AUTH-JWKS",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-AUTH-JWKS",
+            "service": "auth",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "8ea9617d-5ab3-4643-84d2-306e0910d6a4",
+          "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior on 2026-10-24.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "89496b7c-2fa4-48be-bef1-4564bcff69fa",
+          "text": "Production incident HIST-AUTH-JWKS occurred on 2026-10-24 where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00+00:00",
+          "occurred_end": "2026-10-24T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    }
+  },
+  "audit": {
+    "passes": 2,
+    "draft": {
+      "text": "### Incident Diagnosis: Auth Service JWKS Cache Inconsistency\n\n**evidenceStatus:** supported_hypothesis\n\n**Hypothesis:** The auth service is failing to verify JWTs because the application cache retains an obsolete JWKS (JSON Web Key Set), causing a mismatch between the provided signing key identifier (`kid`) in incoming JWTs and the available keys in the local cache.\n\n#### Reasoning\n*   **Observed:** Incoming JWTs are rejected with `unknown kid=new-2026`. The local JWKS cache is verified to contain only the deprecated `old-2025` key set. Transport-layer security (TLS) is confirmed healthy, indicating that the failure is isolated to the authentication logic rather than network or handshake issues.\n*   **Historical match:** This failure matches the technical mechanism observed in incident `HIST-AUTH-JWKS` (2026-10-24), where JWT verification failed following an identity-provider signing-key rotation because the auth service cached an obsolete JWKS. The current symptoms—rejected tokens due to unknown key identifiers following a rotation—are identical.\n*   **Unverified details:** The specific mechanism of why the cache failed to update (e.g., stale TTL configuration, failure in the background refresh process, or an event-driven update failure) remains unobserved and cannot be determined from the current logs.\n\n#### Technical Failure Hypothesis\n**Hypothesis:** JWKS cache stale-read due to missing or delayed key-set synchronization.\n**Basis:** current_observations\n**evidenceIds:** [\"992df75a-3fed-4715-bb23-e5da8dfb6186\", \"1d602575-a244-4798-a9df-36acf8a925e6\"]\n\n#### Diagnostic Checks\nTo determine the status of the cache refresh mechanism without impacting production performance:\n1.  **Inspect Cache Metadata:** Query the authentication service's telemetry or metrics (not raw keys) to determine the last successful JWKS refresh timestamp and the configured Time-To-Live (TTL).\n2.  **Verify Upstream Connectivity:** Check logs for any connection failures or HTTP 4xx/5xx errors when the auth service attempts to fetch the JWKS from the configured identity provider's well-known endpoint.\n3.  **Sampled Key Inspection:** Use a bounded sampling approach to verify if the JWKS endpoint itself returns the expected `new-2026` key identifier, confirming that the upstream provider is correctly configured.\n\n**Cautions:**\n*   Do not attempt to clear or manually force a cache reload via destructive commands such as `FLUSHALL` or service restarts, as these may result in service instability or data loss.\n*   Do not assume this issue is a certificate renewal failure; the logs confirm TLS is valid and the issue is specifically within the JWT key-lookup mechanism.\n*   Historical remediation (such as simple restarts) may provide only temporary relief; focus on diagnosing the persistence of the cache state.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "992df75a-3fed-4715-bb23-e5da8dfb6186",
+            "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior. | When: 2026-10-24 | Where: production",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+            "document_id": "HIST-AUTH-JWKS",
+            "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+            "tags": [
+              "service:auth",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-AUTH-JWKS",
+              "service": "auth",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "1d602575-a244-4798-a9df-36acf8a925e6",
+            "text": "Production incident HIST-AUTH-JWKS occurred where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation. | When: 2026-10-24 | Where: production | The application cached an obsolete JWKS.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-24T00:00:00+00:00",
+            "occurred_end": "2026-10-24T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+            "document_id": "HIST-AUTH-JWKS",
+            "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+            "tags": [
+              "service:auth",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-AUTH-JWKS",
+              "service": "auth",
+              "environment": "production"
+            },
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "The authentication service is rejecting incoming JWTs due to an unknown key identifier. The local JWKS cache contains only deprecated keys, indicating a failure to synchronize with the identity provider's updated signing keys following a rotation.",
+        "hypotheses": [
+          {
+            "title": "JWKS cache stale-read due to missing or delayed key-set synchronization",
+            "reasoning": "Observed: Incoming JWTs are rejected with unknown kid=new-2026; local cache contains only old-2025 keys. Historical match: Similar to incident HIST-AUTH-JWKS where rotation caused cache obsolescence. Unverified: The specific mechanism (TTL, refresh failure, or event-driven failure) causing the cache to remain stale is currently unknown.",
+            "basis": "current_observations",
+            "evidenceIds": [
+              "992df75a-3fed-4715-bb23-e5da8dfb6186",
+              "1d602575-a244-4798-a9df-36acf8a925e6"
+            ]
+          }
+        ],
+        "checks": [
+          "Query authentication service telemetry for last successful JWKS refresh timestamp and configured TTL.",
+          "Check logs for connection failures or HTTP 4xx/5xx errors during JWKS fetch attempts.",
+          "Perform bounded sampling of the JWKS endpoint to verify it returns the expected new-2026 key identifier."
+        ],
+        "avoid": [
+          "Do not attempt to clear or manually force a cache reload via destructive commands like FLUSHALL or service restarts.",
+          "Do not assume this issue is a certificate renewal failure, as logs confirm TLS is valid."
+        ],
+        "missing": [
+          "Last successful JWKS refresh timestamp.",
+          "Configured TTL for the JWKS cache.",
+          "Logs indicating specific errors during the JWKS fetch process."
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 33115,
+        "output_tokens": 1275,
+        "total_tokens": 34390,
+        "cached_tokens": 9451,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    },
+    "review": {
+      "text": "The authentication service is rejecting JWTs because the cached JWKS lacks the current signing key identifier following a rotation. Incoming requests show 'unknown kid=new-2026' while the local cache retains 'old-2025'.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "1d602575-a244-4798-a9df-36acf8a925e6",
+            "text": "Production incident HIST-AUTH-JWKS occurred where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation. | When: 2026-10-24 | Where: production | The application cached an obsolete JWKS.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-24T00:00:00+00:00",
+            "occurred_end": "2026-10-24T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+            "document_id": "HIST-AUTH-JWKS",
+            "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+            "tags": [
+              "service:auth",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-AUTH-JWKS",
+              "service": "auth",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "992df75a-3fed-4715-bb23-e5da8dfb6186",
+            "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior. | When: 2026-10-24 | Where: production",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+            "document_id": "HIST-AUTH-JWKS",
+            "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+            "tags": [
+              "service:auth",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-AUTH-JWKS",
+              "service": "auth",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "8ea9617d-5ab3-4643-84d2-306e0910d6a4",
+            "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior on 2026-10-24.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:auth",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "89496b7c-2fa4-48be-bef1-4564bcff69fa",
+            "text": "Production incident HIST-AUTH-JWKS occurred on 2026-10-24 where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-24T00:00:00+00:00",
+            "occurred_end": "2026-10-24T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:auth",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "The authentication service is rejecting JWTs because the cached JWKS does not contain the current signing key identifier. Incoming requests specify 'new-2026', while the local cache only holds 'old-2025'.",
+        "hypotheses": [
+          {
+            "title": "JWKS cache contains stale signing key identifier",
+            "observed": "Incoming requests show 'unknown kid=new-2026' while the local cache retains 'old-2025'.",
+            "memoryRelation": "none",
+            "historical": "",
+            "unverified": "The mechanism causing the failure to update the JWKS cache with the new signing key.",
+            "basis": "current_observations",
+            "evidenceIds": []
+          }
+        ],
+        "checks": [
+          "Inspect the current JWKS endpoint response to verify the presence of 'new-2026'.",
+          "Check the service logs for any errors related to JWKS refresh or cache update attempts.",
+          "Verify the TTL configuration for the JWKS cache."
+        ],
+        "avoid": [
+          "Do not manually clear the cache until the refresh mechanism is understood.",
+          "Avoid assuming the key rotation process itself is faulty without checking the cache update logic."
+        ],
+        "missing": [
+          "The timestamp of the last successful JWKS cache refresh.",
+          "The configured refresh interval for the JWKS cache.",
+          "Logs indicating if the service attempted to fetch the new key."
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 48283,
+        "output_tokens": 619,
+        "total_tokens": 48902,
+        "cached_tokens": 21354,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    }
+  }
+}

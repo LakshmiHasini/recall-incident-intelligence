@@ -1,0 +1,588 @@
+{
+  "id": "T07",
+  "category": "recurrence",
+  "input": {
+    "id": "T07",
+    "title": "Notification host cannot be found",
+    "service": "notifications",
+    "environment": "production",
+    "description": "Delivery broke after resolver settings changed. Name lookup fails before connecting.",
+    "logs": "getaddrinfo ENOTFOUND outbound.mail.internal; NXDOMAIN"
+  },
+  "events": [],
+  "startedAt": "2026-11-07T15:13:22.191Z",
+  "success": true,
+  "durationMs": 16906,
+  "schemaValid": true,
+  "result": {
+    "text": "The notifications service is experiencing DNS resolution failures for 'outbound.mail.internal', indicated by ENOTFOUND and NXDOMAIN logs following recent resolver configuration changes. \n\n### Hypothesis: DNS Resolver Misconfiguration\n\n*   **Observed:** Service logs consistently report `getaddrinfo ENOTFOUND` and `NXDOMAIN` for 'outbound.mail.internal' immediately following documented resolver settings changes.\n*   **Historical Match:** These symptoms and the identified trigger align with a historical production incident on 2026-10-27, where resolver configuration changes caused identical DNS resolution failures. In that case, reverting the changes restored service.\n*   **Unverified:** The specific nature of the current configuration change (such as incorrect upstream servers or search domains) remains unknown, as does the current infrastructure's identical match to the historical environment.\n\n### Checks\n\n1.  Compare current `/etc/resolv.conf` against a known-good configuration backup.\n2.  Perform an isolated name resolution test using `dig` or `nslookup` against configured upstream DNS servers to confirm reachability.\n3.  Examine deployment logs or configuration management history to identify the specific changes made to resolver settings.\n\n### Missing\n\n1.  The specific content and scope of the recent resolver configuration changes.\n2.  Confirmation that the environment's resolver stack and service dependencies remain unchanged since the historical incident.\n\n### Cautions\n\n1.  Avoid performing manual configuration rollbacks in production without first verifying the current state and its impact.\n2.  Avoid executing high-frequency DNS queries that could be misinterpreted as a network attack or further saturate the resolver.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "ab31b79e-6ffc-4b57-923d-b309265f1456",
+          "text": "The notifications service incident was resolved by reverting the resolver configuration change. | When: 2026-10-27 | Where: production environment | Reverting the change restored DNS resolution and delivery.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+          "document_id": "HIST-NOTIFY-DNS",
+          "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-NOTIFY-DNS",
+            "service": "notifications",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "f04ef18b-ba2e-410c-b60b-fb359aa1d54e",
+          "text": "The notifications service experienced a production incident where DNS resolution failed with getaddrinfo ENOTFOUND and NXDOMAIN errors. | When: 2026-10-27 | Where: production environment | Triggered by a change in resolver configuration.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+          "document_id": "HIST-NOTIFY-DNS",
+          "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-NOTIFY-DNS",
+            "service": "notifications",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "fd896976-f379-4f7d-8f66-920cc9b61c14",
+          "text": "Rotating certificates failed to resolve the DNS issue in the notifications service. | When: 2026-10-27 | Where: production environment | The issue was caused by DNS resolver configuration, not certificate validity.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.651000+00:00",
+          "document_id": "HIST-NOTIFY-DNS",
+          "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-NOTIFY-DNS",
+            "service": "notifications",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "b3e0e389-c67c-449a-892b-53ac630b2872",
+          "text": "The notifications service experienced a production incident on 2026-10-27 where DNS resolution failed with getaddrinfo ENOTFOUND and NXDOMAIN errors.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "b6c0571b-6ca6-4aa6-98e3-6dbdd16258d2",
+          "text": "Reverting the change restored DNS resolution and delivery.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "1d82ac49-4cfd-43bf-bb1f-ab1d13c872bd",
+          "text": "The notifications service incident was resolved by reverting the resolver configuration change.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "497bd31e-3445-4f2d-a797-0fd7b5f23b75",
+          "text": "The notifications service incident was triggered by a change in resolver configuration.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "41b27ffb-fa82-454d-be97-814a25ab6f38",
+          "text": "Rotating certificates failed to resolve the DNS issue in the notifications service.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.651000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The notifications service is experiencing DNS resolution failures for 'outbound.mail.internal' following recent resolver configuration changes, manifesting as ENOTFOUND and NXDOMAIN errors.",
+      "hypotheses": [
+        {
+          "title": "DNS Resolver Misconfiguration",
+          "reasoning": "Service logs show consistent ENOTFOUND and NXDOMAIN errors immediately after resolver settings were changed, mirroring a historical incident from 2026-10-27 where similar changes caused identical failures.",
+          "basis": "current_observations",
+          "evidenceIds": [
+            "getaddrinfo ENOTFOUND",
+            "NXDOMAIN",
+            "2026-10-27 incident"
+          ]
+        }
+      ],
+      "checks": [
+        "Compare current /etc/resolv.conf against a known-good configuration backup.",
+        "Perform an isolated name resolution test using dig or nslookup against configured upstream DNS servers to confirm reachability.",
+        "Examine deployment logs or configuration management history to identify the specific changes made to resolver settings."
+      ],
+      "avoid": [
+        "Avoid performing manual configuration rollbacks in production without first verifying the current state and its impact.",
+        "Avoid executing high-frequency DNS queries that could be misinterpreted as a network attack or further saturate the resolver."
+      ],
+      "missing": [
+        "The specific content and scope of the recent resolver configuration changes.",
+        "Confirmation that the environment's resolver stack and service dependencies remain unchanged since the historical incident."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 60201,
+      "output_tokens": 932,
+      "total_tokens": 61133,
+      "cached_tokens": 25487,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The notifications service is experiencing DNS resolution failures for 'outbound.mail.internal' following recent resolver configuration changes, manifesting as ENOTFOUND and NXDOMAIN errors.",
+      "hypotheses": [
+        {
+          "title": "DNS Resolver Misconfiguration",
+          "reasoning": "Service logs show consistent ENOTFOUND and NXDOMAIN errors immediately after resolver settings were changed, mirroring a historical incident from 2026-10-27 where similar changes caused identical failures.",
+          "basis": "current_observations",
+          "evidenceIds": []
+        }
+      ],
+      "checks": [
+        "Compare current /etc/resolv.conf against a known-good configuration backup.",
+        "Perform an isolated name resolution test using dig or nslookup against configured upstream DNS servers to confirm reachability.",
+        "Examine deployment logs or configuration management history to identify the specific changes made to resolver settings."
+      ],
+      "avoid": [
+        "Avoid performing manual configuration rollbacks in production without first verifying the current state and its impact.",
+        "Avoid executing high-frequency DNS queries that could be misinterpreted as a network attack or further saturate the resolver."
+      ],
+      "missing": [
+        "The specific content and scope of the recent resolver configuration changes.",
+        "Confirmation that the environment's resolver stack and service dependencies remain unchanged since the historical incident."
+      ]
+    },
+    "facts": [],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "ab31b79e-6ffc-4b57-923d-b309265f1456",
+          "text": "The notifications service incident was resolved by reverting the resolver configuration change. | When: 2026-10-27 | Where: production environment | Reverting the change restored DNS resolution and delivery.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+          "document_id": "HIST-NOTIFY-DNS",
+          "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-NOTIFY-DNS",
+            "service": "notifications",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "f04ef18b-ba2e-410c-b60b-fb359aa1d54e",
+          "text": "The notifications service experienced a production incident where DNS resolution failed with getaddrinfo ENOTFOUND and NXDOMAIN errors. | When: 2026-10-27 | Where: production environment | Triggered by a change in resolver configuration.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+          "document_id": "HIST-NOTIFY-DNS",
+          "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-NOTIFY-DNS",
+            "service": "notifications",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "fd896976-f379-4f7d-8f66-920cc9b61c14",
+          "text": "Rotating certificates failed to resolve the DNS issue in the notifications service. | When: 2026-10-27 | Where: production environment | The issue was caused by DNS resolver configuration, not certificate validity.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.651000+00:00",
+          "document_id": "HIST-NOTIFY-DNS",
+          "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-NOTIFY-DNS",
+            "service": "notifications",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "b3e0e389-c67c-449a-892b-53ac630b2872",
+          "text": "The notifications service experienced a production incident on 2026-10-27 where DNS resolution failed with getaddrinfo ENOTFOUND and NXDOMAIN errors.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "b6c0571b-6ca6-4aa6-98e3-6dbdd16258d2",
+          "text": "Reverting the change restored DNS resolution and delivery.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "1d82ac49-4cfd-43bf-bb1f-ab1d13c872bd",
+          "text": "The notifications service incident was resolved by reverting the resolver configuration change.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "497bd31e-3445-4f2d-a797-0fd7b5f23b75",
+          "text": "The notifications service incident was triggered by a change in resolver configuration.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "41b27ffb-fa82-454d-be97-814a25ab6f38",
+          "text": "Rotating certificates failed to resolve the DNS issue in the notifications service.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:13:01.651000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    }
+  },
+  "audit": {
+    "passes": 2,
+    "draft": {
+      "text": "### Incident Diagnosis: DNS Resolution Failure\n\nThe notifications service is currently experiencing a critical failure in name resolution, preventing connectivity to the host `outbound.mail.internal`. The observed technical failure is a persistent DNS lookup error, characterized by `getaddrinfo ENOTFOUND` and `NXDOMAIN` responses. This failure manifests before any connection attempt is initiated, indicating that the service is unable to resolve the required hostname through its current resolver configuration.\n\n#### Reasoning\n\n*   **Observed:** The service logs explicitly return `ENOTFOUND` and `NXDOMAIN` for the host `outbound.mail.internal`. These symptoms appeared immediately following changes to the resolver settings, confirming that the current environment is unable to translate the hostname into a reachable IP address.\n*   **Historical Match:** A previous incident on 2026-10-27 (HIST-NOTIFY-DNS) displayed identical symptoms, where `getaddrinfo ENOTFOUND` and `NXDOMAIN` errors were triggered by a change in resolver configuration. In that historical case, the service was unable to reach its destination until the configuration was reverted.\n*   **Unverified Details:** While the current symptoms mirror the historical incident, the specific nature of the resolver configuration change (e.g., specific upstream server addresses, search domains, or TTL settings) has not been observed. It is also unverified whether the current infrastructure uses the same resolver technology stack as the 2026-10-27 incident.\n\n#### Hypothesis\n\n**evidenceStatus:** supported_hypothesis\n\n*   **Technical Failure:** Misconfigured DNS resolver settings are preventing the resolution of `outbound.mail.internal`.\n*   **Basis:** historical_memory\n*   **Evidence IDs:** ab31b79e-6ffc-4b57-923d-b309265f1456, f04ef18b-ba2e-410c-b60b-fb359aa1d54e\n\n#### Recommended Non-Destructive Checks\n\nTo further investigate the resolver configuration without impacting production traffic, the following checks are recommended:\n\n1.  **Compare Configuration:** Inspect the current `/etc/resolv.conf` or equivalent resolver configuration file and compare it against a known-good configuration backup from before the recent settings change.\n2.  **Test Resolution:** Perform an isolated lookup using `dig` or `nslookup` against the currently configured upstream DNS servers to verify if they are capable of resolving `outbound.mail.internal`.\n3.  **Audit Recent Changes:** Examine the deployment or configuration management logs to identify the specific timestamp and content of the resolver settings change to verify what was modified.\n\n#### Cautions\n\n*   Avoid executing iterative, high-frequency DNS queries that might be interpreted as a DDoS attack against upstream DNS resolvers.\n*   Do not attempt to flush local caches if the system uses a persistent cache that might be necessary for other healthy services on the same host.\n*   Do not perform blind configuration rollbacks in production without verifying that the changes being reverted are indeed the source of the failure.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "ab31b79e-6ffc-4b57-923d-b309265f1456",
+            "text": "The notifications service incident was resolved by reverting the resolver configuration change. | When: 2026-10-27 | Where: production environment | Reverting the change restored DNS resolution and delivery.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+            "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+            "document_id": "HIST-NOTIFY-DNS",
+            "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+            "tags": [
+              "service:notifications",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-NOTIFY-DNS",
+              "service": "notifications",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "f04ef18b-ba2e-410c-b60b-fb359aa1d54e",
+            "text": "The notifications service experienced a production incident where DNS resolution failed with getaddrinfo ENOTFOUND and NXDOMAIN errors. | When: 2026-10-27 | Where: production environment | Triggered by a change in resolver configuration.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-27T00:00:00+00:00",
+            "occurred_end": "2026-10-27T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+            "document_id": "HIST-NOTIFY-DNS",
+            "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+            "tags": [
+              "service:notifications",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-NOTIFY-DNS",
+              "service": "notifications",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "fd896976-f379-4f7d-8f66-920cc9b61c14",
+            "text": "Rotating certificates failed to resolve the DNS issue in the notifications service. | When: 2026-10-27 | Where: production environment | The issue was caused by DNS resolver configuration, not certificate validity.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+            "occurred_end": "2026-10-27T23:59:59.020000+00:00",
+            "mentioned_at": "2026-11-07T15:13:01.651000+00:00",
+            "document_id": "HIST-NOTIFY-DNS",
+            "chunk_id": "recall-eval-v2-regression-v1_HIST-NOTIFY-DNS_0",
+            "tags": [
+              "service:notifications",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-NOTIFY-DNS",
+              "service": "notifications",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "b3e0e389-c67c-449a-892b-53ac630b2872",
+            "text": "The notifications service experienced a production incident on 2026-10-27 where DNS resolution failed with getaddrinfo ENOTFOUND and NXDOMAIN errors.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-27T00:00:00+00:00",
+            "occurred_end": "2026-10-27T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:notifications",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "b6c0571b-6ca6-4aa6-98e3-6dbdd16258d2",
+            "text": "Reverting the change restored DNS resolution and delivery.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+            "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:notifications",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "1d82ac49-4cfd-43bf-bb1f-ab1d13c872bd",
+            "text": "The notifications service incident was resolved by reverting the resolver configuration change.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+            "mentioned_at": "2026-11-07T15:13:01.641000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:notifications",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "497bd31e-3445-4f2d-a797-0fd7b5f23b75",
+            "text": "The notifications service incident was triggered by a change in resolver configuration.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-27T00:00:00+00:00",
+            "occurred_end": "2026-10-27T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T15:13:01.631000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:notifications",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "41b27ffb-fa82-454d-be97-814a25ab6f38",
+            "text": "Rotating certificates failed to resolve the DNS issue in the notifications service.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+            "occurred_end": "2026-10-27T23:59:59.020000+00:00",
+            "mentioned_at": "2026-11-07T15:13:01.651000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:notifications",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "The notifications service is experiencing a critical DNS resolution failure for 'outbound.mail.internal', characterized by ENOTFOUND and NXDOMAIN errors following recent resolver configuration changes.",
+        "hypotheses": [
+          {
+            "title": "Misconfigured DNS resolver settings are preventing the resolution of outbound.mail.internal.",
+            "reasoning": "The service logs show ENOTFOUND and NXDOMAIN errors immediately following resolver setting changes, mirroring a historical incident (HIST-NOTIFY-DNS) where identical symptoms were caused by configuration changes.",
+            "basis": "historical_memory",
+            "evidenceIds": [
+              "ab31b79e-6ffc-4b57-923d-b309265f1456",
+              "f04ef18b-ba2e-410c-b60b-fb359aa1d54e"
+            ]
+          }
+        ],
+        "checks": [
+          "Compare current /etc/resolv.conf or equivalent against a known-good backup.",
+          "Perform isolated lookup using dig or nslookup against configured upstream DNS servers.",
+          "Examine deployment or configuration management logs to identify specific changes."
+        ],
+        "avoid": [
+          "Executing iterative, high-frequency DNS queries that might be interpreted as a DDoS attack.",
+          "Flushing local caches if the system uses a persistent cache necessary for other services.",
+          "Performing blind configuration rollbacks in production without verification."
+        ],
+        "missing": [
+          "Specific nature of the resolver configuration change (e.g., upstream server addresses, search domains, or TTL settings).",
+          "Verification of whether the current infrastructure uses the same resolver technology stack as the 2026-10-27 incident."
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 47661,
+        "output_tokens": 1276,
+        "total_tokens": 48937,
+        "cached_tokens": 17454,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    }
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "T18",
+  "category": "disambiguation",
+  "input": {
+    "id": "T18",
+    "title": "Lag grows without retries",
+    "service": "events",
+    "environment": "production",
+    "description": "Incoming event rate is five times normal. Consumers advance offsets and report no schema errors or repeated records.",
+    "logs": "ingest=5000/s consumption=1000/s schema_errors=0 retries=0"
+  },
+  "events": [],
+  "startedAt": "2026-11-07T15:22:39.569Z",
+  "success": false,
+  "durationMs": 9987,
+  "error": "Hindsight returned HTTP 402. Check the bank ID and connection settings, then retry."
+}

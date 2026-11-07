@@ -1,0 +1,1566 @@
+{
+  "items": [
+    {
+      "id": "f075cd89-9ff5-4b64-841f-e38fb3c3b085",
+      "text": "Catalog service experienced an incident where SKU responses returned incorrect languages due to locale omission in cache keys. | When: 2026-11-06 | Where: production",
+      "context": "",
+      "date": "2026-11-06T00:00:00+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-CATALOG-CORRECTED",
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-11-06T00:00:00+00:00",
+      "occurred_end": "2026-11-06T23:59:59+00:00",
+      "entities": "SKU, catalog, cache, locale",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-CATALOG-CORRECTED_0",
+      "proof_count": 1,
+      "tags": [
+        "service:catalog",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-CATALOG-CORRECTED",
+        "service": "catalog",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:13.453737+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:13.455000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "c3a6f1a4-846d-409c-8f90-06cdec8f920c",
+      "text": "The catalog incident was resolved by including locale in cache keys, ensuring correct language separation. | When: 2026-11-07 | Where: production",
+      "context": "",
+      "date": "2026-11-07T00:00:00.020000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-CATALOG-CORRECTED",
+      "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+      "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+      "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+      "entities": "catalog, cache, locale",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-CATALOG-CORRECTED_0",
+      "proof_count": 1,
+      "tags": [
+        "service:catalog",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-CATALOG-CORRECTED",
+        "service": "catalog",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:13.453737+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:13.455000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "37cac974-0c66-46c6-b7a6-44e659736b56",
+      "text": "The initial diagnosis of memory exhaustion for the catalog incident was retracted as incorrect. | When: 2026-11-07 | Where: production",
+      "context": "",
+      "date": "2026-11-07T00:00:00.010000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-CATALOG-CORRECTED",
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-11-07T00:00:00.010000+00:00",
+      "occurred_end": "2026-11-07T23:59:59.010000+00:00",
+      "entities": "catalog, Redis",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-CATALOG-CORRECTED_0",
+      "proof_count": 1,
+      "tags": [
+        "service:catalog",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-CATALOG-CORRECTED",
+        "service": "catalog",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:13.453737+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:13.455000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "736ab673-76e8-40d5-836f-12c19af81f47",
+      "text": "The catalog incident was resolved by including locale in cache keys on 2026-11-07.",
+      "context": "",
+      "date": "2026-11-07T00:00:00.020000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+      "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+      "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+      "entities": "catalog, cache, locale",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:catalog",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:13.452000+00:00",
+      "source_memory_ids": [
+        "c3a6f1a4-846d-409c-8f90-06cdec8f920c"
+      ]
+    },
+    {
+      "id": "5b491fa6-5591-4eb4-ada6-3452ec19416a",
+      "text": "The initial diagnosis of memory exhaustion for the catalog incident was retracted as incorrect on 2026-11-07.",
+      "context": "",
+      "date": "2026-11-07T00:00:00.010000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-11-07T00:00:00.010000+00:00",
+      "occurred_end": "2026-11-07T23:59:59.010000+00:00",
+      "entities": "catalog, Redis",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:catalog",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:13.452000+00:00",
+      "source_memory_ids": [
+        "37cac974-0c66-46c6-b7a6-44e659736b56"
+      ]
+    },
+    {
+      "id": "5061591e-f66f-421f-b1a0-1794ef0edb3c",
+      "text": "Catalog service experienced an incident in production on 2026-11-06 where SKU responses returned incorrect languages due to locale omission in cache keys.",
+      "context": "",
+      "date": "2026-11-06T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-11-06T00:00:00+00:00",
+      "occurred_end": "2026-11-06T23:59:59+00:00",
+      "entities": "SKU, catalog, cache, locale",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:catalog",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:13.402000+00:00",
+      "source_memory_ids": [
+        "f075cd89-9ff5-4b64-841f-e38fb3c3b085"
+      ]
+    },
+    {
+      "id": "d0bf9f91-0ed5-4850-b545-d60fc386bbe0",
+      "text": "Rotating certificates failed to resolve the DNS issue. | When: 2026-10-27 | Where: production",
+      "context": "",
+      "date": "2026-10-27T00:00:00.020000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-NOTIFY-DNS",
+      "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+      "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-27T00:00:00.020000+00:00",
+      "entities": "DNS",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-NOTIFY-DNS_0",
+      "proof_count": 1,
+      "tags": [
+        "service:notifications",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-NOTIFY-DNS",
+        "service": "notifications",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:12.966673+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:12.968000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "2c11589a-d73e-452d-af50-6fcc98956778",
+      "text": "Production incident HIST-NOTIFY-DNS occurred where notifications service failed due to DNS resolution errors (getaddrinfo ENOTFOUND and NXDOMAIN) following a resolver configuration change. | When: 2026-10-27 | Where: production | Resolver configuration change caused DNS failure.",
+      "context": "",
+      "date": "2026-10-27T00:00:00+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-NOTIFY-DNS",
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-10-27T00:00:00+00:00",
+      "occurred_end": "2026-10-27T00:00:00+00:00",
+      "entities": "HIST-NOTIFY-DNS, notifications, production, DNS",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-NOTIFY-DNS_0",
+      "proof_count": 1,
+      "tags": [
+        "service:notifications",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-NOTIFY-DNS",
+        "service": "notifications",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:12.966673+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:12.968000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "05a0e1b0-3ea5-4d32-8b96-e673b0255320",
+      "text": "Reverting the resolver configuration change restored DNS resolution and service delivery. | When: 2026-10-27 | Where: production",
+      "context": "",
+      "date": "2026-10-27T00:00:00.010000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-NOTIFY-DNS",
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-27T00:00:00.010000+00:00",
+      "entities": "notifications, DNS",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-NOTIFY-DNS_0",
+      "proof_count": 1,
+      "tags": [
+        "service:notifications",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-NOTIFY-DNS",
+        "service": "notifications",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:12.966673+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:12.968000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "e17077b9-e1f0-4dce-b584-ac8c13e194a5",
+      "text": "Rotating certificates failed to resolve the DNS issue.",
+      "context": "",
+      "date": "2026-10-27T00:00:00.020000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+      "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-27T00:00:00.020000+00:00",
+      "entities": "DNS",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:notifications",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:12.965000+00:00",
+      "source_memory_ids": [
+        "d0bf9f91-0ed5-4850-b545-d60fc386bbe0"
+      ]
+    },
+    {
+      "id": "5d3a1fae-e0a2-438e-b9ad-f06ae5f3af82",
+      "text": "Reverting the resolver configuration change restored DNS resolution and service delivery.",
+      "context": "",
+      "date": "2026-10-27T00:00:00.010000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-27T00:00:00.010000+00:00",
+      "entities": "notifications, DNS",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:notifications",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:12.965000+00:00",
+      "source_memory_ids": [
+        "05a0e1b0-3ea5-4d32-8b96-e673b0255320"
+      ]
+    },
+    {
+      "id": "49d996ab-c157-4f2e-977d-3ead56598c7e",
+      "text": "Production incident HIST-NOTIFY-DNS occurred where notifications service failed due to DNS resolution errors (getaddrinfo ENOTFOUND and NXDOMAIN) following a resolver configuration change.",
+      "context": "",
+      "date": "2026-10-27T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-10-27T00:00:00+00:00",
+      "occurred_end": "2026-10-27T00:00:00+00:00",
+      "entities": "HIST-NOTIFY-DNS, notifications, production, DNS",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:notifications",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:12.915000+00:00",
+      "source_memory_ids": [
+        "2c11589a-d73e-452d-af50-6fcc98956778"
+      ]
+    },
+    {
+      "id": "992df75a-3fed-4715-bb23-e5da8dfb6186",
+      "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior. | When: 2026-10-24 | Where: production",
+      "context": "",
+      "date": "2026-10-24T00:00:00.010000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-AUTH-JWKS",
+      "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+      "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+      "entities": "JWKS",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-AUTH-JWKS",
+        "service": "auth",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.619853+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.621000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "7eda8606-7122-4702-8315-7fdcd7cf4427",
+      "text": "TLS handshakes failed for the auth service in production because the leaf certificate had expired. | When: 2026-10-12 | Where: production | The leaf certificate was past its notAfter date.",
+      "context": "",
+      "date": "2026-10-12T00:00:00+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-AUTH-CERT",
+      "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+      "occurred_start": "2026-10-12T00:00:00+00:00",
+      "occurred_end": "2026-10-12T00:00:00+00:00",
+      "entities": "certificate, TLS, auth",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-CERT_0",
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-AUTH-CERT",
+        "service": "auth",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.619853+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.621000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "6d211aa2-8c39-4667-bc57-05446e2b8014",
+      "text": "Restarting the database and resetting passwords failed to resolve the TLS handshake issue. | When: 2026-10-12 | Where: production",
+      "context": "",
+      "date": "2026-10-12T00:00:00.010000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-AUTH-CERT",
+      "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+      "occurred_start": "2026-10-12T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-12T00:00:00.010000+00:00",
+      "entities": "password, TLS, database",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-CERT_0",
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-AUTH-CERT",
+        "service": "auth",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.619853+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.621000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "24022d8c-3d54-4f44-9c19-0676e9c0fbd7",
+      "text": "Resetting user passwords and replacing valid TLS certificates failed to resolve the signing-key lookup issue. | When: 2026-10-24 | Where: production",
+      "context": "",
+      "date": "2026-10-24T00:00:00.020000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-AUTH-JWKS",
+      "mentioned_at": "2026-11-07T15:22:01.479000+00:00",
+      "occurred_start": "2026-10-24T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-24T00:00:00.020000+00:00",
+      "entities": "TLS",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-AUTH-JWKS",
+        "service": "auth",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.619853+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.621000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "1d602575-a244-4798-a9df-36acf8a925e6",
+      "text": "Production incident HIST-AUTH-JWKS occurred where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation. | When: 2026-10-24 | Where: production | The application cached an obsolete JWKS.",
+      "context": "",
+      "date": "2026-10-24T00:00:00+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-AUTH-JWKS",
+      "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+      "occurred_start": "2026-10-24T00:00:00+00:00",
+      "occurred_end": "2026-10-24T00:00:00+00:00",
+      "entities": "HIST-AUTH-JWKS, JWT, JWKS, auth",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-JWKS_0",
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-AUTH-JWKS",
+        "service": "auth",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.619853+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.621000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "126a3b10-4cca-40b7-94e6-0676468c912b",
+      "text": "The auth service TLS failure was resolved by renewing the certificate and deploying the correct chain. | When: 2026-10-12 | Where: production",
+      "context": "",
+      "date": "2026-10-12T00:00:00.020000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-AUTH-CERT",
+      "mentioned_at": "2026-11-07T15:22:01.479000+00:00",
+      "occurred_start": "2026-10-12T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-12T00:00:00.020000+00:00",
+      "entities": "certificate, TLS, auth",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-AUTH-CERT_0",
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-AUTH-CERT",
+        "service": "auth",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.619853+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.621000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "8ff482c3-9cb7-414e-b86f-43c4bb8589e0",
+      "text": "Resetting user passwords and replacing valid TLS certificates failed to resolve the signing-key lookup issue on 2026-10-24.",
+      "context": "",
+      "date": "2026-10-24T00:00:00.020000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.479000+00:00",
+      "occurred_start": "2026-10-24T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-24T00:00:00.020000+00:00",
+      "entities": "TLS",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.619000+00:00",
+      "source_memory_ids": [
+        "24022d8c-3d54-4f44-9c19-0676e9c0fbd7"
+      ]
+    },
+    {
+      "id": "634e8e2c-2b4e-4621-8302-cb110fb7c358",
+      "text": "The auth service TLS failure was resolved by renewing the certificate and deploying the correct chain on 2026-10-12.",
+      "context": "",
+      "date": "2026-10-12T00:00:00.020000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.479000+00:00",
+      "occurred_start": "2026-10-12T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-12T00:00:00.020000+00:00",
+      "entities": "certificate, TLS, auth",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.619000+00:00",
+      "source_memory_ids": [
+        "126a3b10-4cca-40b7-94e6-0676468c912b"
+      ]
+    },
+    {
+      "id": "d4114652-36f7-42a4-b4dd-444d2de385e7",
+      "text": "Restarting the database and resetting passwords failed to resolve the TLS handshake issue on 2026-10-12.",
+      "context": "",
+      "date": "2026-10-12T00:00:00.010000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+      "occurred_start": "2026-10-12T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-12T00:00:00.010000+00:00",
+      "entities": "password, TLS, database",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.618000+00:00",
+      "source_memory_ids": [
+        "6d211aa2-8c39-4667-bc57-05446e2b8014"
+      ]
+    },
+    {
+      "id": "8ea9617d-5ab3-4643-84d2-306e0910d6a4",
+      "text": "Verification was restored by refreshing the JWKS and correcting the key-cache refresh behavior on 2026-10-24.",
+      "context": "",
+      "date": "2026-10-24T00:00:00.010000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.469000+00:00",
+      "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+      "entities": "JWKS",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.618000+00:00",
+      "source_memory_ids": [
+        "992df75a-3fed-4715-bb23-e5da8dfb6186"
+      ]
+    },
+    {
+      "id": "89496b7c-2fa4-48be-bef1-4564bcff69fa",
+      "text": "Production incident HIST-AUTH-JWKS occurred on 2026-10-24 where JWT verification failed with unknown kid and 401 errors following an identity-provider signing-key rotation.",
+      "context": "",
+      "date": "2026-10-24T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+      "occurred_start": "2026-10-24T00:00:00+00:00",
+      "occurred_end": "2026-10-24T00:00:00+00:00",
+      "entities": "HIST-AUTH-JWKS, JWT, JWKS, auth",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.617000+00:00",
+      "source_memory_ids": [
+        "1d602575-a244-4798-a9df-36acf8a925e6"
+      ]
+    },
+    {
+      "id": "bba7f8cb-01c1-48ba-92d8-71a199bc7339",
+      "text": "TLS handshakes failed for the auth service in production on 2026-10-12 because the leaf certificate had expired.",
+      "context": "",
+      "date": "2026-10-12T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.459000+00:00",
+      "occurred_start": "2026-10-12T00:00:00+00:00",
+      "occurred_end": "2026-10-12T00:00:00+00:00",
+      "entities": "certificate, TLS, auth",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:auth",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.558000+00:00",
+      "source_memory_ids": [
+        "7eda8606-7122-4702-8315-7fdcd7cf4427"
+      ]
+    },
+    {
+      "id": "fa941ec6-acfb-4994-95f6-ffb7f2d9d664",
+      "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue. | When: 2026-10-18 | Where: production",
+      "context": "",
+      "date": "2026-10-18T00:00:00.020000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-PAY-QUOTA",
+      "mentioned_at": "2026-11-07T15:22:01.478000+00:00",
+      "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+      "entities": "payments, database",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-PAY-QUOTA_0",
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {
+        "incident_id": "HIST-PAY-QUOTA",
+        "service": "payments",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.537956+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.539000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "e75559df-f8ac-441b-b20d-ca83b2929624",
+      "text": "Restarting the service provided only temporary relief and raising the pool limit failed to repair the connection leak. | When: 2026-10-09 | Where: production",
+      "context": "",
+      "date": "2026-10-09T00:00:00.020000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-PAY-POOL",
+      "mentioned_at": "2026-11-07T15:22:01.478000+00:00",
+      "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+      "entities": "payments",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-PAY-POOL_0",
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {
+        "incident_id": "HIST-PAY-POOL",
+        "service": "payments",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.537956+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.539000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "ac80b30c-c11a-4152-b5c5-8ae34ca126aa",
+      "text": "Restored throughput by closing leaked connections and deploying a cleanup patch. | When: 2026-10-09 | Where: production",
+      "context": "",
+      "date": "2026-10-09T00:00:00.010000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-PAY-POOL",
+      "mentioned_at": "2026-11-07T15:22:01.468000+00:00",
+      "occurred_start": "2026-10-09T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-09T00:00:00.010000+00:00",
+      "entities": "cleanup patch, payments",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-PAY-POOL_0",
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {
+        "incident_id": "HIST-PAY-POOL",
+        "service": "payments",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.537956+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.539000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "7cffb6af-d8fd-497b-a44b-8b74d6aa6ef2",
+      "text": "A regression test was proposed to address the connection leak issue.",
+      "context": "",
+      "date": "2026-11-07T15:22:01.488000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-PAY-POOL",
+      "mentioned_at": "2026-11-07T15:22:01.488000+00:00",
+      "occurred_start": null,
+      "occurred_end": null,
+      "entities": "regression test",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-PAY-POOL_0",
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {
+        "incident_id": "HIST-PAY-POOL",
+        "service": "payments",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.537956+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.539000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "6e3c1a70-3eea-4325-a3a9-015e2719384f",
+      "text": "The payments service experienced a production incident due to an external payment provider returning HTTP 429 and Retry-After errors. | When: 2026-10-18 | Where: production | The external provider rejected requests because the upstream quota was exceeded.",
+      "context": "",
+      "date": "2026-10-18T00:00:00+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-PAY-QUOTA",
+      "mentioned_at": "2026-11-07T15:22:01.458000+00:00",
+      "occurred_start": "2026-10-18T00:00:00+00:00",
+      "occurred_end": "2026-10-18T23:59:59+00:00",
+      "entities": "HTTP 429, payments, Retry-After, production",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-PAY-QUOTA_0",
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {
+        "incident_id": "HIST-PAY-QUOTA",
+        "service": "payments",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.537956+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.539000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "0f633cfe-7572-48a3-9169-a7cedf4f20bd",
+      "text": "Traffic was restored by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate. | When: 2026-10-18 | Where: production",
+      "context": "",
+      "date": "2026-10-18T00:00:00.010000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-PAY-QUOTA",
+      "mentioned_at": "2026-11-07T15:22:01.468000+00:00",
+      "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+      "entities": "payments, Retry-After",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-PAY-QUOTA_0",
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {
+        "incident_id": "HIST-PAY-QUOTA",
+        "service": "payments",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.537956+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.539000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "0c3ae4ff-cbd6-41ae-ba13-2335f9f9c90c",
+      "text": "Payment handlers failed to release database connections after exceptions in version 3.7 of the payments service. | When: 2026-10-09 | Where: production | Caused pool occupancy to reach 100/100, leading to request timeouts.",
+      "context": "",
+      "date": "2026-10-09T00:00:00+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-PAY-POOL",
+      "mentioned_at": "2026-11-07T15:22:01.458000+00:00",
+      "occurred_start": "2026-10-09T00:00:00+00:00",
+      "occurred_end": "2026-10-09T00:00:00+00:00",
+      "entities": "payments, database, version 3.7",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-PAY-POOL_0",
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {
+        "incident_id": "HIST-PAY-POOL",
+        "service": "payments",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:11.537956+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.539000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "71d6dc91-ee6c-4de0-8865-a41c87f44c8e",
+      "text": "A regression test was proposed to address the connection leak issue.",
+      "context": "",
+      "date": "2026-11-07T15:22:01.488000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.488000+00:00",
+      "occurred_start": null,
+      "occurred_end": null,
+      "entities": "regression test",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.537000+00:00",
+      "source_memory_ids": [
+        "7cffb6af-d8fd-497b-a44b-8b74d6aa6ef2"
+      ]
+    },
+    {
+      "id": "34947d08-0c7e-4ca6-9693-214b26b9aae4",
+      "text": "Restarting the service provided only temporary relief on 2026-10-09 and raising the pool limit failed to repair the connection leak.",
+      "context": "",
+      "date": "2026-10-09T00:00:00.020000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.478000+00:00",
+      "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+      "entities": "payments",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.536000+00:00",
+      "source_memory_ids": [
+        "e75559df-f8ac-441b-b20d-ca83b2929624"
+      ]
+    },
+    {
+      "id": "03563851-f578-4673-9f60-2d02be30a28d",
+      "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue on 2026-10-18.",
+      "context": "",
+      "date": "2026-10-18T00:00:00.020000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.478000+00:00",
+      "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+      "entities": "payments, database",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.535000+00:00",
+      "source_memory_ids": [
+        "fa941ec6-acfb-4994-95f6-ffb7f2d9d664"
+      ]
+    },
+    {
+      "id": "7de1743f-600e-4128-b844-389629df1a78",
+      "text": "Throughput was restored on 2026-10-09 by closing leaked connections and deploying a cleanup patch.",
+      "context": "",
+      "date": "2026-10-09T00:00:00.010000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.468000+00:00",
+      "occurred_start": "2026-10-09T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-09T00:00:00.010000+00:00",
+      "entities": "cleanup patch, payments",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.534000+00:00",
+      "source_memory_ids": [
+        "ac80b30c-c11a-4152-b5c5-8ae34ca126aa"
+      ]
+    },
+    {
+      "id": "0738bb89-a9e2-4be6-8301-d2229be188ff",
+      "text": "Traffic was restored on 2026-10-18 by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate.",
+      "context": "",
+      "date": "2026-10-18T00:00:00.010000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.468000+00:00",
+      "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+      "entities": "payments, Retry-After",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.534000+00:00",
+      "source_memory_ids": [
+        "0f633cfe-7572-48a3-9169-a7cedf4f20bd"
+      ]
+    },
+    {
+      "id": "5624cc7f-5c6e-4c91-98aa-6c6e7d8020bd",
+      "text": "Payment handlers in version 3.7 of the payments service failed to release database connections after exceptions on 2026-10-09.",
+      "context": "",
+      "date": "2026-10-09T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.458000+00:00",
+      "occurred_start": "2026-10-09T00:00:00+00:00",
+      "occurred_end": "2026-10-09T00:00:00+00:00",
+      "entities": "payments, database, version 3.7",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.533000+00:00",
+      "source_memory_ids": [
+        "0c3ae4ff-cbd6-41ae-ba13-2335f9f9c90c"
+      ]
+    },
+    {
+      "id": "b8787fff-92a2-40a9-8f41-4ba90290d2ae",
+      "text": "The payments service experienced a production incident on 2026-10-18 due to an external payment provider returning HTTP 429 and Retry-After errors.",
+      "context": "",
+      "date": "2026-10-18T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.458000+00:00",
+      "occurred_start": "2026-10-18T00:00:00+00:00",
+      "occurred_end": "2026-10-18T23:59:59+00:00",
+      "entities": "HTTP 429, payments, Retry-After, production",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "recall-incident",
+        "service:payments"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:11.487000+00:00",
+      "source_memory_ids": [
+        "6e3c1a70-3eea-4325-a3a9-015e2719384f"
+      ]
+    },
+    {
+      "id": "ee3f09af-4305-4ec3-bc11-e167a4c2cba4",
+      "text": "Adding consumers failed to resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment",
+      "context": "",
+      "date": "2026-10-22T00:00:00.010000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-QUEUE-POISON",
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+      "entities": "consumers, events",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+      "proof_count": 1,
+      "tags": [
+        "service:events",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-QUEUE-POISON",
+        "service": "events",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:10.284167+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:10.285000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "ebc11446-8ceb-4ee7-a8eb-317b5988a114",
+      "text": "Progress was restored by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment",
+      "context": "",
+      "date": "2026-10-22T00:00:00.020000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-QUEUE-POISON",
+      "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+      "occurred_start": "2026-10-22T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-22T00:00:00.020000+00:00",
+      "entities": "schema compatibility, events",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+      "proof_count": 1,
+      "tags": [
+        "service:events",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-QUEUE-POISON",
+        "service": "events",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:10.284167+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:10.285000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "2bc707b4-8935-4a2c-bc75-f0fe1c6b90b0",
+      "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment | A producer schema change introduced a poison event that blocked progress.",
+      "context": "",
+      "date": "2026-10-22T00:00:00+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-QUEUE-POISON",
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-10-22T00:00:00+00:00",
+      "occurred_end": "2026-10-22T00:00:00+00:00",
+      "entities": "HIST-QUEUE-POISON, schema validation, production, events",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+      "proof_count": 1,
+      "tags": [
+        "service:events",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-QUEUE-POISON",
+        "service": "events",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:10.284167+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:10.285000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "48831f51-a1c7-4d50-96de-0e944f2a081d",
+      "text": "Adding consumers failed to resolve the single-event retry loop during the production incident on 2026-10-22.",
+      "context": "",
+      "date": "2026-10-22T00:00:00.010000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+      "entities": "consumers, events",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:events",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:10.283000+00:00",
+      "source_memory_ids": [
+        "ee3f09af-4305-4ec3-bc11-e167a4c2cba4"
+      ]
+    },
+    {
+      "id": "04ee9dc6-822f-4d3b-bff7-9a6a37868aba",
+      "text": "Progress was restored by quarantining the failed event and correcting schema compatibility on 2026-10-22.",
+      "context": "",
+      "date": "2026-10-22T00:00:00.020000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+      "occurred_start": "2026-10-22T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-22T00:00:00.020000+00:00",
+      "entities": "schema compatibility, events",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:events",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:10.283000+00:00",
+      "source_memory_ids": [
+        "ebc11446-8ceb-4ee7-a8eb-317b5988a114"
+      ]
+    },
+    {
+      "id": "607e9c24-c17d-4a19-8924-192896f0815d",
+      "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures on 2026-10-22.",
+      "context": "",
+      "date": "2026-10-22T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-10-22T00:00:00+00:00",
+      "occurred_end": "2026-10-22T00:00:00+00:00",
+      "entities": "HIST-QUEUE-POISON, schema validation, production, events",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:events",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:10.242000+00:00",
+      "source_memory_ids": [
+        "2bc707b4-8935-4a2c-bc75-f0fe1c6b90b0"
+      ]
+    },
+    {
+      "id": "ef567ec8-9cfd-4fd6-a192-41bc3de299bd",
+      "text": "Unconditional FLUSHALL was avoided during incident mitigation to prevent data loss. | When: 2026-10-16 | Where: production environment | FLUSHALL would delete data.",
+      "context": "",
+      "date": "2026-10-16T00:00:00.020000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-SEARCH-OOM",
+      "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+      "occurred_start": "2026-10-16T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-16T00:00:00.020000+00:00",
+      "entities": "Redis, FLUSHALL",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-SEARCH-OOM_0",
+      "proof_count": 1,
+      "tags": [
+        "service:search",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-SEARCH-OOM",
+        "service": "search",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:09.372703+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:09.374000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "d4334162-06dd-4c58-aa44-8164ccb4defa",
+      "text": "Incident HIST-SEARCH-OOM was mitigated by inspecting memory, reviewing eviction policies, and reducing nonessential cache usage. | When: 2026-10-16 | Where: production environment",
+      "context": "",
+      "date": "2026-10-16T00:00:00.010000+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-SEARCH-OOM",
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-10-16T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-16T00:00:00.010000+00:00",
+      "entities": "Redis, HIST-SEARCH-OOM",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-SEARCH-OOM_0",
+      "proof_count": 1,
+      "tags": [
+        "service:search",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-SEARCH-OOM",
+        "service": "search",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:09.372703+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:09.374000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "44083a6c-83ac-4eca-8cd4-2fd2c07cc1d9",
+      "text": "Production incident HIST-SEARCH-OOM occurred due to Redis memory exhaustion, causing search cache write failures. | When: 2026-10-16 | Where: production environment | Redis returned OOM command not allowed when memory exceeded maxmemory.",
+      "context": "",
+      "date": "2026-10-16T00:00:00+00:00",
+      "fact_type": "world",
+      "document_id": "HIST-SEARCH-OOM",
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-10-16T00:00:00+00:00",
+      "occurred_end": "2026-10-16T00:00:00+00:00",
+      "entities": "Redis, search, production, HIST-SEARCH-OOM",
+      "chunk_id": "recall-eval-v2-regression-v4_HIST-SEARCH-OOM_0",
+      "proof_count": 1,
+      "tags": [
+        "service:search",
+        "recall-incident"
+      ],
+      "metadata": {
+        "incident_id": "HIST-SEARCH-OOM",
+        "service": "search",
+        "environment": "production"
+      },
+      "consolidated_at": "2026-11-07T15:22:09.372703+00:00",
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:09.374000+00:00",
+      "source_memory_ids": []
+    },
+    {
+      "id": "e9224e3b-1a16-432f-b03c-4487dcbd8b15",
+      "text": "Unconditional FLUSHALL was avoided during incident mitigation to prevent data loss.",
+      "context": "",
+      "date": "2026-10-16T00:00:00.020000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+      "occurred_start": "2026-10-16T00:00:00.020000+00:00",
+      "occurred_end": "2026-10-16T00:00:00.020000+00:00",
+      "entities": "Redis, FLUSHALL",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:search",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:09.372000+00:00",
+      "source_memory_ids": [
+        "ef567ec8-9cfd-4fd6-a192-41bc3de299bd"
+      ]
+    },
+    {
+      "id": "64a9a78f-db47-4fe1-85b3-ca4590659213",
+      "text": "Redis returned OOM command not allowed when memory exceeded maxmemory.",
+      "context": "",
+      "date": "2026-10-16T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-10-16T00:00:00+00:00",
+      "occurred_end": "2026-10-16T00:00:00+00:00",
+      "entities": "Redis, search, production, HIST-SEARCH-OOM",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:search",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:09.371000+00:00",
+      "source_memory_ids": [
+        "44083a6c-83ac-4eca-8cd4-2fd2c07cc1d9"
+      ]
+    },
+    {
+      "id": "16fbac55-de1e-49cc-87b4-0cb0521a235a",
+      "text": "Incident HIST-SEARCH-OOM was mitigated by inspecting memory, reviewing eviction policies, and reducing nonessential cache usage.",
+      "context": "",
+      "date": "2026-10-16T00:00:00.010000+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-10-16T00:00:00.010000+00:00",
+      "occurred_end": "2026-10-16T00:00:00.010000+00:00",
+      "entities": "Redis, HIST-SEARCH-OOM",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:search",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:09.371000+00:00",
+      "source_memory_ids": [
+        "d4334162-06dd-4c58-aa44-8164ccb4defa"
+      ]
+    },
+    {
+      "id": "15fee775-e32b-44d1-bce5-786124b24e9d",
+      "text": "The incident caused search cache write failures.",
+      "context": "",
+      "date": "2026-10-16T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+      "occurred_start": "2026-10-16T00:00:00+00:00",
+      "occurred_end": "2026-10-16T00:00:00+00:00",
+      "entities": "Redis, search, production, HIST-SEARCH-OOM",
+      "chunk_id": null,
+      "proof_count": 1,
+      "tags": [
+        "service:search",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:09.370000+00:00",
+      "source_memory_ids": [
+        "44083a6c-83ac-4eca-8cd4-2fd2c07cc1d9"
+      ]
+    },
+    {
+      "id": "5bcc3bea-1fc7-49cd-ad06-ac37be51a3ac",
+      "text": "Production incident HIST-SEARCH-OOM occurred on 2026-10-16 due to Redis memory exhaustion.",
+      "context": "",
+      "date": "2026-10-16T00:00:00+00:00",
+      "fact_type": "observation",
+      "document_id": null,
+      "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+      "occurred_start": "2026-10-16T00:00:00+00:00",
+      "occurred_end": "2026-10-16T00:00:00.010000+00:00",
+      "entities": "Redis, search, production, HIST-SEARCH-OOM",
+      "chunk_id": null,
+      "proof_count": 2,
+      "tags": [
+        "service:search",
+        "recall-incident"
+      ],
+      "metadata": {},
+      "consolidated_at": null,
+      "consolidation_failed_at": null,
+      "state": "valid",
+      "invalidation_reason": null,
+      "invalidated_at": null,
+      "edited_at": null,
+      "updated_at": "2026-11-07T15:22:09.324000+00:00",
+      "source_memory_ids": [
+        "44083a6c-83ac-4eca-8cd4-2fd2c07cc1d9",
+        "d4334162-06dd-4c58-aa44-8164ccb4defa"
+      ]
+    }
+  ],
+  "total": 52,
+  "limit": 1000,
+  "offset": 0
+}

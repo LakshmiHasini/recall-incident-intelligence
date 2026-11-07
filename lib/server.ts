@@ -8,7 +8,7 @@ import { AppError, Hindsight } from "./hindsight";
 import { eventInput, generatedInvestigation, incidentInput, memoryDocument, patchInput, resolutionInput, webhookInput } from "./validation";
 import type { Incident, MemoryFact, Resolution } from "./types";
 import { redact } from "./privacy";
-import { buildInvestigationQuery, normalizeInvestigation } from "./investigation";
+import { investigateIncident } from "./investigation";
 
 const now = () => new Date().toISOString();
 const uid = () => crypto.randomUUID();
@@ -157,10 +157,10 @@ export async function handleApi(request: Request, path: string[]) {
       }
       if (path[2] === "investigate" && method === "POST") {
         const data = await detail(id); const start = Date.now();
-        const query = buildInvestigationQuery(incident, data.events);
-        const result = await memory().reflect(redact(query));
-        const { structured, facts, basedOn } = normalizeInvestigation(result);
-        const investigation = { id: uid(), incidentId:id, revision:incident.revision, createdAt:now(), result:{ text:result.text, structured, basedOn, facts, provider:"Hindsight Reflect", durationMs:Date.now()-start } };
+        const existing = data.investigations.find(a => a.revision === incident.revision && a.result && typeof a.result === "object" && "provider" in a.result && a.result.provider === "Hindsight Reflect · evidence reviewed");
+        if (existing) return json({ investigation: existing, cached: true });
+        const { result, structured, facts, basedOn } = await investigateIncident(memory(), incident, data.events);
+        const investigation = { id: uid(), incidentId:id, revision:incident.revision, createdAt:now(), result:{ text:result.text, structured, basedOn, facts, provider:"Hindsight Reflect · evidence reviewed", durationMs:Date.now()-start } };
         await db().insert(investigations).values(investigation);
         if (incident.status === "open") await db().update(incidents).set({status:"investigating",updatedAt:now()}).where(and(eq(incidents.id,id),eq(incidents.revision,incident.revision)));
         return json({ investigation });

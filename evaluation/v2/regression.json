@@ -1,0 +1,80 @@
+[
+  {
+    "id": "T04",
+    "category": "recurrence",
+    "incident": {
+      "id": "T04",
+      "title": "Valid users get unauthorized",
+      "service": "auth",
+      "environment": "production",
+      "description": "Signing keys rotated this morning. Transport is healthy, but the cached key set lacks the new key identifier.",
+      "logs": "JWT unknown kid=new-2026; cached JWKS contains old-2025; TLS valid"
+    },
+    "events": []
+  },
+  {
+    "id": "T06",
+    "category": "recurrence",
+    "incident": {
+      "id": "T06",
+      "title": "One event partition is stuck",
+      "service": "events",
+      "environment": "production",
+      "description": "The same record is redelivered, other partitions progress, and schema checks fail.",
+      "logs": "partition=3 offset=902 retry=168 schema validation failed"
+    },
+    "events": []
+  },
+  {
+    "id": "T07",
+    "category": "recurrence",
+    "incident": {
+      "id": "T07",
+      "title": "Notification host cannot be found",
+      "service": "notifications",
+      "environment": "production",
+      "description": "Delivery broke after resolver settings changed. Name lookup fails before connecting.",
+      "logs": "getaddrinfo ENOTFOUND outbound.mail.internal; NXDOMAIN"
+    },
+    "events": []
+  },
+  {
+    "id": "T08",
+    "category": "recurrence",
+    "incident": {
+      "id": "T08",
+      "title": "Wrong language is returned",
+      "service": "catalog",
+      "environment": "production",
+      "description": "The same SKU intermittently displays another locale. Cache entries use product ID alone.",
+      "logs": "key=product:87 request_locale=fr response_locale=en; Redis memory normal"
+    },
+    "events": []
+  },
+  {
+    "id": "T16",
+    "category": "disambiguation",
+    "incident": {
+      "id": "T16",
+      "title": "Staging requests wait for a connection",
+      "service": "payments",
+      "environment": "staging",
+      "description": "This staging configuration allows only two database connections. Both are busy with legitimate long queries; we have no evidence of a leak.",
+      "logs": "configured_max_pool_size=2; active_queries=2; no idle or orphaned sessions"
+    },
+    "events": []
+  },
+  {
+    "id": "T18",
+    "category": "disambiguation",
+    "incident": {
+      "id": "T18",
+      "title": "Lag grows without retries",
+      "service": "events",
+      "environment": "production",
+      "description": "Incoming event rate is five times normal. Consumers advance offsets and report no schema errors or repeated records.",
+      "logs": "ingest=5000/s consumption=1000/s schema_errors=0 retries=0"
+    },
+    "events": []
+  }
+]

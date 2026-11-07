@@ -1,0 +1,190 @@
+
+> recall-incident-intelligence@0.1.0 test
+> node --experimental-transform-types --test tests/core.test.ts
+
+TAP version 13
+# (node:16545) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: new incidents apply explicit safe defaults
+ok 1 - new incidents apply explicit safe defaults
+  ---
+  duration_ms: 1.978416
+  type: 'test'
+  ...
+# Subtest: invalid reports and unverified resolutions are rejected
+ok 2 - invalid reports and unverified resolutions are rejected
+  ---
+  duration_ms: 1.467458
+  type: 'test'
+  ...
+# Subtest: webhook events require a stable provider and event ID
+ok 3 - webhook events require a stable provider and event ID
+  ---
+  duration_ms: 0.381042
+  type: 'test'
+  ...
+# Subtest: retained documents preserve failed-action context and verified outcomes
+ok 4 - retained documents preserve failed-action context and verified outcomes
+  ---
+  duration_ms: 0.168917
+  type: 'test'
+  ...
+# Subtest: common credentials are redacted without dropping diagnostic context
+ok 5 - common credentials are redacted without dropping diagnostic context
+  ---
+  duration_ms: 0.390584
+  type: 'test'
+  ...
+# Subtest: missing configuration fails before any network call
+ok 6 - missing configuration fails before any network call
+  ---
+  duration_ms: 0.366834
+  type: 'test'
+  ...
+# Subtest: retain uses a stable source document and synchronous processing
+ok 7 - retain uses a stable source document and synchronous processing
+  ---
+  duration_ms: 11.314208
+  type: 'test'
+  ...
+# Subtest: queued or unsuccessful retain is never marked completed
+ok 8 - queued or unsuccessful retain is never marked completed
+  ---
+  duration_ms: 0.42875
+  type: 'test'
+  ...
+# Subtest: recall returns actual provider facts
+ok 9 - recall returns actual provider facts
+  ---
+  duration_ms: 0.72575
+  type: 'test'
+  ...
+# Subtest: reflect requests source facts using the documented object schema
+ok 10 - reflect requests source facts using the documented object schema
+  ---
+  duration_ms: 0.992125
+  type: 'test'
+  ...
+# Subtest: empty reflection fails rather than fabricating an answer
+ok 11 - empty reflection fails rather than fabricating an answer
+  ---
+  duration_ms: 0.321875
+  type: 'test'
+  ...
+# Subtest: provider errors never expose response bodies or credentials
+ok 12 - provider errors never expose response bodies or credentials
+  ---
+  duration_ms: 0.232417
+  type: 'test'
+  ...
+# Subtest: network errors become actionable failures
+ok 13 - network errors become actionable failures
+  ---
+  duration_ms: 0.222833
+  type: 'test'
+  ...
+# Subtest: exhausted credits are reported as billing failure without exposing provider details
+ok 14 - exhausted credits are reported as billing failure without exposing provider details
+  ---
+  duration_ms: 0.248208
+  type: 'test'
+  ...
+# Subtest: only evidence actually linked to a hypothesis is presented
+ok 15 - only evidence actually linked to a hypothesis is presented
+  ---
+  duration_ms: 0.355958
+  type: 'test'
+  ...
+# Subtest: fabricated historical fact IDs cannot substantiate a hypothesis
+ok 16 - fabricated historical fact IDs cannot substantiate a hypothesis
+  ---
+  duration_ms: 0.211666
+  type: 'test'
+  ...
+# Subtest: an explicit insufficient-evidence result cannot retain ranked guesses
+ok 17 - an explicit insufficient-evidence result cannot retain ranked guesses
+  ---
+  duration_ms: 0.067917
+  type: 'test'
+  ...
+# Subtest: current-observation hypotheses do not require fabricated historical evidence
+ok 18 - current-observation hypotheses do not require fabricated historical evidence
+  ---
+  duration_ms: 0.063542
+  type: 'test'
+  ...
+# Subtest: invalid structured output is not silently passed as validated output
+ok 19 - invalid structured output is not silently passed as validated output
+  ---
+  duration_ms: 0.269417
+  type: 'test'
+  ...
+# Subtest: the production query contains observations, redacts credentials and defines uncertainty
+ok 20 - the production query contains observations, redacts credentials and defines uncertainty
+  ---
+  duration_ms: 0.127083
+  type: 'test'
+  ...
+# Subtest: exact returned source-document references resolve to actual fact IDs
+ok 21 - exact returned source-document references resolve to actual fact IDs
+  ---
+  duration_ms: 0.075792
+  type: 'test'
+  ...
+# Subtest: evidence review replaces the draft and preserves exact supplied fact provenance
+ok 22 - evidence review replaces the draft and preserves exact supplied fact provenance
+  ---
+  duration_ms: 0.629083
+  type: 'test'
+  ...
+# Subtest: a rejected historical citation is removed from presented evidence
+ok 23 - a rejected historical citation is removed from presented evidence
+  ---
+  duration_ms: 0.314625
+  type: 'test'
+  ...
+# Subtest: review failure cannot fall back to an unreviewed draft
+ok 24 - review failure cannot fall back to an unreviewed draft
+  ---
+  duration_ms: 0.1265
+  type: 'test'
+  ...
+# Subtest: invalid review output cannot be published as raw text
+ok 25 - invalid review output cannot be published as raw text
+  ---
+  duration_ms: 0.2445
+  type: 'test'
+  ...
+# Subtest: review schema restricts citations to supplied evidence and makes state agree with hypothesis count
+ok 26 - review schema restricts citations to supplied evidence and makes state agree with hypothesis count
+  ---
+  duration_ms: 1.8095
+  type: 'test'
+  ...
+# Subtest: an empty evidence set cannot generate review citations
+ok 27 - an empty evidence set cannot generate review citations
+  ---
+  duration_ms: 0.20325
+  type: 'test'
+  ...
+# Subtest: malformed provider facts cannot become usable citation IDs
+ok 28 - malformed provider facts cannot become usable citation IDs
+  ---
+  duration_ms: 0.142083
+  type: 'test'
+  ...
+# Subtest: checks referring to an unobserved integration state the prerequisite explicitly
+ok 29 - checks referring to an unobserved integration state the prerequisite explicitly
+  ---
+  duration_ms: 0.08375
+  type: 'test'
+  ...
+1..29
+# tests 29
+# suites 0
+# pass 29
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 218.249583

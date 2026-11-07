@@ -1,0 +1,565 @@
+{
+  "id": "T06",
+  "category": "recurrence",
+  "input": {
+    "id": "T06",
+    "title": "One event partition is stuck",
+    "service": "events",
+    "environment": "production",
+    "description": "The same record is redelivered, other partitions progress, and schema checks fail.",
+    "logs": "partition=3 offset=902 retry=168 schema validation failed"
+  },
+  "events": [],
+  "startedAt": "2026-11-07T16:58:21.528Z",
+  "success": true,
+  "durationMs": 21950,
+  "schemaValid": true,
+  "result": {
+    "text": "### Incident Report: T06 - Stuck Partition in Events Service\n\n#### Evidence Status\nSupported Hypothesis.\n\n#### Observed Failure Summary\nPartition 3 of the production events service is currently stalled at offset 902, exhibiting a persistent retry loop (168 retries). The consumer reports consistent schema validation failures for this specific record, while other partitions in the service continue to process normally.\n\n#### Hypothesis: Poison Event Blocking Partition Progress\n*   **Observed**: Partition 3 is locked in a retry cycle at offset 902 due to repeated schema validation errors.\n*   **Memory Relation**: The observed behavior (single-event retry loop in a production events service partition) matches the signature of historical incident HIST-QUEUE-POISON (1b4a551a-7626-4d17-a7aa-9306035313e9, 414e5aa9-b146-4e7d-91c8-a25ebe611824).\n*   **Historical Match**: On 2026-10-22, an identical technical failure occurred where one partition repeatedly retried a single offset (418) due to schema validation failures triggered by a 'poison event' introduced during a producer schema change (1b4a551a-7626-4d17-a7aa-9306035313e9).\n*   **Unverified**: The exact record payload at offset 902, the specific nature of the schema mismatch, and the triggering event (e.g., a recent producer-side update) remain unknown.\n*   **Basis**: Historical data confirms that similar retry loops are caused by poison events that cannot be resolved by scaling consumer counts (414e5aa9-b146-4e7d-91c8-a25ebe611824).\n*   **Evidence IDs**: [\"1b4a551a-7626-4d17-a7aa-9306035313e9\", \"414e5aa9-b146-4e7d-91c8-a25ebe611824\"]\n\n#### Understanding the Incident\n*   **Current Observations**: The failure is isolated to a single partition and a single offset, suggesting the record itself violates the expected schema definition. The service's ability to process other partitions confirms that the issue is not a global service failure but a localized data-compatibility error.\n*   **Historical Context**: The incident HIST-QUEUE-POISON mirrors the current state (1b4a551a-7626-4d17-a7aa-9306035313e9). Historical experience dictates that adding consumers is ineffective at clearing a poison event loop (414e5aa9-b146-4e7d-91c8-a25ebe611824). Progress in the previous instance was only restored by quarantining the specific failed payload and ensuring schema compatibility between producer and consumer (ecde7220-70a8-495a-87e3-9a34652cd205).\n*   **Unknown Deeper Causes**: While schema validation errors are observed, the root cause—such as a specific producer-side configuration drift, an uncoordinated schema registry update, or malformed serialization—has not been identified.\n\n#### Proposed Checks\n1.  **Inspect Payload**: Retrieve the record at partition 3, offset 902 to identify the fields causing the validation failure.\n2.  **Schema Compatibility Verification**: Compare the schema version utilized by the consumer against the data format present at offset 902.\n3.  **Log Analysis**: Review the specific error codes returned by the schema validation service for offset 902 to identify the exact field or type violation.\n4.  **Producer Audit**: Check recent deployment logs for producer-side schema updates or changes that occurred immediately preceding the incident onset.\n\n#### Cautions\n*   **Avoid Force-Skipping**: Do not force-skip the offset or delete the record without following established quarantine procedures to prevent permanent data loss or integrity issues.\n*   **Do Not Scale Consumers**: Adding more consumers will not resolve the retry loop caused by a poison event and may increase resource contention unnecessarily (414e5aa9-b146-4e7d-91c8-a25ebe611824).\n\n#### Missing Observations\n*   The specific content of the record at offset 902.\n*   The nature of the schema mismatch (i.e., missing fields, type coercion failure, or unexpected nulls).\n*   Recent configuration changes or updates to the producer-side schema registry.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "1b4a551a-7626-4d17-a7aa-9306035313e9",
+          "text": "A production incident occurred where one partition repeatedly retried offset 418 due to schema validation failures caused by a poison event. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "414e5aa9-b146-4e7d-91c8-a25ebe611824",
+          "text": "Adding consumers did not resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment, events service",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.052000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "998c921a-554c-4552-a346-6337d9822dcb",
+          "text": "One partition repeatedly retried offset 418 due to schema validation failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d35b5f2d-c1e5-4a15-b6ce-0210a902faf0",
+          "text": "A poison event caused by a producer schema change blocked progress.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d79cd80a-d6ef-4b87-9783-009ce801db0b",
+          "text": "Adding consumers did not resolve the single-event retry loop during the production incident.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.052000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "Partition 3 of the production events service is stalled at offset 902, experiencing a persistent retry loop due to schema validation failures. Other partitions are processing normally, indicating the issue is isolated to this specific record.",
+      "hypotheses": [
+        {
+          "title": "Partition 3 Stuck in Retry Loop at Offset 902",
+          "basis": "current_observations",
+          "reasoning": "Observed: Partition 3 is locked in a retry cycle at offset 902 due to repeated schema validation errors. Historical match: On 2026-10-22, a partition repeatedly retried a single offset due to schema validation failures (1b4a551a-7626-4d17-a7aa-9306035313e9, 414e5aa9-b146-4e7d-91c8-a25ebe611824). Unverified: The exact record payload at offset 902, the specific nature of the schema mismatch, and the triggering event remain unknown.",
+          "evidenceIds": [
+            "1b4a551a-7626-4d17-a7aa-9306035313e9",
+            "414e5aa9-b146-4e7d-91c8-a25ebe611824"
+          ]
+        }
+      ],
+      "checks": [
+        "Retrieve the record at partition 3, offset 902 to identify the fields causing the validation failure.",
+        "Compare the schema version utilized by the consumer against the data format present at offset 902.",
+        "Review the specific error codes returned by the schema validation service for offset 902.",
+        "Check recent deployment logs for producer-side schema updates."
+      ],
+      "avoid": [
+        "Do not force-skip the offset or delete the record without following established quarantine procedures.",
+        "Do not scale consumers, as this will not resolve the retry loop and may increase resource contention."
+      ],
+      "missing": [
+        "The specific content of the record at offset 902.",
+        "The nature of the schema mismatch.",
+        "Recent configuration changes or updates to the producer-side schema registry."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 44814,
+      "output_tokens": 1550,
+      "total_tokens": 46364,
+      "cached_tokens": 17402,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "Partition 3 of the production events service is stalled at offset 902, experiencing a persistent retry loop due to schema validation failures. Other partitions are processing normally, indicating the issue is isolated to this specific record.",
+      "hypotheses": [
+        {
+          "title": "Partition 3 Stuck in Retry Loop at Offset 902",
+          "reasoning": "Observed: Partition 3 is locked in a retry cycle at offset 902 due to repeated schema validation errors. Historical match: On 2026-10-22, a partition repeatedly retried a single offset due to schema validation failures (1b4a551a-7626-4d17-a7aa-9306035313e9, 414e5aa9-b146-4e7d-91c8-a25ebe611824). Unverified: The exact record payload at offset 902, the specific nature of the schema mismatch, and the triggering event remain unknown.",
+          "basis": "current_observations",
+          "evidenceIds": [
+            "1b4a551a-7626-4d17-a7aa-9306035313e9",
+            "414e5aa9-b146-4e7d-91c8-a25ebe611824"
+          ]
+        }
+      ],
+      "checks": [
+        "Retrieve the record at partition 3, offset 902 to identify the fields causing the validation failure.",
+        "Compare the schema version utilized by the consumer against the data format present at offset 902.",
+        "Review the specific error codes returned by the schema validation service for offset 902.",
+        "Check recent deployment logs for producer-side schema updates."
+      ],
+      "avoid": [
+        "Do not force-skip the offset or delete the record without following established quarantine procedures.",
+        "Do not scale consumers, as this will not resolve the retry loop and may increase resource contention."
+      ],
+      "missing": [
+        "The specific content of the record at offset 902.",
+        "The nature of the schema mismatch.",
+        "Recent configuration changes or updates to the producer-side schema registry."
+      ]
+    },
+    "facts": [
+      {
+        "id": "1b4a551a-7626-4d17-a7aa-9306035313e9",
+        "text": "A production incident occurred where one partition repeatedly retried offset 418 due to schema validation failures caused by a poison event. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-22T00:00:00+00:00",
+        "occurred_end": "2026-10-22T00:00:00+00:00",
+        "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+        "document_id": "HIST-QUEUE-POISON",
+        "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+        "tags": [
+          "recall-incident",
+          "service:events"
+        ],
+        "metadata": {
+          "incident_id": "HIST-QUEUE-POISON",
+          "service": "events",
+          "environment": "production"
+        },
+        "attachments": null
+      },
+      {
+        "id": "414e5aa9-b146-4e7d-91c8-a25ebe611824",
+        "text": "Adding consumers did not resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment, events service",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+        "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+        "mentioned_at": "2026-11-07T16:58:17.052000+00:00",
+        "document_id": "HIST-QUEUE-POISON",
+        "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+        "tags": [
+          "recall-incident",
+          "service:events"
+        ],
+        "metadata": {
+          "incident_id": "HIST-QUEUE-POISON",
+          "service": "events",
+          "environment": "production"
+        },
+        "attachments": null
+      }
+    ],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "1b4a551a-7626-4d17-a7aa-9306035313e9",
+          "text": "A production incident occurred where one partition repeatedly retried offset 418 due to schema validation failures caused by a poison event. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "414e5aa9-b146-4e7d-91c8-a25ebe611824",
+          "text": "Adding consumers did not resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment, events service",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.052000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "998c921a-554c-4552-a346-6337d9822dcb",
+          "text": "One partition repeatedly retried offset 418 due to schema validation failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d35b5f2d-c1e5-4a15-b6ce-0210a902faf0",
+          "text": "A poison event caused by a producer schema change blocked progress.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d79cd80a-d6ef-4b87-9783-009ce801db0b",
+          "text": "Adding consumers did not resolve the single-event retry loop during the production incident.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T16:58:17.052000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    }
+  },
+  "audit": {
+    "passes": 2,
+    "draft": {
+      "text": "### Incident Summary\nOne partition (partition 3) in the production events service is currently stuck, characterized by repeated redelivery of the same record at offset 902 and consistent schema validation failures. Other partitions are proceeding normally.\n\n### Evidence Analysis\n- **Observed**: The event partition 3 is stuck at offset 902 with 168 retries, and records are failing schema validation. This indicates the consumer is unable to process a specific message, triggering a retry loop.\n- **Historical match**: On 2026-10-22, the events service experienced an identical failure (incident HIST-QUEUE-POISON) where one partition repeatedly retried a specific offset due to schema validation errors triggered by a poison event.\n- **Unverified details**: The specific content of the record at offset 902 and the nature of the schema mismatch remain unverified. It is unknown if the schema change was producer-side or if the environment has undergone recent configuration changes similar to the 2026-10-22 incident.\n\n### Hypothesis\n**Hypothesis**: The partition is blocked by a \"poison\" record that fails schema validation upon every attempt, resulting in a persistent retry loop.\n- **EvidenceStatus**: supported_hypothesis\n- **Basis**: historical_memory\n- **EvidenceIds**: [1b4a551a-7626-4d17-a7aa-9306035313e9, 414e5aa9-b146-4e7d-91c8-a25ebe611824]\n\n### Non-Destructive Checks\n- Inspect the payload at `partition=3, offset=902` to determine why it fails schema validation. Use bounded, read-only telemetry or inspection tools rather than attempting to bypass or delete the record.\n- Verify if the current schema version is compatible with the data format expected at offset 902.\n- Review logs for specific schema validation error messages to confirm if they match the expected schema definition.\n\n### Cautions\n- Do not attempt to force-skip the offset or delete the record without following established quarantine procedures, as this could lead to data loss or further inconsistency.\n- Do not rely on adding more consumers to resolve the issue; historical data confirms that increasing concurrency does not break a single-event retry loop.\n- Avoid performing broad service restarts, as they are unlikely to resolve a specific per-record validation failure and may introduce service instability.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "1b4a551a-7626-4d17-a7aa-9306035313e9",
+            "text": "A production incident occurred where one partition repeatedly retried offset 418 due to schema validation failures caused by a poison event. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00+00:00",
+            "occurred_end": "2026-10-22T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+            "tags": [
+              "recall-incident",
+              "service:events"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "414e5aa9-b146-4e7d-91c8-a25ebe611824",
+            "text": "Adding consumers did not resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment, events service",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+            "mentioned_at": "2026-11-07T16:58:17.052000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+            "tags": [
+              "recall-incident",
+              "service:events"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "Partition 3 of the production events service is stuck at offset 902 with 168 retries. The consumer is experiencing consistent schema validation failures for this specific record, preventing further progress on this partition while other partitions remain functional.",
+        "hypotheses": [
+          {
+            "title": "Partition 3 stuck due to schema validation failure at offset 902",
+            "reasoning": "Observed: Partition 3 is stuck at offset 902 with repeated schema validation errors. Historical match: Incident HIST-QUEUE-POISON involved a similar partition retry loop due to schema errors. Unverified: The specific content of the record and the root cause of the schema mismatch.",
+            "basis": "historical_memory",
+            "evidenceIds": [
+              "1b4a551a-7626-4d17-a7aa-9306035313e9",
+              "414e5aa9-b146-4e7d-91c8-a25ebe611824"
+            ]
+          }
+        ],
+        "checks": [
+          "Inspect the payload at partition 3, offset 902 to identify schema validation failure reasons.",
+          "Verify compatibility between the current schema version and the data format at offset 902.",
+          "Review logs for specific schema validation error messages."
+        ],
+        "avoid": [
+          "Do not force-skip the offset or delete the record without following established quarantine procedures.",
+          "Do not rely on adding more consumers to resolve the issue."
+        ],
+        "missing": [
+          "Content of the record at offset 902.",
+          "Nature of the schema mismatch.",
+          "Recent configuration changes or producer-side schema updates."
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 32961,
+        "output_tokens": 1107,
+        "total_tokens": 34068,
+        "cached_tokens": 9450,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    },
+    "review": {
+      "text": "### Incident Report: T06 - Stuck Partition in Events Service\n\n#### Evidence Status\nSupported Hypothesis.\n\n#### Observed Failure Summary\nPartition 3 of the production events service is currently stalled at offset 902, exhibiting a persistent retry loop (168 retries). The consumer reports consistent schema validation failures for this specific record, while other partitions in the service continue to process normally.\n\n#### Hypothesis: Poison Event Blocking Partition Progress\n*   **Observed**: Partition 3 is locked in a retry cycle at offset 902 due to repeated schema validation errors.\n*   **Memory Relation**: The observed behavior (single-event retry loop in a production events service partition) matches the signature of historical incident HIST-QUEUE-POISON (1b4a551a-7626-4d17-a7aa-9306035313e9, 414e5aa9-b146-4e7d-91c8-a25ebe611824).\n*   **Historical Match**: On 2026-10-22, an identical technical failure occurred where one partition repeatedly retried a single offset (418) due to schema validation failures triggered by a 'poison event' introduced during a producer schema change (1b4a551a-7626-4d17-a7aa-9306035313e9).\n*   **Unverified**: The exact record payload at offset 902, the specific nature of the schema mismatch, and the triggering event (e.g., a recent producer-side update) remain unknown.\n*   **Basis**: Historical data confirms that similar retry loops are caused by poison events that cannot be resolved by scaling consumer counts (414e5aa9-b146-4e7d-91c8-a25ebe611824).\n*   **Evidence IDs**: [\"1b4a551a-7626-4d17-a7aa-9306035313e9\", \"414e5aa9-b146-4e7d-91c8-a25ebe611824\"]\n\n#### Understanding the Incident\n*   **Current Observations**: The failure is isolated to a single partition and a single offset, suggesting the record itself violates the expected schema definition. The service's ability to process other partitions confirms that the issue is not a global service failure but a localized data-compatibility error.\n*   **Historical Context**: The incident HIST-QUEUE-POISON mirrors the current state (1b4a551a-7626-4d17-a7aa-9306035313e9). Historical experience dictates that adding consumers is ineffective at clearing a poison event loop (414e5aa9-b146-4e7d-91c8-a25ebe611824). Progress in the previous instance was only restored by quarantining the specific failed payload and ensuring schema compatibility between producer and consumer (ecde7220-70a8-495a-87e3-9a34652cd205).\n*   **Unknown Deeper Causes**: While schema validation errors are observed, the root cause—such as a specific producer-side configuration drift, an uncoordinated schema registry update, or malformed serialization—has not been identified.\n\n#### Proposed Checks\n1.  **Inspect Payload**: Retrieve the record at partition 3, offset 902 to identify the fields causing the validation failure.\n2.  **Schema Compatibility Verification**: Compare the schema version utilized by the consumer against the data format present at offset 902.\n3.  **Log Analysis**: Review the specific error codes returned by the schema validation service for offset 902 to identify the exact field or type violation.\n4.  **Producer Audit**: Check recent deployment logs for producer-side schema updates or changes that occurred immediately preceding the incident onset.\n\n#### Cautions\n*   **Avoid Force-Skipping**: Do not force-skip the offset or delete the record without following established quarantine procedures to prevent permanent data loss or integrity issues.\n*   **Do Not Scale Consumers**: Adding more consumers will not resolve the retry loop caused by a poison event and may increase resource contention unnecessarily (414e5aa9-b146-4e7d-91c8-a25ebe611824).\n\n#### Missing Observations\n*   The specific content of the record at offset 902.\n*   The nature of the schema mismatch (i.e., missing fields, type coercion failure, or unexpected nulls).\n*   Recent configuration changes or updates to the producer-side schema registry.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "1b4a551a-7626-4d17-a7aa-9306035313e9",
+            "text": "A production incident occurred where one partition repeatedly retried offset 418 due to schema validation failures caused by a poison event. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00+00:00",
+            "occurred_end": "2026-10-22T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+            "tags": [
+              "recall-incident",
+              "service:events"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "414e5aa9-b146-4e7d-91c8-a25ebe611824",
+            "text": "Adding consumers did not resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment, events service",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+            "mentioned_at": "2026-11-07T16:58:17.052000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v5_HIST-QUEUE-POISON_0",
+            "tags": [
+              "recall-incident",
+              "service:events"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "998c921a-554c-4552-a346-6337d9822dcb",
+            "text": "One partition repeatedly retried offset 418 due to schema validation failures.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00+00:00",
+            "occurred_end": "2026-10-22T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "recall-incident",
+              "service:events"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "d35b5f2d-c1e5-4a15-b6ce-0210a902faf0",
+            "text": "A poison event caused by a producer schema change blocked progress.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00+00:00",
+            "occurred_end": "2026-10-22T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T16:58:17.042000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "recall-incident",
+              "service:events"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "d79cd80a-d6ef-4b87-9783-009ce801db0b",
+            "text": "Adding consumers did not resolve the single-event retry loop during the production incident.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+            "mentioned_at": "2026-11-07T16:58:17.052000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "recall-incident",
+              "service:events"
+            ],
+            "metadata": null,
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "Partition 3 of the production events service is stalled at offset 902, experiencing a persistent retry loop due to schema validation failures. Other partitions are processing normally, indicating the issue is isolated to this specific record.",
+        "hypotheses": [
+          {
+            "title": "Partition 3 Stuck in Retry Loop at Offset 902",
+            "observed": "Partition 3 is locked in a retry cycle at offset 902 due to repeated schema validation errors.",
+            "memoryRelation": "same_mechanism",
+            "historical": "On 2026-10-22, a partition repeatedly retried a single offset due to schema validation failures (1b4a551a-7626-4d17-a7aa-9306035313e9, 414e5aa9-b146-4e7d-91c8-a25ebe611824).",
+            "unverified": "The exact record payload at offset 902, the specific nature of the schema mismatch, and the triggering event remain unknown.",
+            "basis": "current_observations",
+            "evidenceIds": [
+              "1b4a551a-7626-4d17-a7aa-9306035313e9",
+              "414e5aa9-b146-4e7d-91c8-a25ebe611824"
+            ]
+          }
+        ],
+        "checks": [
+          "Retrieve the record at partition 3, offset 902 to identify the fields causing the validation failure.",
+          "Compare the schema version utilized by the consumer against the data format present at offset 902.",
+          "Review the specific error codes returned by the schema validation service for offset 902.",
+          "Check recent deployment logs for producer-side schema updates."
+        ],
+        "avoid": [
+          "Do not force-skip the offset or delete the record without following established quarantine procedures.",
+          "Do not scale consumers, as this will not resolve the retry loop and may increase resource contention."
+        ],
+        "missing": [
+          "The specific content of the record at offset 902.",
+          "The nature of the schema mismatch.",
+          "Recent configuration changes or updates to the producer-side schema registry."
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 44814,
+        "output_tokens": 1550,
+        "total_tokens": 46364,
+        "cached_tokens": 17402,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    }
+  }
+}

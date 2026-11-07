@@ -1,0 +1,340 @@
+[
+  {
+    "id": "H01",
+    "category": "historical recurrence",
+    "source": "HIST-PAY-POOL",
+    "concepts": [
+      "leak|unreleased|not.*releas|skip.*releas|fail.*releas",
+      "pool|connection|session"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H02",
+    "category": "historical recurrence",
+    "source": "HIST-PAY-QUOTA",
+    "concepts": [
+      "quota|429|rate.?limit|throttl"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H03",
+    "category": "historical recurrence",
+    "source": "HIST-AUTH-CERT",
+    "concepts": [
+      "certificat",
+      "expir"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H04",
+    "category": "historical recurrence",
+    "source": "HIST-AUTH-JWKS",
+    "concepts": [
+      "jwks|key.cache|cached.key|key.set",
+      "stale|outdat|old|missing|refresh|obsolete"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H05",
+    "category": "historical recurrence",
+    "source": "HIST-SEARCH-OOM",
+    "concepts": [
+      "memory|oom",
+      "redis|cache"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H06",
+    "category": "historical recurrence",
+    "source": "HIST-QUEUE-POISON",
+    "concepts": [
+      "poison|schema|invalid.*record|invalid.*event|payload|malformed"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H07",
+    "category": "historical recurrence",
+    "source": "HIST-NOTIFY-DNS",
+    "concepts": [
+      "dns|resolver|name.resol"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H08",
+    "category": "historical recurrence",
+    "source": "HIST-CATALOG-CORRECTED",
+    "concepts": [
+      "locale|language",
+      "key|cache"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H09",
+    "category": "historical recurrence",
+    "source": "HIST-PAY-QUOTA",
+    "concepts": [
+      "429|quota|rate.?limit|throttl"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H10",
+    "category": "historical recurrence",
+    "source": "HIST-AUTH-JWKS",
+    "concepts": [
+      "jwks|cached.key|key.cache|key.set"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H11",
+    "category": "historical recurrence",
+    "source": "HIST-CATALOG-CORRECTED",
+    "concepts": [
+      "locale|language",
+      "key|cache"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H12",
+    "category": "historical recurrence",
+    "source": "HIST-QUEUE-POISON",
+    "concepts": [
+      "schema|poison|invalid|malformed|payload"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H13",
+    "category": "observed failure",
+    "concepts": [
+      "pool|connection",
+      "capacity|saturat|one|1|limit|size"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H14",
+    "category": "observed failure",
+    "concepts": [
+      "capacity|throughput|rate|backlog|ingest|arrival"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H15",
+    "category": "observed failure",
+    "concepts": [
+      "disk|volume|space|storage",
+      "full|exhaust|enospc|no.*space"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H16",
+    "category": "observed failure",
+    "concepts": [
+      "host.?name|san|name.*mismatch",
+      "certificat|tls"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H17",
+    "category": "observed failure",
+    "concepts": [
+      "deadlock|lock.order|circular.*wait"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H18",
+    "category": "observed failure",
+    "concepts": [
+      "unique|duplicate",
+      "constraint|key|insert"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H19",
+    "category": "observed failure",
+    "concepts": [
+      "memory|oom",
+      "limit|cap|exceed"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H20",
+    "category": "observed failure",
+    "concepts": [
+      "permission|authoriz|scope|access",
+      "pull|registry|image"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H21",
+    "category": "observed failure",
+    "concepts": [
+      "wal|write.ahead",
+      "remov|unavailable|missing|retention"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H22",
+    "category": "observed failure",
+    "concepts": [
+      "listen|listener|port",
+      "no |absent|missing|refus|not "
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H23",
+    "category": "observed failure",
+    "concepts": [
+      "descriptor|open.files|emfile",
+      "limit|exhaust|too.many"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H24",
+    "category": "observed failure",
+    "concepts": [
+      "body|payload|request|upload",
+      "limit|size|large|413"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H25",
+    "category": "observed failure",
+    "concepts": [
+      "dns|resolver|name.resol",
+      "servfail|fail"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H26",
+    "category": "observed failure",
+    "concepts": [
+      "probe|readiness",
+      "port|mismatch"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H27",
+    "category": "observed failure",
+    "concepts": [
+      "clock|time",
+      "skew|behind|incorrect|valid"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H28",
+    "category": "observed failure",
+    "concepts": [
+      "index|seq.*scan|full.*scan"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H29",
+    "category": "observed failure",
+    "concepts": [
+      "replica|replication",
+      "lag|stale|older|delay"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H30",
+    "category": "hostile input",
+    "source": "HIST-PAY-QUOTA",
+    "concepts": [
+      "quota|429|throttl|rate.?limit"
+    ],
+    "abstain": false
+  },
+  {
+    "id": "H31",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H32",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H33",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H34",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H35",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H36",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H37",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H38",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H39",
+    "category": "insufficient evidence",
+    "concepts": [],
+    "abstain": true
+  },
+  {
+    "id": "H40",
+    "category": "learning",
+    "source": "HIST-ARCHIVE-LEARNED",
+    "concepts": [
+      "codec|compress",
+      "incompatib|unsupported|reader|identifier"
+    ],
+    "abstain": false,
+    "learning": true
+  }
+]

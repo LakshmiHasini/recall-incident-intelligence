@@ -1,0 +1,495 @@
+{
+  "id": "T06",
+  "category": "recurrence",
+  "input": {
+    "id": "T06",
+    "title": "One event partition is stuck",
+    "service": "events",
+    "environment": "production",
+    "description": "The same record is redelivered, other partitions progress, and schema checks fail.",
+    "logs": "partition=3 offset=902 retry=168 schema validation failed"
+  },
+  "events": [],
+  "startedAt": "2026-11-07T15:22:05.929Z",
+  "success": true,
+  "durationMs": 16591,
+  "schemaValid": true,
+  "result": {
+    "text": "The events service is experiencing a partition-specific processing block at partition 3, offset 902, characterized by 168 repeated schema validation failures. Other partitions remain unaffected and continue to process successfully.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "2bc707b4-8935-4a2c-bc75-f0fe1c6b90b0",
+          "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "ebc11446-8ceb-4ee7-a8eb-317b5988a114",
+          "text": "Progress was restored by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "ee3f09af-4305-4ec3-bc11-e167a4c2cba4",
+          "text": "Adding consumers failed to resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "04ee9dc6-822f-4d3b-bff7-9a6a37868aba",
+          "text": "Progress was restored by quarantining the failed event and correcting schema compatibility on 2026-10-22.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "607e9c24-c17d-4a19-8924-192896f0815d",
+          "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures on 2026-10-22.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The events service is experiencing a partition-specific processing block at partition 3, offset 902, due to 168 repeated schema validation failures. Other partitions are processing successfully.",
+      "hypotheses": [
+        {
+          "title": "Partition-specific schema validation failure",
+          "basis": "current_observations",
+          "reasoning": "Observed: 168 repeated schema validation failures at partition 3, offset 902. Historical match: None. Unverified: The root cause of the schema validation failure at the specific offset.",
+          "evidenceIds": []
+        }
+      ],
+      "checks": [
+        "Inspect schema validation error logs for the specific message content at partition 3, offset 902.",
+        "Verify the schema version associated with the events being processed at partition 3.",
+        "Compare the event structure at offset 902 against the expected schema definition."
+      ],
+      "avoid": [
+        "Do not perform manual offset resets or deletions.",
+        "Do not restart the events service while investigating the specific partition block."
+      ],
+      "missing": [
+        "The specific error message or code returned by the schema validator.",
+        "The schema definition version currently enforced for partition 3."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 48246,
+      "output_tokens": 574,
+      "total_tokens": 48820,
+      "cached_tokens": 21352,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The events service is experiencing a partition-specific processing block at partition 3, offset 902, due to 168 repeated schema validation failures. Other partitions are processing successfully.",
+      "hypotheses": [
+        {
+          "title": "Partition-specific schema validation failure",
+          "reasoning": "Observed: 168 repeated schema validation failures at partition 3, offset 902. Historical match: None. Unverified: The root cause of the schema validation failure at the specific offset.",
+          "basis": "current_observations",
+          "evidenceIds": []
+        }
+      ],
+      "checks": [
+        "Inspect schema validation error logs for the specific message content at partition 3, offset 902.",
+        "Verify the schema version associated with the events being processed at partition 3.",
+        "Compare the event structure at offset 902 against the expected schema definition."
+      ],
+      "avoid": [
+        "Do not perform manual offset resets or deletions.",
+        "Do not restart the events service while investigating the specific partition block."
+      ],
+      "missing": [
+        "The specific error message or code returned by the schema validator.",
+        "The schema definition version currently enforced for partition 3."
+      ]
+    },
+    "facts": [],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "2bc707b4-8935-4a2c-bc75-f0fe1c6b90b0",
+          "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "ebc11446-8ceb-4ee7-a8eb-317b5988a114",
+          "text": "Progress was restored by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "ee3f09af-4305-4ec3-bc11-e167a4c2cba4",
+          "text": "Adding consumers failed to resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "04ee9dc6-822f-4d3b-bff7-9a6a37868aba",
+          "text": "Progress was restored by quarantining the failed event and correcting schema compatibility on 2026-10-22.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "607e9c24-c17d-4a19-8924-192896f0815d",
+          "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures on 2026-10-22.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    }
+  },
+  "audit": {
+    "passes": 2,
+    "draft": {
+      "text": "### Technical Failure Hypothesis: Poison Event Blocking Partition Progress\n\nThe current observation of a single partition (partition 3) being stuck while others progress, combined with repeated schema validation failures for the same offset (902), indicates that a poison event is failing schema validation and triggering an infinite retry loop. \n\n**Observed**\n- A specific partition (3) is stuck at offset 902.\n- The same event is repeatedly redelivered, failing schema validation 168 times.\n- Other partitions in the system are processing normally.\n\n**Historical Match**\n- A prior incident on 2026-10-22 involved an identical mechanism where a poison event introduced by a producer schema change blocked a single partition, resulting in persistent schema validation failures and retry loops. The resolution involved quarantining the failed event to restore processing.\n\n**Unverified Details**\n- The specific schema incompatibility or the content of the event at offset 902 remains unobserved.\n\n**Cautions**\n- Adding consumers or increasing processing capacity will not resolve a poison-event retry loop; it only increases total throughput without addressing the blocking record.\n- Do not perform destructive operations such as clearing the entire partition or forcing offsets without first confirming the identity of the event causing the validation failure.\n\n**Recommended Non-Destructive Checks**\n- Inspect the event at partition 3, offset 902, using bounded read-only tools to confirm the schema discrepancy.\n- Review recent producer deployment logs or schema registry updates that may have introduced incompatible event formats.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "2bc707b4-8935-4a2c-bc75-f0fe1c6b90b0",
+            "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment | A producer schema change introduced a poison event that blocked progress.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00+00:00",
+            "occurred_end": "2026-10-22T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+            "tags": [
+              "service:events",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "ebc11446-8ceb-4ee7-a8eb-317b5988a114",
+            "text": "Progress was restored by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00.020000+00:00",
+            "occurred_end": "2026-10-22T00:00:00.020000+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+            "tags": [
+              "service:events",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "ee3f09af-4305-4ec3-bc11-e167a4c2cba4",
+            "text": "Adding consumers failed to resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.470000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+            "tags": [
+              "service:events",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "Partition 3 is stuck at offset 902, with the same event failing schema validation 168 times. While other partitions process normally, this specific event is repeatedly redelivered, causing a persistent retry loop that blocks progress for this partition.",
+        "hypotheses": [
+          {
+            "title": "Poison event causing partition-specific schema validation retry loop",
+            "reasoning": "Observed: Partition 3 is stuck at offset 902 with 168 repeated schema validation failures. Historical: A 2026-10-22 incident involved a similar mechanism where a poison event blocked a partition. Unverified: The specific schema incompatibility or content of the event at offset 902 is currently unknown.",
+            "basis": "current_observations",
+            "evidenceIds": [
+              "2026-10-22"
+            ]
+          }
+        ],
+        "checks": [
+          "Inspect the event at partition 3, offset 902, using bounded read-only tools to confirm the schema discrepancy.",
+          "Review recent producer deployment logs or schema registry updates for potential incompatible event formats."
+        ],
+        "avoid": [
+          "Do not increase processing capacity or add consumers, as this will not resolve the retry loop.",
+          "Do not perform destructive operations like clearing the partition or forcing offsets without confirming the event identity."
+        ],
+        "missing": [
+          "The specific schema incompatibility details for the event at offset 902.",
+          "The content of the event at partition 3, offset 902."
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 32739,
+        "output_tokens": 912,
+        "total_tokens": 33651,
+        "cached_tokens": 9450,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    },
+    "review": {
+      "text": "The events service is experiencing a partition-specific processing block at partition 3, offset 902, characterized by 168 repeated schema validation failures. Other partitions remain unaffected and continue to process successfully.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "2bc707b4-8935-4a2c-bc75-f0fe1c6b90b0",
+            "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment | A producer schema change introduced a poison event that blocked progress.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00+00:00",
+            "occurred_end": "2026-10-22T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v4_HIST-QUEUE-POISON_0",
+            "tags": [
+              "service:events",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "04ee9dc6-822f-4d3b-bff7-9a6a37868aba",
+            "text": "Progress was restored by quarantining the failed event and correcting schema compatibility on 2026-10-22.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00.020000+00:00",
+            "occurred_end": "2026-10-22T00:00:00.020000+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.480000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:events",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "607e9c24-c17d-4a19-8924-192896f0815d",
+            "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures on 2026-10-22.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00+00:00",
+            "occurred_end": "2026-10-22T00:00:00+00:00",
+            "mentioned_at": "2026-11-07T15:22:01.460000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:events",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "The events service is experiencing a partition-specific processing block at partition 3, offset 902, due to 168 repeated schema validation failures. Other partitions are processing successfully.",
+        "hypotheses": [
+          {
+            "title": "Partition-specific schema validation failure",
+            "observed": "168 repeated schema validation failures at partition 3, offset 902.",
+            "memoryRelation": "none",
+            "historical": "",
+            "unverified": "The root cause of the schema validation failure at the specific offset.",
+            "basis": "current_observations",
+            "evidenceIds": []
+          }
+        ],
+        "checks": [
+          "Inspect schema validation error logs for the specific message content at partition 3, offset 902.",
+          "Verify the schema version associated with the events being processed at partition 3.",
+          "Compare the event structure at offset 902 against the expected schema definition."
+        ],
+        "avoid": [
+          "Do not perform manual offset resets or deletions.",
+          "Do not restart the events service while investigating the specific partition block."
+        ],
+        "missing": [
+          "The specific error message or code returned by the schema validator.",
+          "The schema definition version currently enforced for partition 3."
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 48246,
+        "output_tokens": 574,
+        "total_tokens": 48820,
+        "cached_tokens": 21352,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    }
+  }
+}

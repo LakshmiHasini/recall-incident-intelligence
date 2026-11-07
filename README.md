@@ -8,7 +8,7 @@ Live app: https://recall-incident-memory.lakshmihasini8.chatgpt.site
 
 Source: https://github.com/LakshmiHasini/recall-incident-intelligence
 
-The app and repository currently have private access. The hosted application’s sign-in and live Hindsight connection have been verified.
+The live site and repository are public. The landing page is open to everyone; sign in with ChatGPT to use the shared incident workspace. Runtime API keys remain server-side.
 
 ## Features
 
@@ -22,11 +22,13 @@ The app and repository currently have private access. The hosted application’s
 - Receive authenticated monitoring events with duplicate-event handling.
 - Responsive workspace, connection diagnostics and hosted authentication.
 
-This is a single shared team workspace. The deployed Site stays owner-private. The app recommends checks and does not execute production commands.
+This is a single shared team workspace. The public landing page leads to a signed-in workspace. The app recommends checks and does not execute production commands.
 
 ## Measured answer quality
 
-The reviewed result is **25/30 scenarios passed (83.3%)** on an assistant-authored synthetic benchmark. Leading diagnostic direction was correct in 22/23 answerable cases, and all 7 insufficient-evidence cases abstained appropriately. This is not independently validated production accuracy. Read [the full evaluation report](evaluation/REPORT.md), including its five failures, grading protocol, raw responses and limitations.
+The original single-pass version’s reviewed result was **25/30 scenarios passed (83.3%)** on an assistant-authored synthetic benchmark. Leading diagnostic direction was correct in 22/23 answerable cases, and all 7 insufficient-evidence cases abstained appropriately. This is not independently validated production accuracy. Read [the full evaluation report](evaluation/REPORT.md), including its five failures, grading protocol, raw responses and limitations.
+
+The current version uses a second evidence-review pass and reuses completed investigations when the incident revision is unchanged. This version has not completed a fresh accuracy benchmark: the planned 40-case run was cancelled to preserve credits for judges. See [enhancement status](evaluation/v2/STATUS.md).
 
 ## Stack
 
@@ -65,7 +67,7 @@ npm run build
 
 The focused tests mock provider responses to exercise request schemas and failures; they are not evidence of live connectivity. `test:local` creates an explicitly labelled synthetic record in the local database. `verify-live.mjs` performs actual Hindsight operations, requires the local bank ID `recall-development`, and consumes usage credits. It verifies retain → recall → later incident reflection with source facts.
 
-Verified during development: 20 focused unit tests, 24 API reliability checks, 5 production-worker authentication checks, a live learning workflow and a separate 30-case answer-quality benchmark. Software test pass rates are not diagnostic accuracy.
+Verified during development: 29 focused unit tests, 24 API reliability checks, 5 production-worker authentication checks, a live learning workflow and a separate 30-case answer-quality benchmark. Software test pass rates are not diagnostic accuracy.
 
 ## Hindsight configuration
 
@@ -74,7 +76,7 @@ Verified during development: 20 focused unit tests, 24 API reliability checks, 5
 - `HINDSIGHT_BANK_ID`: memory bank controlled by the server.
 - `WEBHOOK_SECRET`: independent private token for monitoring intake.
 
-The hosted app uses runtime secrets and a separate production D1 database. Local verification uses `recall-development`; production uses `recall-incidents`. The hosting manifest declares the `DB` binding. The platform handles hosted identity and private access.
+The hosted app uses runtime secrets and a separate production D1 database. Local verification uses `recall-development`; production uses `recall-incidents`. The hosting manifest declares the `DB` binding. The platform handles hosted identity. Anonymous API access is rejected.
 
 ## Monitoring intake
 
@@ -119,3 +121,7 @@ Private hosting additionally requires platform service access. A generic receive
 ## Remaining submission work
 
 Publish the clean source to the team's GitHub repository, record the working project, verify judge access, and complete each member's required article, social post and video. Obtain the organizers' separate content guide before finalizing those materials.
+
+## Visual design
+
+The interface adapts the airy lavender, glass orb, ripple effects and navy typography of the user-supplied Nexa Talent reference. The orb is an original SVG/CSS implementation. No paid MotionSites prompt or source code is included. Desktop and mobile layouts support reduced motion.

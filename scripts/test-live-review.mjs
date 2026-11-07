@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {writeFileSync} from 'node:fs';
+const base=process.env.RECALL_TEST_URL||'http://127.0.0.1:5173';
+const response=await fetch(`${base}/api/incidents`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title:'TEST — reviewed disk space diagnosis',service:'media-store-verification',environment:'development',severity:'SEV3',description:'Synthetic integration check: writes fail because the upload mount has zero free bytes. No information establishes which process filled it.',logs:'write ENOSPC; /uploads available=0 bytes'})});
+assert.equal(response.status,201);const {id}=await response.json();
+const r=await fetch(`${base}/api/incidents/${id}/investigate`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});const answer=await r.json();assert.equal(r.status,200,JSON.stringify(answer));
+const a=answer.investigation;assert.match(a.result.provider,/evidence reviewed/);assert.equal(a.result.structured.evidenceStatus,'supported_hypothesis');assert.equal(a.result.structured.hypotheses.length,1);assert.match(a.result.structured.hypotheses[0].title,/space|disk|volume|storage/i);
+const detail=await (await fetch(`${base}/api/incidents/${id}`)).json();assert.equal(detail.investigations[0].id,a.id);assert.match(a.result.structured.hypotheses[0].reasoning,/Observed:.*Historical match:.*Unverified:/s);
+const cached=await (await fetch(`${base}/api/incidents/${id}/investigate`,{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'})).json();assert.equal(cached.cached,true);assert.equal(cached.investigation.id,a.id);
+writeFileSync('evaluation/v2/results/live-api-review-final.json',JSON.stringify({executedAt:new Date().toISOString(),passed:true,checks:['reviewed agent through real application API','supported current-observation diagnosis','reviewed answer persisted','separate observation/history/unknown fields','unchanged incident reuses existing result without another model request'],investigation:a},null,2)+'\n');
+console.log(JSON.stringify({passed:true,incident:id,durationMs:a.result.durationMs}));

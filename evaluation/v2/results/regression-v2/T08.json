@@ -1,0 +1,467 @@
+{
+  "id": "T08",
+  "category": "recurrence",
+  "input": {
+    "id": "T08",
+    "title": "Wrong language is returned",
+    "service": "catalog",
+    "environment": "production",
+    "description": "The same SKU intermittently displays another locale. Cache entries use product ID alone.",
+    "logs": "key=product:87 request_locale=fr response_locale=en; Redis memory normal"
+  },
+  "events": [],
+  "startedAt": "2026-11-07T15:17:27.943Z",
+  "success": true,
+  "durationMs": 16520,
+  "schemaValid": true,
+  "result": {
+    "text": "### Incident Investigation: Catalog Locale Mismatch\n\n**Summary**\nThe catalog service is serving cached content for incorrect locales. Observed logs for product:87 confirm a request for the 'fr' locale returned an 'en' response, indicating cache keys lack the requested locale identifier.\n\n**Hypothesis: Cache Key Collision due to Omitted Locale Identifier**\n*   **Reasoning:** \n    *   **Observed:** Logs explicitly demonstrate a locale mismatch for product:87 where the response language does not match the requested locale.\n    *   **Historical match:** A previous incident (9d40efc3-07d9-4155-8b79-bfa05e985ad2, f9041119-ae35-4fdc-854a-632c6980fc28) identified the exact same technical failure mechanism where locale-specific content was incorrectly cached because the cache key relied solely on the product ID.\n    *   **Unverified:** Whether this recurrence stems from a partial configuration reversion or an underlying logic flaw that persists despite previous mitigation efforts.\n*   **Basis:** current_observations\n*   **EvidenceIds:** [\"9d40efc3-07d9-4155-8b79-bfa05e985ad2\", \"f9041119-ae35-4fdc-854a-632c6980fc28\"]\n\n**Checks**\n*   Use a bounded SCAN command to sample Redis catalog keys to verify the current key structure.\n*   Analyze cache hit/miss rates partitioned by requested locale.\n*   Review application-level cache key generation source code for locale inclusion.\n\n**Missing**\n*   Confirmation of the specific code path currently responsible for cache key generation.\n*   Scope of the impact (e.g., whether all products or specific subsets are affected).\n\n**Avoid**\n*   Do not assume recent code changes are the sole cause without verifying current key generation logic.\n*   Do not assume the absence of a regression suite implies a specific recent deployment failure.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "f9041119-ae35-4fdc-854a-632c6980fc28",
+          "text": "The incident was resolved by including locale in cache keys, which verified proper locale separation. | When: 2026-11-07 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+          "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.798000+00:00",
+          "document_id": "HIST-CATALOG-CORRECTED",
+          "chunk_id": "recall-eval-v2-regression-v2_HIST-CATALOG-CORRECTED_0",
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": {
+            "incident_id": "HIST-CATALOG-CORRECTED",
+            "service": "catalog",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "9d40efc3-07d9-4155-8b79-bfa05e985ad2",
+          "text": "Catalog service experienced a production incident where SKU responses returned incorrect language content due to locale being omitted from cache keys. | When: 2026-11-06 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-11-06T00:00:00+00:00",
+          "occurred_end": "2026-11-06T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.778000+00:00",
+          "document_id": "HIST-CATALOG-CORRECTED",
+          "chunk_id": "recall-eval-v2-regression-v2_HIST-CATALOG-CORRECTED_0",
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": {
+            "incident_id": "HIST-CATALOG-CORRECTED",
+            "service": "catalog",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "9e93ac65-d9d5-4bd2-bdd2-36e118612fe1",
+          "text": "The incident was resolved by including locale in cache keys, which verified proper locale separation.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+          "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.798000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4aba5d88-73c1-49c1-9910-d4776cab523c",
+          "text": "Catalog service experienced a production incident on 2026-11-06 where SKU responses returned incorrect language content due to locale being omitted from cache keys.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-11-06T00:00:00+00:00",
+          "occurred_end": "2026-11-06T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.778000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "b5050dba-48d0-4f61-9135-7c8cf224d44b",
+          "text": "The initial diagnosis of memory exhaustion was retracted as incorrect; Redis memory usage was confirmed to be normal.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-11-07T00:00:00.010000+00:00",
+          "occurred_end": "2026-11-07T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.788000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The catalog service is serving cached content for incorrect locales. Logs for product:87 confirm that requests for the 'fr' locale return 'en' responses, indicating that the cache keys currently lack the requested locale identifier.",
+      "hypotheses": [
+        {
+          "title": "Cache Key Collision due to Omitted Locale Identifier",
+          "reasoning": "Observed: Logs show locale mismatch for product:87. Historical match: Previous incidents 9d40efc3-07d9-4155-8b79-bfa05e985ad2 and f9041119-ae35-4fdc-854a-632c6980fc28 involved identical cache key failures. Unverified: Whether this is a regression or a persistent logic flaw.",
+          "basis": "current_observations",
+          "evidenceIds": [
+            "9d40efc3-07d9-4155-8b79-bfa05e985ad2",
+            "f9041119-ae35-4fdc-854a-632c6980fc28"
+          ]
+        }
+      ],
+      "checks": [
+        "Use a bounded SCAN command to sample Redis catalog keys to verify the current key structure.",
+        "Analyze cache hit/miss rates partitioned by requested locale.",
+        "Review application-level cache key generation source code for locale inclusion."
+      ],
+      "avoid": [
+        "Do not assume recent code changes are the sole cause without verifying current key generation logic.",
+        "Do not assume the absence of a regression suite implies a specific recent deployment failure."
+      ],
+      "missing": [
+        "Confirmation of the specific code path currently responsible for cache key generation.",
+        "Scope of the impact regarding whether all products or specific subsets are affected."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 53867,
+      "output_tokens": 1020,
+      "total_tokens": 54887,
+      "cached_tokens": 23412,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The catalog service is serving cached content for incorrect locales. Logs for product:87 confirm that requests for the 'fr' locale return 'en' responses, indicating that the cache keys currently lack the requested locale identifier.",
+      "hypotheses": [
+        {
+          "title": "Cache Key Collision due to Omitted Locale Identifier",
+          "reasoning": "Observed: Logs show locale mismatch for product:87. Historical match: Previous incidents 9d40efc3-07d9-4155-8b79-bfa05e985ad2 and f9041119-ae35-4fdc-854a-632c6980fc28 involved identical cache key failures. Unverified: Whether this is a regression or a persistent logic flaw.",
+          "basis": "current_observations",
+          "evidenceIds": [
+            "9d40efc3-07d9-4155-8b79-bfa05e985ad2",
+            "f9041119-ae35-4fdc-854a-632c6980fc28"
+          ]
+        }
+      ],
+      "checks": [
+        "Use a bounded SCAN command to sample Redis catalog keys to verify the current key structure.",
+        "Analyze cache hit/miss rates partitioned by requested locale.",
+        "Review application-level cache key generation source code for locale inclusion."
+      ],
+      "avoid": [
+        "Do not assume recent code changes are the sole cause without verifying current key generation logic.",
+        "Do not assume the absence of a regression suite implies a specific recent deployment failure."
+      ],
+      "missing": [
+        "Confirmation of the specific code path currently responsible for cache key generation.",
+        "Scope of the impact regarding whether all products or specific subsets are affected."
+      ]
+    },
+    "facts": [
+      {
+        "id": "f9041119-ae35-4fdc-854a-632c6980fc28",
+        "text": "The incident was resolved by including locale in cache keys, which verified proper locale separation. | When: 2026-11-07 | Where: production",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+        "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+        "mentioned_at": "2026-11-07T15:16:53.798000+00:00",
+        "document_id": "HIST-CATALOG-CORRECTED",
+        "chunk_id": "recall-eval-v2-regression-v2_HIST-CATALOG-CORRECTED_0",
+        "tags": [
+          "recall-incident",
+          "service:catalog"
+        ],
+        "metadata": {
+          "incident_id": "HIST-CATALOG-CORRECTED",
+          "service": "catalog",
+          "environment": "production"
+        },
+        "attachments": null
+      },
+      {
+        "id": "9d40efc3-07d9-4155-8b79-bfa05e985ad2",
+        "text": "Catalog service experienced a production incident where SKU responses returned incorrect language content due to locale being omitted from cache keys. | When: 2026-11-06 | Where: production",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-11-06T00:00:00+00:00",
+        "occurred_end": "2026-11-06T23:59:59+00:00",
+        "mentioned_at": "2026-11-07T15:16:53.778000+00:00",
+        "document_id": "HIST-CATALOG-CORRECTED",
+        "chunk_id": "recall-eval-v2-regression-v2_HIST-CATALOG-CORRECTED_0",
+        "tags": [
+          "recall-incident",
+          "service:catalog"
+        ],
+        "metadata": {
+          "incident_id": "HIST-CATALOG-CORRECTED",
+          "service": "catalog",
+          "environment": "production"
+        },
+        "attachments": null
+      }
+    ],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "f9041119-ae35-4fdc-854a-632c6980fc28",
+          "text": "The incident was resolved by including locale in cache keys, which verified proper locale separation. | When: 2026-11-07 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+          "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.798000+00:00",
+          "document_id": "HIST-CATALOG-CORRECTED",
+          "chunk_id": "recall-eval-v2-regression-v2_HIST-CATALOG-CORRECTED_0",
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": {
+            "incident_id": "HIST-CATALOG-CORRECTED",
+            "service": "catalog",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "9d40efc3-07d9-4155-8b79-bfa05e985ad2",
+          "text": "Catalog service experienced a production incident where SKU responses returned incorrect language content due to locale being omitted from cache keys. | When: 2026-11-06 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-11-06T00:00:00+00:00",
+          "occurred_end": "2026-11-06T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.778000+00:00",
+          "document_id": "HIST-CATALOG-CORRECTED",
+          "chunk_id": "recall-eval-v2-regression-v2_HIST-CATALOG-CORRECTED_0",
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": {
+            "incident_id": "HIST-CATALOG-CORRECTED",
+            "service": "catalog",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "9e93ac65-d9d5-4bd2-bdd2-36e118612fe1",
+          "text": "The incident was resolved by including locale in cache keys, which verified proper locale separation.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+          "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.798000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4aba5d88-73c1-49c1-9910-d4776cab523c",
+          "text": "Catalog service experienced a production incident on 2026-11-06 where SKU responses returned incorrect language content due to locale being omitted from cache keys.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-11-06T00:00:00+00:00",
+          "occurred_end": "2026-11-06T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.778000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "b5050dba-48d0-4f61-9135-7c8cf224d44b",
+          "text": "The initial diagnosis of memory exhaustion was retracted as incorrect; Redis memory usage was confirmed to be normal.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-11-07T00:00:00.010000+00:00",
+          "occurred_end": "2026-11-07T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:16:53.788000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:catalog"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    }
+  },
+  "audit": {
+    "passes": 2,
+    "draft": {
+      "text": "### Technical Failure Hypothesis\nThe catalog service is experiencing cache key collisions where requests for a specific locale-product combination are served cached content associated with a different locale. This is directly indicated by the observation that cache entries are keyed solely by product ID, failing to account for the requested locale.\n\n### Reasoning\n* **Observed:** The current incident logs for `product:87` show a discrepancy where the `request_locale` is `fr` but the `response_locale` is `en`. Current observations confirm that existing cache entries only utilize the product ID as a key. Redis memory is confirmed to be normal, eliminating memory exhaustion as a contributor.\n* **Historical match:** A previous production incident (HIST-CATALOG-CORRECTED) involved the exact same technical mechanism: SKU responses returning incorrect language content because the locale was omitted from cache keys. The historical resolution was to include the locale in the cache keys to enforce proper separation.\n* **Unverified details:** While historical records note that a preventive regression suite was proposed following the previous incident, it remains unimplemented. This does not confirm the absence of recent code changes or deployment factors, only that the current cache key structure remains insufficient for localized content.\n\n### Evidence Status: supported_hypothesis\n\n### Recommended Non-Destructive Checks\n* **Sampled Cache Inspection:** Use a bounded `SCAN` command to list keys in the Redis catalog namespace and examine a sample of cache values to verify if current entries lack locale identifiers.\n* **Telemetry Review:** Analyze cache hit/miss rates partitioned by locale to determine if the mismatch correlates with specific user language request distributions.\n* **Configuration Audit:** Review the application-level cache key generation logic to identify the code path responsible for constructing keys without locale segments.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "f9041119-ae35-4fdc-854a-632c6980fc28",
+            "text": "The incident was resolved by including locale in cache keys, which verified proper locale separation. | When: 2026-11-07 | Where: production",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+            "mentioned_at": "2026-11-07T15:16:53.798000+00:00",
+            "document_id": "HIST-CATALOG-CORRECTED",
+            "chunk_id": "recall-eval-v2-regression-v2_HIST-CATALOG-CORRECTED_0",
+            "tags": [
+              "recall-incident",
+              "service:catalog"
+            ],
+            "metadata": {
+              "incident_id": "HIST-CATALOG-CORRECTED",
+              "service": "catalog",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "9d40efc3-07d9-4155-8b79-bfa05e985ad2",
+            "text": "Catalog service experienced a production incident where SKU responses returned incorrect language content due to locale being omitted from cache keys. | When: 2026-11-06 | Where: production",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-11-06T00:00:00+00:00",
+            "occurred_end": "2026-11-06T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T15:16:53.778000+00:00",
+            "document_id": "HIST-CATALOG-CORRECTED",
+            "chunk_id": "recall-eval-v2-regression-v2_HIST-CATALOG-CORRECTED_0",
+            "tags": [
+              "recall-incident",
+              "service:catalog"
+            ],
+            "metadata": {
+              "incident_id": "HIST-CATALOG-CORRECTED",
+              "service": "catalog",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "9e93ac65-d9d5-4bd2-bdd2-36e118612fe1",
+            "text": "The incident was resolved by including locale in cache keys, which verified proper locale separation.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+            "mentioned_at": "2026-11-07T15:16:53.798000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "recall-incident",
+              "service:catalog"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "4aba5d88-73c1-49c1-9910-d4776cab523c",
+            "text": "Catalog service experienced a production incident on 2026-11-06 where SKU responses returned incorrect language content due to locale being omitted from cache keys.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-11-06T00:00:00+00:00",
+            "occurred_end": "2026-11-06T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T15:16:53.778000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "recall-incident",
+              "service:catalog"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "b5050dba-48d0-4f61-9135-7c8cf224d44b",
+            "text": "The initial diagnosis of memory exhaustion was retracted as incorrect; Redis memory usage was confirmed to be normal.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.010000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.010000+00:00",
+            "mentioned_at": "2026-11-07T15:16:53.788000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "recall-incident",
+              "service:catalog"
+            ],
+            "metadata": null,
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "The catalog service is serving cached content for incorrect locales because cache keys are generated using only the product ID, failing to incorporate the requested locale. This results in locale-product mismatches, as observed in recent incident logs for product:87.",
+        "hypotheses": [
+          {
+            "title": "Cache key collisions due to missing locale identifiers",
+            "reasoning": "Observed: Incident logs for product:87 show request_locale 'fr' returning response_locale 'en'. Historical match: A previous incident (HIST-CATALOG-CORRECTED) involved identical cache key behavior. Unverified: Whether recent code changes triggered this or if the issue has persisted since the previous incident.",
+            "basis": "current_observations",
+            "evidenceIds": [
+              "HIST-CATALOG-CORRECTED"
+            ]
+          }
+        ],
+        "checks": [
+          "Use a bounded SCAN command to inspect Redis catalog keys for locale identifiers",
+          "Analyze cache hit/miss rates partitioned by locale",
+          "Review application-level cache key generation logic"
+        ],
+        "avoid": [
+          "Do not assume recent code changes are the sole cause without verifying the current key generation logic",
+          "Avoid assuming the absence of a regression suite implies a specific recent deployment failure"
+        ],
+        "missing": [
+          "Confirmation of the specific code path currently generating cache keys",
+          "Verification of whether the cache key structure has been modified recently",
+          "Data on whether all products or only specific subsets are affected by locale mismatches"
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 43954,
+        "output_tokens": 930,
+        "total_tokens": 44884,
+        "cached_tokens": 17395,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    }
+  }
+}

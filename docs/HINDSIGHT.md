@@ -16,7 +16,7 @@ The Memory library uses the real Recall operation for queries. It lists recent f
 
 Investigation sends the current symptoms, redacted log excerpts, service, environment, timeline and attempted fixes to Reflect. The prompt treats reports as untrusted data and distinguishes historical patterns from current observations and hypotheses. The request asks for structured output and includes `facts: {}`. Returned `based_on.memories` facts populate the evidence panel. Recall results from an independent query are not labelled as evidence used by Reflect.
 
-Zod validates the structured response. If typed output is unavailable but Hindsight supplies a text answer, the answer is shown as text. An absent answer or provider error is surfaced rather than replaced with a fabricated response. Investigation records include the incident revision; changed context gets a stale-analysis notice.
+Zod validates both draft and evidence-review responses. Failed or invalid review returns an actionable error; an unreviewed draft is not saved or shown. An absent answer or provider error is surfaced rather than replaced with a fabricated response. Investigation records include the incident revision; changed context gets a stale-analysis notice.
 
 The current version adds an explicit evidence-status decision and limits presentation to one leading hypothesis. The shared normalizer validates linked fact IDs, resolves exact source-document references only through evidence returned by Hindsight, and suppresses unsupported historical hypotheses. Only linked evidence is presented as support. This checks provenance, not semantic entailment: the evaluation still found misleading explanations and one irrelevant citation. See `evaluation/REPORT.md` for the measured result and remaining failures.
 
@@ -35,3 +35,5 @@ The current version adds an explicit evidence-status decision and limits present
 - A subsequent incident was investigated using Reflect, returning four supporting facts and validated structured output.
 
 Reproduce with `npm run test:local`, then `node scripts/verify-live.mjs`. The live script refuses to run against a bank other than `recall-development` and consumes Hindsight usage credits.
+
+Current investigations use a separate evidence-review Reflect request. The review separates observed failure, historical match and unknown deeper causes; citations resolve only to returned facts. Diagnostics that mention selected unobserved integrations are explicitly conditional. Repeating an investigation for an unchanged incident revision reuses the saved reviewed result, saving model credits. New observations increment the revision and permit a fresh investigation.

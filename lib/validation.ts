@@ -16,6 +16,12 @@ export const generatedInvestigation = z.object({
   hypotheses: z.array(z.object({ title: z.string(), reasoning: z.string(), basis: z.enum(["current_observations", "historical_memory"]), evidenceIds: z.array(z.string()) })),
   checks: z.array(z.string()), avoid: z.array(z.string()), missing: z.array(z.string()),
 });
+export const reviewedInvestigation = generatedInvestigation.extend({
+  hypotheses: z.array(z.object({
+    title: z.string(), basis: z.enum(["current_observations", "historical_memory"]), evidenceIds: z.array(z.string()),
+    observed: z.string(), memoryRelation: z.enum(["same_mechanism", "none"]), historical: z.string(), unverified: z.string(),
+  })).max(1),
+});
 
 export function memoryDocument(incident: { id: string; title: string; service: string; environment: string; description: string }, resolution: { cause: string; fix: string; verification: string; prevention: string }, attempts: { content: string; outcome: string | null }[]) {
   return [`CONFIRMED INCIDENT REPORT ${incident.id}`, `Title: ${incident.title}`, `Service: ${incident.service}; environment: ${incident.environment}`, `Symptoms: ${incident.description}`, `Confirmed cause: ${resolution.cause}`, `Successful fix: ${resolution.fix}`, `Verification evidence: ${resolution.verification}`, `Proposed preventive action (not confirmed implemented): ${resolution.prevention || "Not recorded"}`, ...attempts.map(a => `Attempt (${a.outcome || "unknown"}): ${a.content}`), "Interpret failed attempts in the conditions of this incident; they are not universal prohibitions."].join("\n");

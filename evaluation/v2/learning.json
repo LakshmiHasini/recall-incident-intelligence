@@ -1,0 +1,5 @@
+{
+  "id": "HIST-ARCHIVE-LEARNED",
+  "service": "archive",
+  "content": "SYNTHETIC VERIFIED INCIDENT HIST-ARCHIVE-LEARNED: archive internal code AX905 means the manifest compression codec identifier is unsupported by the reader version. A compatible codec identifier and reader restored archive reads, verified by replaying the failed archive request. Generic restarts did not correct the incompatibility."
+}

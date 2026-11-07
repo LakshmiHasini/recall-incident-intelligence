@@ -1,0 +1,17 @@
+{
+  "id": "T16",
+  "category": "disambiguation",
+  "input": {
+    "id": "T16",
+    "title": "Staging requests wait for a connection",
+    "service": "payments",
+    "environment": "staging",
+    "description": "This staging configuration allows only two database connections. Both are busy with legitimate long queries; we have no evidence of a leak.",
+    "logs": "configured_max_pool_size=2; active_queries=2; no idle or orphaned sessions"
+  },
+  "events": [],
+  "startedAt": "2026-11-07T15:22:38.959Z",
+  "success": false,
+  "durationMs": 10441,
+  "error": "Hindsight returned HTTP 402. Check the bank ID and connection settings, then retry."
+}

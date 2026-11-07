@@ -14,7 +14,7 @@
 - Phase 3: Implemented and exercised through local API tests: incidents, timeline attempts, optimistic revision checks, resolution and source amendments.
 - Phase 4: Live learning loop passed: four recalled facts and four reflection evidence facts, with structured output. Pending/retryable sync jobs and stable source documents are implemented.
 - Phase 5: Responsive UI and authenticated generic webhook implemented. Local webhook authentication/deduplication passed. Named monitoring-provider setup remains dependent on the chosen provider account.
-- Phase 6: Thirteen focused tests, local workflow checks, TypeScript and production build pass. The app is privately deployed, hosted sign-in works, and the production Hindsight connection test passed in the browser. Clean source is in a private GitHub repository. Submission drafts are in docs/SUBMISSION.md. Final judge access, submission, video and individual content deliverables remain outstanding.
+- Phase 6: Thirteen focused tests, local workflow checks, TypeScript and production build pass. The app is publicly deployed, hosted sign-in works, and the production Hindsight connection test passed in the browser. Clean source is in a public GitHub repository. Submission drafts are in docs/SUBMISSION.md. Public judge access is enabled; sign in with ChatGPT for the workspace. Submission, video and individual content deliverables remain outstanding.
 
 Live application: https://recall-incident-memory.lakshmihasini8.chatgpt.site
 
@@ -25,3 +25,5 @@ The local database contains labelled synthetic verification records. Production 
 ## Accuracy follow-up
 
 The reviewed synthetic benchmark scored **25/30 scenario passes (83.3%)**, with 22/23 correct leading diagnostic directions and 7/7 correct insufficient-evidence outcomes. The five failures and raw outputs are retained in `evaluation/`. Twenty unit checks, 24 API checks and five built-worker authentication checks pass separately. These results do not establish perfect or production-wide accuracy.
+
+Latest update: Nexa Talent-inspired UI, public landing page and repository, new Hindsight account connection, two-pass evidence review and reuse of unchanged investigations. The new 40-case accuracy run is cancelled to conserve credits for judges; no above-90% claim is made.

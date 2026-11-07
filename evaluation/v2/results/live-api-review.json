@@ -1,0 +1,224 @@
+{
+  "executedAt": "2026-11-07T15:22:47.236Z",
+  "passed": true,
+  "checks": [
+    "reviewed agent through real application API",
+    "supported current-observation diagnosis",
+    "reviewed answer persisted",
+    "separate observation/history/unknown fields"
+  ],
+  "investigation": {
+    "id": "58095d4d-6ff5-4f05-91f0-f6f9eff20fa6",
+    "incidentId": "20719dd3-0282-48df-90e3-4e0669e60c79",
+    "revision": 1,
+    "createdAt": "2026-11-07T15:22:47.203Z",
+    "result": {
+      "text": "The media-store-verification service is failing write operations due to zero available bytes on the upload mount, as indicated by ENOSPC errors. The root cause for this disk space exhaustion is currently unidentified.",
+      "structured": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "The media-store-verification service is experiencing write failures due to disk space exhaustion on the upload mount, evidenced by ENOSPC errors. The underlying cause of the storage depletion remains unidentified.",
+        "hypotheses": [
+          {
+            "title": "Disk space exhaustion on upload mount",
+            "reasoning": "Observed: The media-store-verification service is failing write operations with ENOSPC errors due to zero available bytes on the upload mount. Historical match: None. Unverified: The root cause of the disk space exhaustion is currently unknown.",
+            "basis": "current_observations",
+            "evidenceIds": []
+          }
+        ],
+        "checks": [
+          "Check current disk usage and available space on the upload mount",
+          "Review recent write operation volume and patterns",
+          "Identify the largest files or directories on the affected mount"
+        ],
+        "avoid": [
+          "Do not perform file deletions until the cause of space consumption is understood",
+          "Avoid restarting the service as it will not resolve the underlying disk capacity issue"
+        ],
+        "missing": [
+          "List of files or directories contributing to the disk space usage",
+          "Recent trends in disk space consumption leading up to the ENOSPC error"
+        ]
+      },
+      "basedOn": {
+        "memories": [
+          {
+            "id": "bf173156-0582-435a-9da8-fcc7066b1a1a",
+            "text": "Incident 6c2265dd-3a27-49fc-89ae-4e420346df9d occurred in the development environment for the verification-only service, caused by database connection pool exhaustion. | When: 2026-11-07 | Where: development environment | Synthetic integration test triggered database pool exhaustion.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00+00:00",
+            "occurred_end": "2026-11-07T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.236000+00:00",
+            "document_id": "incident-6c2265dd-3a27-49fc-89ae-4e420346df9d",
+            "chunk_id": "recall-development_incident-6c2265dd-3a27-49fc-89ae-4e420346df9d_0",
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "6c2265dd-3a27-49fc-89ae-4e420346df9d",
+              "service": "verification-only",
+              "environment": "development",
+              "revision": "3"
+            },
+            "attachments": null
+          },
+          {
+            "id": "f6c3e8d7-9723-4173-8c2a-7376577cb6f5",
+            "text": "A service restart failed to repair the database connection leak. | When: 2026-11-07 | Where: development environment",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.010000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.010000+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.246000+00:00",
+            "document_id": "incident-6c2265dd-3a27-49fc-89ae-4e420346df9d",
+            "chunk_id": "recall-development_incident-6c2265dd-3a27-49fc-89ae-4e420346df9d_0",
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "6c2265dd-3a27-49fc-89ae-4e420346df9d",
+              "service": "verification-only",
+              "environment": "development",
+              "revision": "3"
+            },
+            "attachments": null
+          },
+          {
+            "id": "244c88b4-1d29-4951-a44f-01d80fec8cc2",
+            "text": "The incident was resolved by closing leaked database connections. | When: 2026-11-07 | Where: development environment",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.256000+00:00",
+            "document_id": "incident-6c2265dd-3a27-49fc-89ae-4e420346df9d",
+            "chunk_id": "recall-development_incident-6c2265dd-3a27-49fc-89ae-4e420346df9d_0",
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "6c2265dd-3a27-49fc-89ae-4e420346df9d",
+              "service": "verification-only",
+              "environment": "development",
+              "revision": "3"
+            },
+            "attachments": null
+          },
+          {
+            "id": "38ff6c05-e8ee-4cfc-b840-fefa696aa14a",
+            "text": "A regression test for connection cleanup was implemented to prevent future occurrences. | When: 2026-11-07",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.030000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.030000+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.266000+00:00",
+            "document_id": "incident-6c2265dd-3a27-49fc-89ae-4e420346df9d",
+            "chunk_id": "recall-development_incident-6c2265dd-3a27-49fc-89ae-4e420346df9d_0",
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "6c2265dd-3a27-49fc-89ae-4e420346df9d",
+              "service": "verification-only",
+              "environment": "development",
+              "revision": "3"
+            },
+            "attachments": null
+          },
+          {
+            "id": "bc336c34-e039-4174-9516-97f018260600",
+            "text": "Incident 6c2265dd-3a27-49fc-89ae-4e420346df9d occurred in the development environment for the verification-only service.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00+00:00",
+            "occurred_end": "2026-11-07T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.236000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "cb049ecc-6061-4ef0-bf53-5d407da82e31",
+            "text": "A service restart failed to repair the database connection leak on 2026-11-07.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.010000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.010000+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.246000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "40a6afe6-d38a-47e7-9f23-7873d45b6437",
+            "text": "Incident 6c2265dd-3a27-49fc-89ae-4e420346df9d was caused by database connection pool exhaustion.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00+00:00",
+            "occurred_end": "2026-11-07T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.236000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "26d99f92-d8d1-43f3-910f-de888c45ba78",
+            "text": "Incident 6c2265dd-3a27-49fc-89ae-4e420346df9d was resolved by closing leaked database connections.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.020000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.020000+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.256000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          },
+          {
+            "id": "34e1d06f-0562-4507-ab59-7cb4ad6e5c10",
+            "text": "A regression test for connection cleanup was implemented on 2026-11-07.",
+            "type": "observation",
+            "context": null,
+            "occurred_start": "2026-11-07T00:00:00.030000+00:00",
+            "occurred_end": "2026-11-07T23:59:59.030000+00:00",
+            "mentioned_at": "2026-11-07T13:59:11.266000+00:00",
+            "document_id": null,
+            "chunk_id": null,
+            "tags": [
+              "service:verification-only",
+              "recall-incident"
+            ],
+            "metadata": null,
+            "attachments": null
+          }
+        ]
+      },
+      "facts": [],
+      "provider": "Hindsight Reflect · evidence reviewed",
+      "durationMs": 18085
+    }
+  }
+}

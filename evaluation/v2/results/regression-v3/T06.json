@@ -1,0 +1,806 @@
+{
+  "id": "T06",
+  "category": "recurrence",
+  "input": {
+    "id": "T06",
+    "title": "One event partition is stuck",
+    "service": "events",
+    "environment": "production",
+    "description": "The same record is redelivered, other partitions progress, and schema checks fail.",
+    "logs": "partition=3 offset=902 retry=168 schema validation failed"
+  },
+  "events": [],
+  "startedAt": "2026-11-07T15:20:23.797Z",
+  "success": true,
+  "durationMs": 16584,
+  "schemaValid": true,
+  "result": {
+    "text": "### Incident Summary\nPartition 3 is experiencing a continuous retry loop at offset 902, characterized by repeated schema validation failures. Other event partitions are processing normally, indicating that the failure is localized to a specific record currently blocking progress for this partition.\n\n### Hypothesis\n**Title:** Partition 3 Stuck in Retry Loop due to Schema Validation Failure\n\n*   **Observed:** Logs explicitly confirm that partition 3, offset 902, is failing schema validation repeatedly.\n*   **Memory Relation:** same_mechanism\n*   **Historical:** Incident HIST-QUEUE-POISON involved a production event where a single partition repeatedly retried a record due to schema validation failures caused by a poison event.\n*   **Unverified:** The exact nature of the schema mismatch and the identity of the producer responsible for the record are unknown.\n\n### Checks\n*   Fetch the record payload at partition 3, offset 902 using a bounded, read-only operation.\n*   Compare the schema version of the record at offset 902 against the current schema registry.\n\n### Missing\n*   The specific content of the schema mismatch.\n*   The identity of the producer responsible for the record at offset 902.\n\n### Avoid\n*   Do not assume that adding more consumers will resolve a persistent retry loop.\n*   Avoid destructive operations like global consumer group resets.\n\n### Evidence Status\nsupported_hypothesis",
+    "based_on": {
+      "memories": [
+        {
+          "id": "769d7c36-799e-44d9-8899-b90ab43a1b1c",
+          "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v3_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "13c1774b-e9e2-47c0-897b-8e82a9fceb96",
+          "text": "Adding consumers failed to resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v3_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "e9410bd8-91f6-4924-9727-f271cf4e5104",
+          "text": "Restarting the database and resetting passwords failed to resolve the TLS handshake issue on 2026-10-12.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-12T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.434000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "75206f1d-3c97-4a54-9cd9-4e8af6ea2d3c",
+          "text": "Resetting user passwords and replacing valid TLS certificates failed to resolve the signing-key lookup issue on 2026-10-24.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-24T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.445000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "1b28cc32-2006-4a57-ab01-449df6aec16b",
+          "text": "TLS handshakes failed in production on 2026-10-12 because the leaf certificate for the auth service had expired; the failure was resolved by renewing the certificate and deploying the correct chain.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00+00:00",
+          "occurred_end": "2026-10-12T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.444000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d7c27c08-0477-4d1f-8448-47a9d388bca3",
+          "text": "Redis returned OOM command not allowed when memory exceeded maxmemory during the incident.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "267a2fe8-7b46-4ec0-9830-4d494c10571d",
+          "text": "The notifications service failed due to DNS resolution errors (getaddrinfo ENOTFOUND and NXDOMAIN) during HIST-NOTIFY-DNS.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "6f9beafe-2a6a-47ac-9037-b82709023ed5",
+          "text": "Reverting the resolver configuration change restored DNS resolution and service delivery during HIST-NOTIFY-DNS.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.445000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "0a04931c-7c22-4777-b614-309febb5b280",
+          "text": "A resolver configuration change caused the DNS failure in HIST-NOTIFY-DNS.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "47df7d46-23d5-40ea-bd49-cce877594d77",
+          "text": "Verification was restored on 2026-10-24 by refreshing the JWKS and correcting the key-cache refresh behavior.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "9fac3c98-82ba-42bb-a059-3b7b664b7fe2",
+          "text": "Rotating certificates failed to resolve the DNS issue during HIST-NOTIFY-DNS.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4fa959d3-48e1-44c3-aaad-3ee153a00b0e",
+          "text": "Production incident HIST-SEARCH-OOM caused search cache write failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "940877ef-078c-4cc3-a20b-860ce2307491",
+          "text": "Production incident HIST-NOTIFY-DNS occurred in production on 2026-10-27.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "49e68425-247d-421b-88f0-d39edcb25dcd",
+          "text": "Unconditional FLUSHALL was avoided during the mitigation of incident HIST-SEARCH-OOM to prevent data loss.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-16T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.445000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "649b44e2-623e-455c-96ca-675aaf7a4f2b",
+          "text": "Production incident HIST-AUTH-JWKS occurred on 2026-10-24 due to identity-provider signing-key rotation.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00+00:00",
+          "occurred_end": "2026-10-24T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "c0c73992-f095-48de-a2b3-ff1a0ef64b8e",
+          "text": "Incident HIST-SEARCH-OOM was mitigated by inspecting memory, reviewing safe eviction policies, and reducing nonessential cache usage.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-16T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "2556a70b-1996-4808-a1fa-5e5e8c3d08c3",
+          "text": "Production incident HIST-SEARCH-OOM was caused by Redis memory exhaustion.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "97e25f50-8a04-4691-88cd-79f853c90a6d",
+          "text": "Production incident HIST-SEARCH-OOM occurred on 2026-10-16 in production.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "Partition 3 is experiencing a continuous retry loop at offset 902 due to repeated schema validation failures. This issue is localized to a specific record, while other partitions are processing normally.",
+      "hypotheses": [
+        {
+          "title": "Partition 3 Stuck in Retry Loop due to Schema Validation Failure",
+          "basis": "current_observations",
+          "reasoning": "Observed: Logs confirm partition 3, offset 902, is failing schema validation repeatedly. Historical match: Incident HIST-QUEUE-POISON involved a production event where a single partition repeatedly retried a record due to schema validation failures caused by a poison event. Unverified: The exact nature of the schema mismatch and the identity of the producer responsible for the record are unknown.",
+          "evidenceIds": []
+        }
+      ],
+      "checks": [
+        "Fetch the record payload at partition 3, offset 902 using a bounded, read-only operation.",
+        "Compare the schema version of the record at offset 902 against the current schema registry."
+      ],
+      "avoid": [
+        "Do not assume that adding more consumers will resolve a persistent retry loop.",
+        "Avoid destructive operations like global consumer group resets."
+      ],
+      "missing": [
+        "The specific content of the schema mismatch.",
+        "The identity of the producer responsible for the record at offset 902."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 44374,
+      "output_tokens": 866,
+      "total_tokens": 45240,
+      "cached_tokens": 15485,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "Partition 3 is experiencing a continuous retry loop at offset 902 due to repeated schema validation failures. This issue is localized to a specific record, while other partitions are processing normally.",
+      "hypotheses": [
+        {
+          "title": "Partition 3 Stuck in Retry Loop due to Schema Validation Failure",
+          "reasoning": "Observed: Logs confirm partition 3, offset 902, is failing schema validation repeatedly. Historical match: Incident HIST-QUEUE-POISON involved a production event where a single partition repeatedly retried a record due to schema validation failures caused by a poison event. Unverified: The exact nature of the schema mismatch and the identity of the producer responsible for the record are unknown.",
+          "basis": "current_observations",
+          "evidenceIds": []
+        }
+      ],
+      "checks": [
+        "Fetch the record payload at partition 3, offset 902 using a bounded, read-only operation.",
+        "Compare the schema version of the record at offset 902 against the current schema registry."
+      ],
+      "avoid": [
+        "Do not assume that adding more consumers will resolve a persistent retry loop.",
+        "Avoid destructive operations like global consumer group resets."
+      ],
+      "missing": [
+        "The specific content of the schema mismatch.",
+        "The identity of the producer responsible for the record at offset 902."
+      ]
+    },
+    "facts": [],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "769d7c36-799e-44d9-8899-b90ab43a1b1c",
+          "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v3_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "13c1774b-e9e2-47c0-897b-8e82a9fceb96",
+          "text": "Adding consumers failed to resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-v2-regression-v3_HIST-QUEUE-POISON_0",
+          "tags": [
+            "service:events",
+            "recall-incident"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production"
+          },
+          "attachments": null
+        },
+        {
+          "id": "e9410bd8-91f6-4924-9727-f271cf4e5104",
+          "text": "Restarting the database and resetting passwords failed to resolve the TLS handshake issue on 2026-10-12.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-12T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.434000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "75206f1d-3c97-4a54-9cd9-4e8af6ea2d3c",
+          "text": "Resetting user passwords and replacing valid TLS certificates failed to resolve the signing-key lookup issue on 2026-10-24.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-24T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.445000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "1b28cc32-2006-4a57-ab01-449df6aec16b",
+          "text": "TLS handshakes failed in production on 2026-10-12 because the leaf certificate for the auth service had expired; the failure was resolved by renewing the certificate and deploying the correct chain.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00+00:00",
+          "occurred_end": "2026-10-12T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.444000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d7c27c08-0477-4d1f-8448-47a9d388bca3",
+          "text": "Redis returned OOM command not allowed when memory exceeded maxmemory during the incident.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "267a2fe8-7b46-4ec0-9830-4d494c10571d",
+          "text": "The notifications service failed due to DNS resolution errors (getaddrinfo ENOTFOUND and NXDOMAIN) during HIST-NOTIFY-DNS.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "6f9beafe-2a6a-47ac-9037-b82709023ed5",
+          "text": "Reverting the resolver configuration change restored DNS resolution and service delivery during HIST-NOTIFY-DNS.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.445000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "0a04931c-7c22-4777-b614-309febb5b280",
+          "text": "A resolver configuration change caused the DNS failure in HIST-NOTIFY-DNS.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "47df7d46-23d5-40ea-bd49-cce877594d77",
+          "text": "Verification was restored on 2026-10-24 by refreshing the JWKS and correcting the key-cache refresh behavior.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-24T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "9fac3c98-82ba-42bb-a059-3b7b664b7fe2",
+          "text": "Rotating certificates failed to resolve the DNS issue during HIST-NOTIFY-DNS.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-27T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4fa959d3-48e1-44c3-aaad-3ee153a00b0e",
+          "text": "Production incident HIST-SEARCH-OOM caused search cache write failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "940877ef-078c-4cc3-a20b-860ce2307491",
+          "text": "Production incident HIST-NOTIFY-DNS occurred in production on 2026-10-27.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-27T00:00:00+00:00",
+          "occurred_end": "2026-10-27T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:notifications",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "49e68425-247d-421b-88f0-d39edcb25dcd",
+          "text": "Unconditional FLUSHALL was avoided during the mitigation of incident HIST-SEARCH-OOM to prevent data loss.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-16T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.445000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "649b44e2-623e-455c-96ca-675aaf7a4f2b",
+          "text": "Production incident HIST-AUTH-JWKS occurred on 2026-10-24 due to identity-provider signing-key rotation.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-24T00:00:00+00:00",
+          "occurred_end": "2026-10-24T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:auth",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "c0c73992-f095-48de-a2b3-ff1a0ef64b8e",
+          "text": "Incident HIST-SEARCH-OOM was mitigated by inspecting memory, reviewing safe eviction policies, and reducing nonessential cache usage.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-16T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "2556a70b-1996-4808-a1fa-5e5e8c3d08c3",
+          "text": "Production incident HIST-SEARCH-OOM was caused by Redis memory exhaustion.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "97e25f50-8a04-4691-88cd-79f853c90a6d",
+          "text": "Production incident HIST-SEARCH-OOM occurred on 2026-10-16 in production.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "service:search",
+            "recall-incident"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ]
+    }
+  },
+  "audit": {
+    "passes": 2,
+    "draft": {
+      "text": "### Technical Failure Hypothesis\n\n**Evidence Status**: supported_hypothesis\n\n**Hypothesis**: A poison record in partition 3 is failing schema validation, triggering a continuous retry loop that blocks progress for that partition.\n\n**Reasoning**:\n*   **Observed**: Logs indicate `partition=3 offset=902 retry=168` with a persistent `schema validation failed` error, while other partitions are progressing. The repetition of the same offset during retries confirms that the consumer cannot advance past this specific record.\n*   **Historical match**: This failure mechanism is identical to the incident on 2026-10-22 (HIST-QUEUE-POISON), where a poison event introduced by a producer schema change caused a single partition to repeatedly retry a specific offset due to schema validation failures.\n*   **Unverified details**: The specific content of the schema mismatch and the identity of the producer responsible for the record at offset 902 are currently unknown.\n\n**Cautions**:\n1.  Do not assume that adding more consumers will resolve a poison-record retry loop; historical evidence shows this is ineffective.\n2.  Avoid destructive operations (such as global consumer group resets) that might cause collateral data loss or widespread impact.\n3.  Do not infer that schema validation failures are caused by Redis memory or connection pool saturation unless supported by metrics.\n\n**Recommended Non-Destructive Checks**:\n*   Inspect the specific payload at `partition=3, offset=902` using a bounded, read-only fetch to confirm the schema mismatch.\n*   Compare the schema version of the record at offset 902 against the current expected schema version defined in the registry.\n*   Review recent producer deployment logs for the events service to identify any recent schema-altering changes.",
+      "based_on": {
+        "memories": [
+          {
+            "id": "769d7c36-799e-44d9-8899-b90ab43a1b1c",
+            "text": "A production incident occurred where a poison event caused a single partition to repeatedly retry offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment | A producer schema change introduced a poison event that blocked progress.",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00+00:00",
+            "occurred_end": "2026-10-22T23:59:59+00:00",
+            "mentioned_at": "2026-11-07T15:20:19.425000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v3_HIST-QUEUE-POISON_0",
+            "tags": [
+              "service:events",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          },
+          {
+            "id": "13c1774b-e9e2-47c0-897b-8e82a9fceb96",
+            "text": "Adding consumers failed to resolve the single-event retry loop. | When: 2026-10-22 | Where: production environment",
+            "type": "world",
+            "context": null,
+            "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+            "occurred_end": "2026-10-22T23:59:59.010000+00:00",
+            "mentioned_at": "2026-11-07T15:20:19.435000+00:00",
+            "document_id": "HIST-QUEUE-POISON",
+            "chunk_id": "recall-eval-v2-regression-v3_HIST-QUEUE-POISON_0",
+            "tags": [
+              "service:events",
+              "recall-incident"
+            ],
+            "metadata": {
+              "incident_id": "HIST-QUEUE-POISON",
+              "service": "events",
+              "environment": "production"
+            },
+            "attachments": null
+          }
+        ],
+        "mental_models": [],
+        "directives": []
+      },
+      "structured_output": {
+        "evidenceStatus": "supported_hypothesis",
+        "summary": "Partition 3 is stuck in a continuous retry loop at offset 902 due to persistent schema validation failures. While other partitions process normally, the consumer cannot advance past this specific record, indicating a potential poison record issue.",
+        "hypotheses": [
+          {
+            "title": "Partition 3 stuck in retry loop due to schema validation failure",
+            "reasoning": "Observed: Logs show partition 3, offset 902 failing schema validation repeatedly. Historical match: Similar to incident HIST-QUEUE-POISON where a producer schema change caused partition-specific retries. Unverified: The specific content of the schema mismatch and the identity of the producer are unknown.",
+            "basis": "current_observations",
+            "evidenceIds": [
+              "HIST-QUEUE-POISON"
+            ]
+          }
+        ],
+        "checks": [
+          "Inspect the payload at partition 3, offset 902 using a bounded, read-only fetch.",
+          "Compare the schema version of the record at offset 902 against the registry.",
+          "Review recent producer deployment logs for the events service."
+        ],
+        "avoid": [
+          "Do not assume adding more consumers will resolve the retry loop.",
+          "Avoid destructive operations like global consumer group resets."
+        ],
+        "missing": [
+          "Specific content of the schema mismatch.",
+          "Identity of the producer responsible for the record at offset 902."
+        ]
+      },
+      "structured_output_error": null,
+      "usage": {
+        "input_tokens": 33348,
+        "output_tokens": 922,
+        "total_tokens": 34270,
+        "cached_tokens": 9464,
+        "thoughts_tokens": 0
+      },
+      "trace": null
+    }
+  }
+}

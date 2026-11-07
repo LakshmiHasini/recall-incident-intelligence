@@ -1,0 +1,24 @@
+{
+  "dataset": "Recall synthetic v2",
+  "mode": "regression",
+  "version": "v3",
+  "bank": "recall-eval-v2-regression-v3",
+  "sourceCommit": "d1de401364594a0eeefa0bbc1f691ff3844ede4f",
+  "fingerprints": {
+    "lib/investigation.ts": "3c7761ec35fc407c5a2296fa68f05de5a1d20db6a015636a0c87e8762cf9936e",
+    "lib/hindsight.ts": "1559317fedaa971f0e5cdeb3d09e675b4180abf6771b755df2436d53ce3a670e",
+    "lib/validation.ts": "044368e1a982ebb55c550571b120d471c0990a645bb90386fde5a511a334a542",
+    "scripts/evaluate-agent-v2.mjs": "c72adc6e8c68850819f9d81f622ca9aa82b84e6dde929d398ffdfcd3ad5918a0",
+    "evaluation/v2/regression.json": "5bea642038b5e7848f14b21d884383bdb7541189d826722617a36e6497fe3ff1",
+    "evaluation/v2/memories.json": "421f72fcfb1bde3f2ded448e3c79c0ded9706bd308b5b5d77f213760537024ee",
+    "evaluation/v2/learning.json": "287ff7cdf054cb30d341a0f82d925d2c14027f33b9f845951831569a59230678"
+  },
+  "count": 6,
+  "startedAt": "2026-11-07T15:20:16.674Z",
+  "model": "Hindsight Cloud default; exact model not pinned",
+  "pipeline": "draft then evidence review; fail closed",
+  "concurrency": 2,
+  "answerKeySent": false,
+  "completedAt": "2026-11-07T15:21:18.654Z",
+  "stoppedForQuota": false
+}
