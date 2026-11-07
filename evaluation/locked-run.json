@@ -1,0 +1,15 @@
+{
+  "lockedAt": "2026-11-07T14:41:25.322Z",
+  "run": "benchmark-v4",
+  "statement": "Agent version and rubric frozen before benchmark outputs. Any later agent change requires a new holdout before an unseen-case claim.",
+  "hashes": {
+    "evaluation/inputs.json": "8245f019ab3687f98c8a65a953f09866d4b16df97349aea7f689cd3ec231be7f",
+    "evaluation/expected.json": "18ca239177f6336f9caf8a8c4eb9c8190203fc3809d1236e46dfcb81650b93ef",
+    "evaluation/memories.json": "421f72fcfb1bde3f2ded448e3c79c0ded9706bd308b5b5d77f213760537024ee",
+    "evaluation/PROTOCOL.md": "dcb579df93453e7d83d8323b3e648a1d48bdc11ad88146961666174c269b8d63",
+    "lib/investigation.ts": "7514881018310d6bd8b6c4ba7311c2eda05e85053e29651d4ebd9e4025457185",
+    "lib/hindsight.ts": "e5569b86c3ed3353e39f285153add17647c72371cde659d39706572e6f397253",
+    "scripts/evaluate-agent.mjs": "938033ac8c43e2b13ad5616bb789c2aa5618a8e3d2084a6dca7ceacd30223ae4",
+    "scripts/score-evaluation.mjs": "6d4e229137f7b0b8b9e6fedfa7d6ff25adb5c50cc5146422caeddea3b0107659"
+  }
+}

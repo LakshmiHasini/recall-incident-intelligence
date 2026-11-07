@@ -29,7 +29,21 @@ export class Hindsight {
     return (Array.isArray(data.results) ? data.results : []) as MemoryFact[];
   }
   async reflect(query: string) {
-    const data = await this.request(`${this.bankPath}/reflect`, { query, budget: "mid", max_tokens: 2200, include: { facts: {} }, response_schema: { type: "object", properties: { summary: { type: "string" }, hypotheses: { type: "array", items: { type: "object", properties: { title: { type: "string" }, reasoning: { type: "string" } }, required: ["title", "reasoning"] } }, checks: { type: "array", items: { type: "string" } }, avoid: { type: "array", items: { type: "string" } }, missing: { type: "array", items: { type: "string" } } }, required: ["summary", "hypotheses", "checks", "avoid", "missing"] } });
+    const data = await this.request(`${this.bankPath}/reflect`, {
+      query, budget: "mid", max_tokens: 2200, include: { facts: {} },
+      response_schema: { type: "object", properties: {
+        evidenceStatus: { type: "string", enum: ["insufficient_evidence", "supported_hypothesis"] },
+        summary: { type: "string" },
+        hypotheses: { type: "array", maxItems: 1, items: { type: "object", properties: {
+          title: { type: "string" }, reasoning: { type: "string" },
+          basis: { type: "string", enum: ["current_observations", "historical_memory"] },
+          evidenceIds: { type: "array", items: { type: "string" } },
+        }, required: ["title", "reasoning", "basis", "evidenceIds"] } },
+        checks: { type: "array", items: { type: "string" } },
+        avoid: { type: "array", items: { type: "string" } },
+        missing: { type: "array", items: { type: "string" } },
+      }, required: ["evidenceStatus", "summary", "hypotheses", "checks", "avoid", "missing"] },
+    });
     if (typeof data.text !== "string" || !data.text.trim()) throw new AppError("Hindsight did not return an investigation. Please retry.", 502);
     return data;
   }

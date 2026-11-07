@@ -1,0 +1,104 @@
+{
+  "executedAt": "2026-11-07T14:43:41.301Z",
+  "passed": 24,
+  "total": 24,
+  "results": [
+    {
+      "name": "invalid report rejected",
+      "passed": true
+    },
+    {
+      "name": "malformed JSON rejected",
+      "passed": true
+    },
+    {
+      "name": "oversized body rejected",
+      "passed": true
+    },
+    {
+      "name": "cross-origin writes rejected",
+      "passed": true
+    },
+    {
+      "name": "unknown endpoint rejected",
+      "passed": true
+    },
+    {
+      "name": "unknown incident rejected",
+      "passed": true
+    },
+    {
+      "name": "webhook rejects missing credentials",
+      "passed": true
+    },
+    {
+      "name": "webhook rejects incorrect credentials",
+      "passed": true
+    },
+    {
+      "name": "valid incident created",
+      "passed": true
+    },
+    {
+      "name": "original record persists",
+      "passed": true
+    },
+    {
+      "name": "JSON credential redacted",
+      "passed": true
+    },
+    {
+      "name": "valid status transition",
+      "passed": true
+    },
+    {
+      "name": "stale status update rejected",
+      "passed": true
+    },
+    {
+      "name": "concurrent event writes either save or report conflict",
+      "passed": true
+    },
+    {
+      "name": "concurrent writes do not lose saved events",
+      "passed": true
+    },
+    {
+      "name": "one of two concurrent resolutions wins",
+      "passed": true
+    },
+    {
+      "name": "resolution and memory job are atomic",
+      "passed": true
+    },
+    {
+      "name": "resolved incident rejects new timeline entries",
+      "passed": true
+    },
+    {
+      "name": "resolved incident rejects status reopening",
+      "passed": true
+    },
+    {
+      "name": "explicit resolution amendment succeeds",
+      "passed": true
+    },
+    {
+      "name": "obsolete sync job superseded without provider call",
+      "passed": true
+    },
+    {
+      "name": "missing sync job rejected",
+      "passed": true
+    },
+    {
+      "name": "concurrent webhook deliveries deduplicate",
+      "passed": true
+    },
+    {
+      "name": "connection status never exposes key",
+      "passed": true
+    }
+  ],
+  "syntheticIncident": "52e908d7-96a8-4402-bc19-6f16c5aac442"
+}

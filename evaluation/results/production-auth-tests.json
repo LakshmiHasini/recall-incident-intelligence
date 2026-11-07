@@ -1,0 +1,32 @@
+{
+  "executedAt": "2026-11-07T14:43:41.370Z",
+  "passed": 5,
+  "total": 5,
+  "records": [
+    {
+      "path": "incidents",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "path": "incidents",
+      "method": "POST",
+      "status": 401
+    },
+    {
+      "path": "connections/status",
+      "method": "GET",
+      "status": 401
+    },
+    {
+      "path": "connections/test",
+      "method": "POST",
+      "status": 401
+    },
+    {
+      "path": "memories",
+      "method": "GET",
+      "status": 401
+    }
+  ]
+}

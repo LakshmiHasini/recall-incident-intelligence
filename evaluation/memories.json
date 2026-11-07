@@ -1,0 +1,42 @@
+[
+  {
+    "id": "HIST-PAY-POOL",
+    "service": "payments",
+    "text": "Confirmed production incident on 2026-10-09: payment handlers failed to release database connections after exceptions in version 3.7. Pool occupancy reached 100/100, requests waited and timed out. Closing leaked connections and deploying a cleanup patch restored throughput. Restarting the service brought only temporary relief; raising the pool limit did not repair the leak. A regression test was PROPOSED, not confirmed implemented."
+  },
+  {
+    "id": "HIST-PAY-QUOTA",
+    "service": "payments",
+    "text": "Confirmed production incident on 2026-10-18: the external payment provider returned HTTP 429 and Retry-After while the local database pool stayed healthy. Exceeded upstream quota caused rejected requests. Respecting Retry-After, bounded retries with jitter, and reducing request rate restored traffic. Restarting the local application did not increase the provider quota. Increasing database capacity was unrelated."
+  },
+  {
+    "id": "HIST-AUTH-CERT",
+    "service": "auth",
+    "text": "Confirmed production incident on 2026-10-12: TLS handshakes failed with certificate has expired before HTTP requests reached the auth service. The leaf certificate was past its notAfter date. Renewing the certificate and deploying the correct chain restored TLS. Restarting the database and resetting passwords did not repair this TLS failure."
+  },
+  {
+    "id": "HIST-AUTH-JWKS",
+    "service": "auth",
+    "text": "Confirmed production incident on 2026-10-24: following identity-provider signing-key rotation, JWT verification returned unknown kid and 401; TLS was valid. The application cached an obsolete JWKS. Refreshing JWKS and correcting key-cache refresh behavior restored verification. Resetting user passwords and replacing valid TLS certificates did not fix signing-key lookup."
+  },
+  {
+    "id": "HIST-SEARCH-OOM",
+    "service": "search",
+    "text": "Confirmed production incident on 2026-10-16: Redis returned OOM command not allowed when used memory exceeds maxmemory. Search cache writes failed at the configured memory limit. Inspecting memory, reviewing safe eviction policy and reducing nonessential cache usage mitigated the incident. Unconditional FLUSHALL was not performed; it would delete data. Do not infer this cause when Redis memory is healthy."
+  },
+  {
+    "id": "HIST-QUEUE-POISON",
+    "service": "events",
+    "text": "Confirmed production incident on 2026-10-22: one partition repeatedly retried offset 418 with schema validation failures. A poison event introduced by a producer schema change blocked progress. After inspecting and preserving the failed payload, quarantining that event under the approved procedure and correcting schema compatibility restored progress. Adding consumers alone did not resolve the single-event retry loop."
+  },
+  {
+    "id": "HIST-NOTIFY-DNS",
+    "service": "notifications",
+    "text": "Confirmed production incident on 2026-10-27: notifications failed with getaddrinfo ENOTFOUND and NXDOMAIN after resolver configuration changed. No TLS handshake was reached. Reverting the resolver change restored DNS resolution and delivery. Rotating certificates did not address this DNS problem."
+  },
+  {
+    "id": "HIST-CATALOG-CORRECTED",
+    "service": "catalog",
+    "text": "CORRECTED source version 2, dated 2026-11-06, replaces version 1. Confirmed cause: catalog response cache keys omitted the locale; the same SKU returned another language's content. Redis memory was normal. Version 1's memory-exhaustion diagnosis was explicitly retracted as incorrect. Including locale in cache keys fixed the issue and verified locale separation. This is a confirmed completed fix. A preventive regression suite is only proposed, not confirmed implemented."
+  }
+]

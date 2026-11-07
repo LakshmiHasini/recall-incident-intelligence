@@ -24,6 +24,10 @@ The app and repository currently have private access. The hosted application’s
 
 This is a single shared team workspace. The deployed Site stays owner-private. The app recommends checks and does not execute production commands.
 
+## Measured answer quality
+
+The reviewed result is **25/30 scenarios passed (83.3%)** on an assistant-authored synthetic benchmark. Leading diagnostic direction was correct in 22/23 answerable cases, and all 7 insufficient-evidence cases abstained appropriately. This is not independently validated production accuracy. Read [the full evaluation report](evaluation/REPORT.md), including its five failures, grading protocol, raw responses and limitations.
+
 ## Stack
 
 React, TypeScript, Tailwind CSS, Lucide, Vinext/Vite, server-side route handlers, Cloudflare D1, Drizzle, Zod and Hindsight Cloud. Band desktop is used in the required development setup. Hindsight Reflect supplies the initial reasoning layer; no separate LLM account is necessary.
@@ -61,7 +65,7 @@ npm run build
 
 The focused tests mock provider responses to exercise request schemas and failures; they are not evidence of live connectivity. `test:local` creates an explicitly labelled synthetic record in the local database. `verify-live.mjs` performs actual Hindsight operations, requires the local bank ID `recall-development`, and consumes usage credits. It verifies retain → recall → later incident reflection with source facts.
 
-Verified during development: 13 focused tests, persistent local incident workflow, failed-action recording, stale-update rejection, atomic resolution/job creation, authenticated webhook deduplication, a live Hindsight connection, four recalled facts, four reflection facts, and structured investigation output.
+Verified during development: 20 focused unit tests, 24 API reliability checks, 5 production-worker authentication checks, a live learning workflow and a separate 30-case answer-quality benchmark. Software test pass rates are not diagnostic accuracy.
 
 ## Hindsight configuration
 
@@ -109,6 +113,7 @@ Private hosting additionally requires platform service access. A generic receive
 - [Hindsight implementation](docs/HINDSIGHT.md)
 - [Live walkthrough and submission checklist](docs/DEMO-SCRIPT.md)
 - [Submission drafts and project links](docs/SUBMISSION.md)
+- [Accuracy evaluation and limitations](evaluation/REPORT.md)
 - [Starter-specific tooling notes](docs/STARTER.md)
 
 ## Remaining submission work

@@ -8,7 +8,7 @@ export type IncidentEvent = { id: string; kind: string; content: string; outcome
 export type MemoryFact = { id: string; text: string; type?: string; context?: string; document_id?: string; metadata?: Record<string, string>; occurred_start?: string; tags?: string[] };
 export type Investigation = {
   id: string; revision: number; createdAt: string;
-  result: { text: string; facts: MemoryFact[]; basedOn: unknown; structured: { summary?: string; hypotheses?: { title: string; reasoning: string }[]; checks?: string[]; avoid?: string[]; missing?: string[] } | null; provider: string; durationMs: number };
+  result: { text: string; facts: MemoryFact[]; basedOn: unknown; structured: { evidenceStatus?: "insufficient_evidence" | "supported_hypothesis"; summary?: string; hypotheses?: { title: string; reasoning: string; basis?: string; evidenceIds?: string[] }[]; checks?: string[]; avoid?: string[]; missing?: string[] } | null; provider: string; durationMs: number };
 };
 export type MemoryJob = { id: string; incidentId: string; revision: number; documentId: string; status: string; attempts: number; lastError: string | null; updatedAt: string };
 export type IncidentDetail = { incident: Incident; events: IncidentEvent[]; investigations: Investigation[]; jobs: MemoryJob[] };

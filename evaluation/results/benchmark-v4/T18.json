@@ -1,0 +1,315 @@
+{
+  "id": "T18",
+  "category": "disambiguation",
+  "stage": "single",
+  "input": {
+    "id": "T18",
+    "title": "Lag grows without retries",
+    "service": "events",
+    "environment": "production",
+    "description": "Incoming event rate is five times normal. Consumers advance offsets and report no schema errors or repeated records.",
+    "logs": "ingest=5000/s consumption=1000/s schema_errors=0 retries=0"
+  },
+  "events": [],
+  "queryHash": "8e4c9c7682ec240851491b3f3aa286f5cd73c9d31d2b3ff937e7661de065ddae",
+  "promptHash": "7514881018310d6bd8b6c4ba7311c2eda05e85053e29651d4ebd9e4025457185",
+  "startedAt": "2026-11-07T14:42:48.000Z",
+  "success": true,
+  "durationMs": 6859,
+  "schemaValid": true,
+  "result": {
+    "text": "### Technical Analysis: Incident T18\n\nThe observed state in Incident T18 involves a persistent consumer lag where the ingest rate (5000/s) significantly exceeds the consumption rate (1000/s). Unlike historical incidents involving retry loops or schema-related poison events, current logs explicitly report zero schema errors and zero retries. The consumers are successfully advancing their offsets, indicating that the system is processing events, albeit at a reduced throughput that is insufficient to keep pace with the current ingest volume.\n\n#### Observed Facts\n- Ingest Rate: 5000/s.\n- Consumption Rate: 1000/s.\n- Status: Schema errors = 0; Retries = 0.\n- Behavior: Offsets are advancing.\n\n#### Historical Analogy\nWhile Incident HIST-QUEUE-POISON (2026-10-22) involved a retry loop in the events service, that incident was characterized by repeated retries and schema validation failures, which are explicitly absent in the current logs. The current situation does not align with poison-pill events or retry-loop mechanisms. No other historical incident in the provided bank matches the combination of steady offset advancement with sustained low-throughput processing in the events service.\n\n#### Root Cause Determination\n- **evidenceStatus**: insufficient_evidence\n- **Hypotheses**: []\n\nThe root cause cannot be determined. The evidence indicates that the consumers are performing work but are bottlenecked. Because there are no errors, no retries, and no apparent schema issues, the current data does not isolate whether the bottleneck is CPU saturation, network throughput limits, downstream resource contention, or an intentional rate-limiting configuration. \n\n#### Recommended Non-Destructive Checks\nTo collect the missing observations needed to distinguish these possibilities, the following checks should be performed:\n1. **Resource Utilization**: Analyze per-consumer CPU and memory usage to determine if the 1000/s consumption limit corresponds to a resource ceiling.\n2. **Downstream Latency**: Measure the latency of downstream dependencies or storage operations called by the event consumers.\n3. **Network Throughput**: Inspect network interface utilization for the consumer instances to identify potential bandwidth throttling.\n4. **Configuration Review**: Compare current consumer group parallelism settings against expected performance profiles.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "ac8306d9-abc8-4d71-a9c9-3cf424ecb39b",
+          "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment, events service | Adding consumers failed to resolve the retry loop.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "c941bc33-4c69-4c93-bc6c-33f68e74e850",
+          "text": "A production incident occurred where a poison event caused a retry loop on partition offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "898aa84e-4bb8-4b38-ab9c-702d15c0f48e",
+          "text": "Adding consumers failed to resolve the retry loop.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "f642a8bf-df12-4d9a-816e-8ad36831bebb",
+          "text": "The incident involved a poison event causing a retry loop on partition offset 418 due to schema validation failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d6886ac9-cddb-45b1-985a-350ebcbc4285",
+          "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d08f275e-4af1-4830-b93c-fabab7165332",
+          "text": "A production incident occurred in the production environment's events service on 2026-10-22.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    },
+    "structured_output": {
+      "evidenceStatus": "insufficient_evidence",
+      "summary": "Incident T18 involves a persistent consumer lag where the ingest rate of 5000/s exceeds the consumption rate of 1000/s. Consumers are advancing offsets without errors or retries, indicating a performance bottleneck rather than a failure state.",
+      "hypotheses": [],
+      "checks": [
+        "Analyze per-consumer CPU and memory usage",
+        "Measure the latency of downstream dependencies or storage operations",
+        "Inspect network interface utilization for the consumer instances",
+        "Compare current consumer group parallelism settings against expected performance profiles"
+      ],
+      "avoid": [
+        "Assuming poison-pill events",
+        "Assuming retry-loop mechanisms"
+      ],
+      "missing": [
+        "CPU utilization data",
+        "Memory usage data",
+        "Downstream dependency latency metrics",
+        "Network bandwidth utilization data",
+        "Consumer group parallelism configuration details"
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 43061,
+      "output_tokens": 939,
+      "total_tokens": 44000,
+      "cached_tokens": 17385,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "insufficient_evidence",
+      "summary": "Incident T18 involves a persistent consumer lag where the ingest rate of 5000/s exceeds the consumption rate of 1000/s. Consumers are advancing offsets without errors or retries, indicating a performance bottleneck rather than a failure state.",
+      "hypotheses": [],
+      "checks": [
+        "Analyze per-consumer CPU and memory usage",
+        "Measure the latency of downstream dependencies or storage operations",
+        "Inspect network interface utilization for the consumer instances",
+        "Compare current consumer group parallelism settings against expected performance profiles"
+      ],
+      "avoid": [
+        "Assuming poison-pill events",
+        "Assuming retry-loop mechanisms"
+      ],
+      "missing": [
+        "CPU utilization data",
+        "Memory usage data",
+        "Downstream dependency latency metrics",
+        "Network bandwidth utilization data",
+        "Consumer group parallelism configuration details"
+      ]
+    },
+    "facts": [],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "ac8306d9-abc8-4d71-a9c9-3cf424ecb39b",
+          "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment, events service | Adding consumers failed to resolve the retry loop.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "c941bc33-4c69-4c93-bc6c-33f68e74e850",
+          "text": "A production incident occurred where a poison event caused a retry loop on partition offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "898aa84e-4bb8-4b38-ab9c-702d15c0f48e",
+          "text": "Adding consumers failed to resolve the retry loop.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "f642a8bf-df12-4d9a-816e-8ad36831bebb",
+          "text": "The incident involved a poison event causing a retry loop on partition offset 418 due to schema validation failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d6886ac9-cddb-45b1-985a-350ebcbc4285",
+          "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d08f275e-4af1-4830-b93c-fabab7165332",
+          "text": "A production incident occurred in the production environment's events service on 2026-10-22.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    }
+  }
+}

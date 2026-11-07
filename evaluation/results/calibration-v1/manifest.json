@@ -1,0 +1,18 @@
+{
+  "dataset": "Recall synthetic incident benchmark v1",
+  "mode": "calibration",
+  "version": "v1",
+  "bank": "recall-eval-20261107-v1",
+  "sourceCommit": "01c8e81a18cb979c34eae96444d4657dd50368b6",
+  "promptHash": "415aa10d720a70da2c947fb5202497b4f779006657be769bc88c063a587484b0",
+  "clientHash": "93e46cb74bea6656c19c80814b2636d3a2db2192dcd0011e696b8058248efc1f",
+  "inputHash": "70c8d6443b8ee81ef14abe4569eaa4c1ecd23123a5120fe3a8bf8a79b901fad3",
+  "memoryHash": "421f72fcfb1bde3f2ded448e3c79c0ded9706bd308b5b5d77f213760537024ee",
+  "startedAt": "2026-11-07T14:35:02.983Z",
+  "count": 6,
+  "model": "Hindsight Cloud default; exact provider model not pinned",
+  "concurrency": 2,
+  "answerKeySent": false,
+  "completedAt": "2026-11-07T14:35:39.386Z",
+  "stoppedForQuota": false
+}

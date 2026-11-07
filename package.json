@@ -14,7 +14,11 @@
     "db:generate": "drizzle-kit generate",
     "test": "node --experimental-transform-types --test tests/core.test.ts",
     "typecheck": "tsc --noEmit",
-    "test:local": "node scripts/verify-local.mjs"
+    "test:local": "node scripts/verify-local.mjs",
+    "test:api": "node scripts/test-api.mjs",
+    "eval:calibration": "node --experimental-transform-types scripts/evaluate-agent.mjs calibration",
+    "eval:benchmark": "node --experimental-transform-types scripts/evaluate-agent.mjs benchmark",
+    "eval:score": "node scripts/score-evaluation.mjs evaluation/results/benchmark-v4"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

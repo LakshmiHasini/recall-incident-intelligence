@@ -1,0 +1,660 @@
+{
+  "id": "D06",
+  "category": "calibration",
+  "stage": "single",
+  "input": {
+    "id": "D06",
+    "title": "Timeout without enough detail",
+    "service": "payments",
+    "environment": "staging",
+    "description": "Staging requests time out. Pool size, provider codes and transaction traces are not collected.",
+    "logs": "timeout"
+  },
+  "events": [],
+  "queryHash": "665d126fac21e2b350e423638400d3b71ec99ef8b89f16be87c89133b55acfdf",
+  "promptHash": "2e1f68025c8305c3bc0957b54f562382546b68a123f81094b7a8dc819e7eebeb",
+  "startedAt": "2026-11-07T14:37:39.055Z",
+  "success": true,
+  "durationMs": 8601,
+  "schemaValid": true,
+  "result": {
+    "text": "The root cause of the current timeout incident in the staging payments service cannot be determined with the available evidence. The currently available logs and observations only report a generic timeout, without providing diagnostic metrics such as pool occupancy, response codes from upstream providers, or transaction traces. Because the evidence is limited to the single symptom of a timeout, it is impossible to distinguish between several plausible technical failures that have historically affected the payments service or could occur in staging environments.\n\n### Evidence Status: insufficient_evidence\n\n### Hypotheses\n\nHypotheses cannot be ranked or confirmed due to the lack of granular diagnostic data. Without specific error codes or state information from the payments service, the following scenarios remain plausible but unverified:\n\n*   **Resource Exhaustion (Database Pool):** A connection leak in the payment handlers could be causing the pool to saturate, leading to request timeouts as seen in previous production incidents (e.g., 2026-10-09). \n*   **Upstream Quota Limitation:** The service may be hitting rate limits or quotas imposed by an external payment provider, which historically manifests as timeouts or 429 errors (e.g., 2026-10-18).\n*   **Environment-Specific Configuration Error:** Staging environments may be misconfigured with incorrect endpoints or security settings that do not manifest in production, but there is no specific data currently pointing to this.\n\n### Recommended Non-Destructive Checks\n\nTo move toward a diagnosis, the following non-destructive data collection steps are required:\n\n1.  **Examine Pool Metrics:** Inspect current database connection pool utilization (active vs. idle connections) to determine if the pool is saturated.\n2.  **Capture Upstream Response Codes:** Review outbound request logs from the payments service to the payment provider to check for HTTP 429 (Too Many Requests), 5xx errors, or specific connection-level timeout signals.\n3.  **Analyze Transaction Traces:** Enable or review distributed tracing logs for a sample of timed-out requests to identify which specific internal handler or external dependency is responsible for the duration of the request.\n4.  **Check Service Health Logs:** Verify if the service is emitting error logs related to specific exceptions (e.g., database connection acquisition timeouts or read/write timeouts).\n\n### Cautions\n\n*   **Avoid Unconditional Restarts:** Restarting the service or the database provided only temporary relief in past connection-leak scenarios and does not address the underlying cause; rely on metrics first.\n*   **Avoid Over-Provisioning:** Increasing database capacity is ineffective if the issue is a connection leak or an external quota limit; verify the bottleneck before making infrastructure changes.\n*   **Monitor for Cache/Session State:** Do not assume memory-related issues or cache failures without evidence, as historical diagnoses for memory exhaustion have previously been retracted as incorrect.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "9d943076-e660-4e32-a3e1-07b085e156e8",
+          "text": "Restarting the service provided only temporary relief and raising the pool limit failed to repair the connection leak. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "b4e2498c-ce2d-451a-976d-663fd1a61386",
+          "text": "Throughput was restored by closing leaked connections and deploying a cleanup patch. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "2e8ff71e-dfce-4f29-bae7-f7d1b86a4b27",
+          "text": "Payment handlers failed to release database connections after exceptions in version 3.7, causing pool occupancy to reach 100/100 and request timeouts. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00+00:00",
+          "occurred_end": "2026-10-09T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "738c1c4b-603a-41fb-bde9-a45de962274e",
+          "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue. | When: 2026-10-18 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "fca0a2e1-b600-4ff4-9015-37538140ac76",
+          "text": "The payments service experienced a production incident due to an upstream quota limit being exceeded. | When: 2026-10-18 | Where: production | External payment provider returned HTTP 429 and Retry-After errors.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00+00:00",
+          "occurred_end": "2026-10-18T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "c20b304f-dde2-4ef0-b91e-697548a399ad",
+          "text": "A regression test was proposed to address the incident, but implementation was not confirmed.",
+          "type": "world",
+          "context": null,
+          "occurred_start": null,
+          "occurred_end": null,
+          "mentioned_at": "2026-11-07T14:35:08.371000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1c84ffdf-ea72-43ee-8eed-23c2179a2002",
+          "text": "Traffic was restored by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate. | When: 2026-10-18 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1207bf42-1f75-4fae-90a1-919dd63aa116",
+          "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue on 2026-10-18.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "17444104-1a04-4ab6-a193-a6589720953b",
+          "text": "The payments service experienced a production incident on 2026-10-18 due to an upstream quota limit being exceeded.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00+00:00",
+          "occurred_end": "2026-10-18T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "31b51594-4a7d-4f1e-a7a0-e6552748a0ad",
+          "text": "Payment handlers failed to release database connections after exceptions in version 3.7 on 2026-10-09.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00+00:00",
+          "occurred_end": "2026-10-09T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4f46b1b0-b923-4287-bc0b-66b07fb152fa",
+          "text": "A regression test was proposed to address the incident, but implementation was not confirmed.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": null,
+          "occurred_end": null,
+          "mentioned_at": "2026-11-07T14:35:08.371000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "62315849-1387-4885-93b5-707f54825da7",
+          "text": "Restarting the service provided only temporary relief on 2026-10-09, and raising the pool limit failed to repair the connection leak.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "bee05fb9-8bc8-4403-a48f-385d821d397b",
+          "text": "Throughput was restored on 2026-10-09 by closing leaked connections and deploying a cleanup patch.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4289663f-c15e-4f57-8fad-2d769c1a1345",
+          "text": "Traffic was restored on 2026-10-18 by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    },
+    "structured_output": {
+      "evidenceStatus": "insufficient_evidence",
+      "summary": "The root cause of the staging payments service timeout cannot be determined due to a lack of granular diagnostic data, such as pool occupancy, upstream response codes, or transaction traces.",
+      "hypotheses": [
+        {
+          "title": "Resource Exhaustion (Database Pool)",
+          "reasoning": "A connection leak in the payment handlers could be causing the pool to saturate, leading to request timeouts.",
+          "basis": "historical_memory",
+          "evidenceIds": [
+            "2026-10-09"
+          ]
+        },
+        {
+          "title": "Upstream Quota Limitation",
+          "reasoning": "The service may be hitting rate limits or quotas imposed by an external payment provider, manifesting as timeouts or 429 errors.",
+          "basis": "historical_memory",
+          "evidenceIds": [
+            "2026-10-18"
+          ]
+        },
+        {
+          "title": "Environment-Specific Configuration Error",
+          "reasoning": "Staging environments may be misconfigured with incorrect endpoints or security settings that do not manifest in production.",
+          "basis": "current_observations",
+          "evidenceIds": []
+        }
+      ],
+      "checks": [
+        "Examine database connection pool utilization",
+        "Capture outbound request logs for HTTP 429 or 5xx errors",
+        "Analyze distributed tracing logs for timed-out requests",
+        "Verify service health logs for specific exceptions"
+      ],
+      "avoid": [
+        "Unconditional service or database restarts",
+        "Over-provisioning database capacity",
+        "Assuming memory-related issues or cache failures without evidence"
+      ],
+      "missing": [
+        "Pool occupancy metrics",
+        "Response codes from upstream providers",
+        "Transaction traces",
+        "Specific error codes or state information"
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 42654,
+      "output_tokens": 1331,
+      "total_tokens": 43985,
+      "cached_tokens": 17372,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "insufficient_evidence",
+      "summary": "The root cause of the staging payments service timeout cannot be determined due to a lack of granular diagnostic data, such as pool occupancy, upstream response codes, or transaction traces.",
+      "hypotheses": [],
+      "checks": [
+        "Examine database connection pool utilization",
+        "Capture outbound request logs for HTTP 429 or 5xx errors",
+        "Analyze distributed tracing logs for timed-out requests",
+        "Verify service health logs for specific exceptions"
+      ],
+      "avoid": [
+        "Unconditional service or database restarts",
+        "Over-provisioning database capacity",
+        "Assuming memory-related issues or cache failures without evidence"
+      ],
+      "missing": [
+        "Pool occupancy metrics",
+        "Response codes from upstream providers",
+        "Transaction traces",
+        "Specific error codes or state information"
+      ]
+    },
+    "facts": [],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "9d943076-e660-4e32-a3e1-07b085e156e8",
+          "text": "Restarting the service provided only temporary relief and raising the pool limit failed to repair the connection leak. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "b4e2498c-ce2d-451a-976d-663fd1a61386",
+          "text": "Throughput was restored by closing leaked connections and deploying a cleanup patch. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "2e8ff71e-dfce-4f29-bae7-f7d1b86a4b27",
+          "text": "Payment handlers failed to release database connections after exceptions in version 3.7, causing pool occupancy to reach 100/100 and request timeouts. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00+00:00",
+          "occurred_end": "2026-10-09T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "738c1c4b-603a-41fb-bde9-a45de962274e",
+          "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue. | When: 2026-10-18 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "fca0a2e1-b600-4ff4-9015-37538140ac76",
+          "text": "The payments service experienced a production incident due to an upstream quota limit being exceeded. | When: 2026-10-18 | Where: production | External payment provider returned HTTP 429 and Retry-After errors.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00+00:00",
+          "occurred_end": "2026-10-18T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "c20b304f-dde2-4ef0-b91e-697548a399ad",
+          "text": "A regression test was proposed to address the incident, but implementation was not confirmed.",
+          "type": "world",
+          "context": null,
+          "occurred_start": null,
+          "occurred_end": null,
+          "mentioned_at": "2026-11-07T14:35:08.371000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1c84ffdf-ea72-43ee-8eed-23c2179a2002",
+          "text": "Traffic was restored by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate. | When: 2026-10-18 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1207bf42-1f75-4fae-90a1-919dd63aa116",
+          "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue on 2026-10-18.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "17444104-1a04-4ab6-a193-a6589720953b",
+          "text": "The payments service experienced a production incident on 2026-10-18 due to an upstream quota limit being exceeded.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00+00:00",
+          "occurred_end": "2026-10-18T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "31b51594-4a7d-4f1e-a7a0-e6552748a0ad",
+          "text": "Payment handlers failed to release database connections after exceptions in version 3.7 on 2026-10-09.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00+00:00",
+          "occurred_end": "2026-10-09T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4f46b1b0-b923-4287-bc0b-66b07fb152fa",
+          "text": "A regression test was proposed to address the incident, but implementation was not confirmed.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": null,
+          "occurred_end": null,
+          "mentioned_at": "2026-11-07T14:35:08.371000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "62315849-1387-4885-93b5-707f54825da7",
+          "text": "Restarting the service provided only temporary relief on 2026-10-09, and raising the pool limit failed to repair the connection leak.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "bee05fb9-8bc8-4403-a48f-385d821d397b",
+          "text": "Throughput was restored on 2026-10-09 by closing leaked connections and deploying a cleanup patch.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4289663f-c15e-4f57-8fad-2d769c1a1345",
+          "text": "Traffic was restored on 2026-10-18 by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    }
+  }
+}

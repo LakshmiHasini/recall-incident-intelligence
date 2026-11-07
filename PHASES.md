@@ -21,3 +21,7 @@ Live application: https://recall-incident-memory.lakshmihasini8.chatgpt.site
 Private GitHub repository: https://github.com/LakshmiHasini/recall-incident-intelligence
 
 The local database contains labelled synthetic verification records. Production uses separate storage and the `recall-incidents` bank. The separate content guide is still needed from the organizers.
+
+## Accuracy follow-up
+
+The reviewed synthetic benchmark scored **25/30 scenario passes (83.3%)**, with 22/23 correct leading diagnostic directions and 7/7 correct insufficient-evidence outcomes. The five failures and raw outputs are retained in `evaluation/`. Twenty unit checks, 24 API checks and five built-worker authentication checks pass separately. These results do not establish perfect or production-wide accuracy.

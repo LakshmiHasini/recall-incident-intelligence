@@ -1,0 +1,270 @@
+{
+  "id": "T15",
+  "category": "disambiguation",
+  "stage": "single",
+  "input": {
+    "id": "T15",
+    "title": "Delivery blocked after name lookup succeeds",
+    "service": "notifications",
+    "environment": "production",
+    "description": "DNS resolves correctly. A TLS error explicitly reports an expired server certificate.",
+    "logs": "DNS OK; TLS certificate has expired; connect aborted"
+  },
+  "events": [],
+  "queryHash": "4db8edab727e73523bab8bbd9514ed248e9804b64cf10288d814376521d0b14c",
+  "promptHash": "7514881018310d6bd8b6c4ba7311c2eda05e85053e29651d4ebd9e4025457185",
+  "startedAt": "2026-11-07T14:42:37.094Z",
+  "success": true,
+  "durationMs": 7727,
+  "schemaValid": true,
+  "result": {
+    "text": "### Evidence Assessment\n\n**Observed:** \n- The service is failing to deliver notifications in production.\n- DNS resolution is confirmed as functional.\n- Logs explicitly report a TLS connection abort due to an expired server certificate.\n\n**Historical Match:** \n- Production incident HIST-AUTH-CERT (2026-10-12) involved a similar failure where an expired TLS leaf certificate caused handshake failures before HTTP requests could proceed. The resolution required replacing the certificate and deploying the correct chain.\n\n**Unverified Details:** \n- The underlying mechanism for the certificate expiration (e.g., failed automated renewal vs. manual oversight) is unknown.\n- The specific service component managing the termination of the TLS connection (e.g., load balancer, gateway, or application-level proxy) is not identified.\n\n### Hypothesis\n\n- **Hypothesis:** The technical failure is the presence of an expired leaf TLS certificate on the endpoint serving the notifications service.\n- **Basis:** current_observations\n- **Evidence IDs:** [396a82f1-831b-450a-9452-ccbb3643e4e1]\n\n### Recommended Non-Destructive Checks\n\n1. **Verify Certificate Chain:** Perform a client-side check of the endpoint's TLS certificate chain using `openssl s_client -connect <host>:<port> -showcerts` to confirm the expiration date and the specific leaf certificate associated with the connection error.\n2. **Review Deployment State:** Check if the certificate currently presented by the endpoint differs from the certificate currently installed in the infrastructure's secret store or certificate management service.\n\n### Cautions\n\n- Do not assume a failure of automated renewal mechanisms without inspecting the certificate management logs; an expired certificate is a primary failure, not an automatic proof of secondary infrastructure issues.\n- Restarting backend services or modifying database settings (as attempted in previous, unrelated incidents) will not resolve a TLS handshake failure caused by an expired certificate.\n- Ensure that any replacement certificate includes the full chain; incomplete chains may lead to trust verification failures even after the leaf is renewed.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "396a82f1-831b-450a-9452-ccbb3643e4e1",
+          "text": "Production incident HIST-AUTH-CERT occurred due to an expired TLS leaf certificate, causing TLS handshake failures before HTTP requests reached the auth service. | When: 2026-10-12 | Where: production environment | The leaf certificate was past its notAfter date.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00+00:00",
+          "occurred_end": "2026-10-12T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": "HIST-AUTH-CERT",
+          "chunk_id": "recall-eval-20261107-v1_HIST-AUTH-CERT_0",
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": {
+            "incident_id": "HIST-AUTH-CERT",
+            "service": "auth",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1f1e74cc-2ab2-4cf1-983c-feae495ba5a8",
+          "text": "Production incident HIST-AUTH-CERT was caused by an expired TLS leaf certificate.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00+00:00",
+          "occurred_end": "2026-10-12T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "2a306fb5-dd42-4567-972d-860ecdd0952a",
+          "text": "Renewing the certificate and deploying the correct chain restored TLS functionality on 2026-10-12.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-12T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.362000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "922359a5-1856-4c73-8c1e-25229d5a764a",
+          "text": "Production incident HIST-AUTH-CERT caused TLS handshake failures before HTTP requests reached the auth service.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00+00:00",
+          "occurred_end": "2026-10-12T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The notifications service is failing due to a TLS handshake error caused by an expired leaf certificate, as confirmed by logs and historical incident patterns.",
+      "hypotheses": [
+        {
+          "title": "The technical failure is the presence of an expired leaf TLS certificate on the endpoint serving the notifications service.",
+          "reasoning": "Logs explicitly report a TLS connection abort due to an expired server certificate, which matches historical incident patterns where expired certificates caused similar handshake failures.",
+          "basis": "current_observations",
+          "evidenceIds": [
+            "396a82f1-831b-450a-9452-ccbb3643e4e1"
+          ]
+        }
+      ],
+      "checks": [
+        "Verify Certificate Chain: Perform a client-side check of the endpoint's TLS certificate chain using openssl s_client -connect <host>:<port> -showcerts to confirm the expiration date and the specific leaf certificate associated with the connection error.",
+        "Review Deployment State: Check if the certificate currently presented by the endpoint differs from the certificate currently installed in the infrastructure's secret store or certificate management service."
+      ],
+      "avoid": [
+        "Do not assume a failure of automated renewal mechanisms without inspecting the certificate management logs.",
+        "Do not restart backend services or modify database settings as these will not resolve a TLS handshake failure.",
+        "Ensure that any replacement certificate includes the full chain to avoid trust verification failures."
+      ],
+      "missing": [
+        "The underlying mechanism for the certificate expiration (e.g., failed automated renewal vs. manual oversight).",
+        "The specific service component managing the termination of the TLS connection (e.g., load balancer, gateway, or application-level proxy)."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 42803,
+      "output_tokens": 1060,
+      "total_tokens": 43863,
+      "cached_tokens": 17381,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The notifications service is failing due to a TLS handshake error caused by an expired leaf certificate, as confirmed by logs and historical incident patterns.",
+      "hypotheses": [
+        {
+          "title": "The technical failure is the presence of an expired leaf TLS certificate on the endpoint serving the notifications service.",
+          "reasoning": "Logs explicitly report a TLS connection abort due to an expired server certificate, which matches historical incident patterns where expired certificates caused similar handshake failures.",
+          "basis": "current_observations",
+          "evidenceIds": [
+            "396a82f1-831b-450a-9452-ccbb3643e4e1"
+          ]
+        }
+      ],
+      "checks": [
+        "Verify Certificate Chain: Perform a client-side check of the endpoint's TLS certificate chain using openssl s_client -connect <host>:<port> -showcerts to confirm the expiration date and the specific leaf certificate associated with the connection error.",
+        "Review Deployment State: Check if the certificate currently presented by the endpoint differs from the certificate currently installed in the infrastructure's secret store or certificate management service."
+      ],
+      "avoid": [
+        "Do not assume a failure of automated renewal mechanisms without inspecting the certificate management logs.",
+        "Do not restart backend services or modify database settings as these will not resolve a TLS handshake failure.",
+        "Ensure that any replacement certificate includes the full chain to avoid trust verification failures."
+      ],
+      "missing": [
+        "The underlying mechanism for the certificate expiration (e.g., failed automated renewal vs. manual oversight).",
+        "The specific service component managing the termination of the TLS connection (e.g., load balancer, gateway, or application-level proxy)."
+      ]
+    },
+    "facts": [
+      {
+        "id": "396a82f1-831b-450a-9452-ccbb3643e4e1",
+        "text": "Production incident HIST-AUTH-CERT occurred due to an expired TLS leaf certificate, causing TLS handshake failures before HTTP requests reached the auth service. | When: 2026-10-12 | Where: production environment | The leaf certificate was past its notAfter date.",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-12T00:00:00+00:00",
+        "occurred_end": "2026-10-12T00:00:00+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+        "document_id": "HIST-AUTH-CERT",
+        "chunk_id": "recall-eval-20261107-v1_HIST-AUTH-CERT_0",
+        "tags": [
+          "recall-incident",
+          "service:auth"
+        ],
+        "metadata": {
+          "incident_id": "HIST-AUTH-CERT",
+          "service": "auth",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      }
+    ],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "396a82f1-831b-450a-9452-ccbb3643e4e1",
+          "text": "Production incident HIST-AUTH-CERT occurred due to an expired TLS leaf certificate, causing TLS handshake failures before HTTP requests reached the auth service. | When: 2026-10-12 | Where: production environment | The leaf certificate was past its notAfter date.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00+00:00",
+          "occurred_end": "2026-10-12T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": "HIST-AUTH-CERT",
+          "chunk_id": "recall-eval-20261107-v1_HIST-AUTH-CERT_0",
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": {
+            "incident_id": "HIST-AUTH-CERT",
+            "service": "auth",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1f1e74cc-2ab2-4cf1-983c-feae495ba5a8",
+          "text": "Production incident HIST-AUTH-CERT was caused by an expired TLS leaf certificate.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00+00:00",
+          "occurred_end": "2026-10-12T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "2a306fb5-dd42-4567-972d-860ecdd0952a",
+          "text": "Renewing the certificate and deploying the correct chain restored TLS functionality on 2026-10-12.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-12T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.362000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "922359a5-1856-4c73-8c1e-25229d5a764a",
+          "text": "Production incident HIST-AUTH-CERT caused TLS handshake failures before HTTP requests reached the auth service.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-12T00:00:00+00:00",
+          "occurred_end": "2026-10-12T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:auth"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    }
+  }
+}

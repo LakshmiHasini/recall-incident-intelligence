@@ -1,0 +1,336 @@
+{
+  "id": "D01",
+  "category": "calibration",
+  "stage": "single",
+  "input": {
+    "id": "D01",
+    "title": "Payment pool waits",
+    "service": "payments",
+    "environment": "production",
+    "description": "All database connections are held after exception handlers exit without cleanup. A restart helped briefly.",
+    "logs": "pool 100/100; acquire timeout"
+  },
+  "events": [],
+  "queryHash": "e483c582debb01639d4e7419a836c67a36b6d3c2f7e88c663e591209b548dcab",
+  "promptHash": "9426e09cd952475975b2296131b3d36f9b7693291079006fea231a84ac77d4d5",
+  "startedAt": "2026-11-07T14:39:08.250Z",
+  "success": true,
+  "durationMs": 8761,
+  "schemaValid": true,
+  "result": {
+    "text": "### Technical Failure Hypothesis: Database Connection Leak in Exception Handlers\n\n**evidenceStatus**: supported_hypothesis\n\n#### Summary of Observations\n*   **Current State**: The `payments` service in production is experiencing database connection pool exhaustion (100/100 pool occupancy) leading to request acquisition timeouts.\n*   **Observed Behavior**: Database connections remain held even after the service's exception handlers finish execution. A service restart provided only temporary relief.\n*   **Historical Match**: On 2026-10-09, the `payments` service experienced an identical incident (HIST-PAY-POOL). In that instance, payment handlers failed to release database connections following exceptions, specifically within version 3.7. The behavior matched current observations, including temporary relief from restarts and persistent pool exhaustion.\n\n#### Reasoning\n*   **Observed**: Connection pool is full (100/100); connections are not being released by exception handlers.\n*   **Historical match**: Incident HIST-PAY-POOL (2026-10-09) explicitly confirms that payment handlers failing to release connections after exceptions caused identical exhaustion symptoms.\n*   **Unverified details**: The specific version currently running and the exact code path causing the exception are unknown and not present in the current incident data.\n\n#### Hypothesis\n*   **Hypothesis**: Payment handler code path is failing to invoke the mandatory connection release/close operation within its `finally` block or equivalent exception handling structure.\n*   **Basis**: historical_memory\n*   **Evidence IDs**: [2e8ff71e-dfce-4f29-bae7-f7d1b86a4b27, 9d943076-e660-4e32-a3e1-07b085e156e8]\n\n#### Cautions and Recommendations\n*   **Caution**: Restarting the service provides only temporary relief and does not address the underlying leak; it will likely recur as connections are exhausted again.\n*   **Caution**: Increasing the connection pool limit is ineffective against a resource leak and will only delay the inevitable exhaustion.\n*   **Check**: Inspect the application code for the `payments` service, specifically identifying the `finally` blocks in database transaction handlers to verify that `connection.close()` or the equivalent pool release method is called unconditionally regardless of whether an exception occurs.\n*   **Check**: Review recent code changes or deployment logs for the `payments` service to determine if any modifications were made to transaction or exception handling logic.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "2e8ff71e-dfce-4f29-bae7-f7d1b86a4b27",
+          "text": "Payment handlers failed to release database connections after exceptions in version 3.7, causing pool occupancy to reach 100/100 and request timeouts. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00+00:00",
+          "occurred_end": "2026-10-09T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "9d943076-e660-4e32-a3e1-07b085e156e8",
+          "text": "Restarting the service provided only temporary relief and raising the pool limit failed to repair the connection leak. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "bee05fb9-8bc8-4403-a48f-385d821d397b",
+          "text": "Throughput was restored on 2026-10-09 by closing leaked connections and deploying a cleanup patch.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "62315849-1387-4885-93b5-707f54825da7",
+          "text": "Restarting the service provided only temporary relief on 2026-10-09, and raising the pool limit failed to repair the connection leak.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "31b51594-4a7d-4f1e-a7a0-e6552748a0ad",
+          "text": "Payment handlers failed to release database connections after exceptions in version 3.7 on 2026-10-09.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00+00:00",
+          "occurred_end": "2026-10-09T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The payments service is experiencing database connection pool exhaustion (100/100 occupancy) due to connections not being released after exceptions, a behavior identical to a historical incident (HIST-PAY-POOL) from 2026-10-09.",
+      "hypotheses": [
+        {
+          "title": "Payment handler code path is failing to invoke the mandatory connection release/close operation within its finally block or equivalent exception handling structure.",
+          "reasoning": "Connection pool is full and connections are not being released by exception handlers; historical incident HIST-PAY-POOL confirms identical symptoms caused by failure to release connections after exceptions.",
+          "basis": "historical_memory",
+          "evidenceIds": [
+            "2e8ff71e-dfce-4f29-bae7-f7d1b86a4b27",
+            "9d943076-e660-4e32-a3e1-07b085e156e8"
+          ]
+        }
+      ],
+      "checks": [
+        "Inspect the application code for the payments service, specifically identifying the finally blocks in database transaction handlers to verify that connection.close() or the equivalent pool release method is called unconditionally regardless of whether an exception occurs.",
+        "Review recent code changes or deployment logs for the payments service to determine if any modifications were made to transaction or exception handling logic."
+      ],
+      "avoid": [
+        "Restarting the service as it provides only temporary relief and does not address the underlying leak.",
+        "Increasing the connection pool limit as it is ineffective against a resource leak and will only delay the inevitable exhaustion."
+      ],
+      "missing": [
+        "The specific version currently running in production.",
+        "The exact code path causing the exception."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 43026,
+      "output_tokens": 1141,
+      "total_tokens": 44167,
+      "cached_tokens": 15456,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The payments service is experiencing database connection pool exhaustion (100/100 occupancy) due to connections not being released after exceptions, a behavior identical to a historical incident (HIST-PAY-POOL) from 2026-10-09.",
+      "hypotheses": [
+        {
+          "title": "Payment handler code path is failing to invoke the mandatory connection release/close operation within its finally block or equivalent exception handling structure.",
+          "reasoning": "Connection pool is full and connections are not being released by exception handlers; historical incident HIST-PAY-POOL confirms identical symptoms caused by failure to release connections after exceptions.",
+          "basis": "historical_memory",
+          "evidenceIds": [
+            "2e8ff71e-dfce-4f29-bae7-f7d1b86a4b27",
+            "9d943076-e660-4e32-a3e1-07b085e156e8"
+          ]
+        }
+      ],
+      "checks": [
+        "Inspect the application code for the payments service, specifically identifying the finally blocks in database transaction handlers to verify that connection.close() or the equivalent pool release method is called unconditionally regardless of whether an exception occurs.",
+        "Review recent code changes or deployment logs for the payments service to determine if any modifications were made to transaction or exception handling logic."
+      ],
+      "avoid": [
+        "Restarting the service as it provides only temporary relief and does not address the underlying leak.",
+        "Increasing the connection pool limit as it is ineffective against a resource leak and will only delay the inevitable exhaustion."
+      ],
+      "missing": [
+        "The specific version currently running in production.",
+        "The exact code path causing the exception."
+      ]
+    },
+    "facts": [
+      {
+        "id": "2e8ff71e-dfce-4f29-bae7-f7d1b86a4b27",
+        "text": "Payment handlers failed to release database connections after exceptions in version 3.7, causing pool occupancy to reach 100/100 and request timeouts. | When: 2026-10-09 | Where: production",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-09T00:00:00+00:00",
+        "occurred_end": "2026-10-09T00:00:00+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+        "document_id": "HIST-PAY-POOL",
+        "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+        "tags": [
+          "recall-incident",
+          "service:payments"
+        ],
+        "metadata": {
+          "incident_id": "HIST-PAY-POOL",
+          "service": "payments",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      },
+      {
+        "id": "9d943076-e660-4e32-a3e1-07b085e156e8",
+        "text": "Restarting the service provided only temporary relief and raising the pool limit failed to repair the connection leak. | When: 2026-10-09 | Where: production",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+        "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+        "document_id": "HIST-PAY-POOL",
+        "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+        "tags": [
+          "recall-incident",
+          "service:payments"
+        ],
+        "metadata": {
+          "incident_id": "HIST-PAY-POOL",
+          "service": "payments",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      }
+    ],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "2e8ff71e-dfce-4f29-bae7-f7d1b86a4b27",
+          "text": "Payment handlers failed to release database connections after exceptions in version 3.7, causing pool occupancy to reach 100/100 and request timeouts. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00+00:00",
+          "occurred_end": "2026-10-09T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "9d943076-e660-4e32-a3e1-07b085e156e8",
+          "text": "Restarting the service provided only temporary relief and raising the pool limit failed to repair the connection leak. | When: 2026-10-09 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": "HIST-PAY-POOL",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-POOL_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-POOL",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "bee05fb9-8bc8-4403-a48f-385d821d397b",
+          "text": "Throughput was restored on 2026-10-09 by closing leaked connections and deploying a cleanup patch.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "62315849-1387-4885-93b5-707f54825da7",
+          "text": "Restarting the service provided only temporary relief on 2026-10-09, and raising the pool limit failed to repair the connection leak.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "31b51594-4a7d-4f1e-a7a0-e6552748a0ad",
+          "text": "Payment handlers failed to release database connections after exceptions in version 3.7 on 2026-10-09.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00+00:00",
+          "occurred_end": "2026-10-09T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    }
+  }
+}

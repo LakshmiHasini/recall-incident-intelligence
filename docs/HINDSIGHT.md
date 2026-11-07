@@ -18,6 +18,8 @@ Investigation sends the current symptoms, redacted log excerpts, service, enviro
 
 Zod validates the structured response. If typed output is unavailable but Hindsight supplies a text answer, the answer is shown as text. An absent answer or provider error is surfaced rather than replaced with a fabricated response. Investigation records include the incident revision; changed context gets a stale-analysis notice.
 
+The current version adds an explicit evidence-status decision and limits presentation to one leading hypothesis. The shared normalizer validates linked fact IDs, resolves exact source-document references only through evidence returned by Hindsight, and suppresses unsupported historical hypotheses. Only linked evidence is presented as support. This checks provenance, not semantic entailment: the evaluation still found misleading explanations and one irrelevant citation. See `evaluation/REPORT.md` for the measured result and remaining failures.
+
 ## Development and production
 
 - Local integration tests use `recall-development` and explicitly labelled synthetic test records.

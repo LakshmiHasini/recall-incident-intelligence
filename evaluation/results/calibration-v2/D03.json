@@ -1,0 +1,448 @@
+{
+  "id": "D03",
+  "category": "calibration",
+  "stage": "single",
+  "input": {
+    "id": "D03",
+    "title": "Provider status contradicts pool theory",
+    "service": "payments",
+    "environment": "production",
+    "description": "The pool is idle. The payment provider is rejecting traffic with a quota code.",
+    "logs": "provider 429; db pool 2/100"
+  },
+  "events": [],
+  "queryHash": "1a41f9bc97b52ca5c826b222ad6f0291d5133dd895940939402c752cf187894d",
+  "promptHash": "2e1f68025c8305c3bc0957b54f562382546b68a123f81094b7a8dc819e7eebeb",
+  "startedAt": "2026-11-07T14:37:27.024Z",
+  "success": true,
+  "durationMs": 9676,
+  "schemaValid": true,
+  "result": {
+    "text": "### Investigation Summary: Incident D03\n\nThe current symptoms indicate a discrepancy between the payments service's upstream provider status and the local database pool health. The payment provider is returning HTTP 429 (Too Many Requests), which is an upstream quota-related rejection. Simultaneously, the database pool is reported as idle (2/100 connections in use), which suggests that the service is not currently under heavy load or experiencing the connection exhaustion issues observed in previous incidents.\n\n### Evidence Status: supported_hypothesis\n\nGiven the explicit presence of the provider 429 status and the verified idle state of the database pool, the root cause is likely an external quota limit rather than a local resource exhaustion or connection leak. The symptoms are distinct from historical incidents where pool exhaustion caused timeouts or service failures.\n\n### Hypotheses\n\n1. **Upstream Quota Limit Exceeded (basis: current_observations)\n   - **Technical Failure:** The external payment provider has enforced a rate or volume quota, resulting in HTTP 429 responses. The idle state of the database pool indicates that local traffic is being throttled before reaching the database, consistent with a rejection at the service's edge or during initial request processing.\n   - **Evidence:** Logs confirm 'provider 429' and 'db pool 2/100'. This matches the behavior seen in historical incident HIST-PAY-QUOTA, where upstream quota limits caused 429 errors while the database pool remained healthy.\n   - **Evidence IDs:** []\n\n2. **Misconfiguration of Upstream Client Throttling (basis: historical_memory)\n   - **Technical Failure:** The payments service may be misinterpreting or failing to handle the provider's rate-limiting signals, or it may have a static configuration that does not align with the provider's current quota, leading to continuous rejection.\n   - **Evidence:** Historical memory HIST-PAY-QUOTA (fca0a2e1-b600-4ff4-9015-37538140ac76, 738c1c4b-603a-41fb-bde9-a45de962274e, 1c84ffdf-ea72-43ee-8eed-23c2179a2002) notes that traffic was restored by respecting the `Retry-After` header, implementing bounded retries with jitter, and reducing the request rate. If the service is not properly implementing these, it could result in persistent 429s.\n   - **Evidence IDs:** [\"fca0a2e1-b600-4ff4-9015-37538140ac76\", \"738c1c4b-603a-41fb-bde9-a45de962274e\", \"1c84ffdf-ea72-43ee-8eed-23c2179a2002\"]\n\n### Cautions\n\n- **Restarting the service:** Restarting the application has been documented in the past (HIST-PAY-QUOTA) as ineffective at resolving upstream quota issues and provides only temporary, misleading relief.\n- **Increasing resources:** Modifying database capacity or pool limits (HIST-PAY-QUOTA) does not resolve external quota rejections and is an inappropriate response to 429 errors.\n- **Unconditional flushing:** Avoid any destructive operations such as flushing caches (HIST-SEARCH-OOM) unless specifically confirmed, as this is unnecessary for a provider-side quota issue.\n\n### Non-Destructive Checks\n\n- **Verify `Retry-After` header:** Inspect the headers of the 429 responses to see if the provider is signaling a specific wait time. Ensure the application is actively parsing and respecting this value.\n- **Check outbound request logs:** Review the logs for the timing and frequency of outbound requests to the provider to confirm if the service is effectively using jitter and backoff patterns.\n- **Compare current traffic against historical quotas:** Check if there have been any recent changes in the total volume of requests sent to the provider that might have triggered an automatic rate limit.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "fca0a2e1-b600-4ff4-9015-37538140ac76",
+          "text": "The payments service experienced a production incident due to an upstream quota limit being exceeded. | When: 2026-10-18 | Where: production | External payment provider returned HTTP 429 and Retry-After errors.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00+00:00",
+          "occurred_end": "2026-10-18T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "738c1c4b-603a-41fb-bde9-a45de962274e",
+          "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue. | When: 2026-10-18 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1c84ffdf-ea72-43ee-8eed-23c2179a2002",
+          "text": "Traffic was restored by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate. | When: 2026-10-18 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "62315849-1387-4885-93b5-707f54825da7",
+          "text": "Restarting the service provided only temporary relief on 2026-10-09, and raising the pool limit failed to repair the connection leak.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "1207bf42-1f75-4fae-90a1-919dd63aa116",
+          "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue on 2026-10-18.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "17444104-1a04-4ab6-a193-a6589720953b",
+          "text": "The payments service experienced a production incident on 2026-10-18 due to an upstream quota limit being exceeded.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00+00:00",
+          "occurred_end": "2026-10-18T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4289663f-c15e-4f57-8fad-2d769c1a1345",
+          "text": "Traffic was restored on 2026-10-18 by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The payments service is receiving HTTP 429 (Too Many Requests) errors from an upstream provider, while the local database pool remains idle, indicating an external quota limit rather than local resource exhaustion.",
+      "hypotheses": [
+        {
+          "title": "Upstream Quota Limit Exceeded",
+          "reasoning": "The external payment provider has enforced a rate or volume quota, resulting in HTTP 429 responses. The idle state of the database pool indicates that local traffic is being throttled before reaching the database.",
+          "basis": "current_observations",
+          "evidenceIds": []
+        },
+        {
+          "title": "Misconfiguration of Upstream Client Throttling",
+          "reasoning": "The payments service may be misinterpreting or failing to handle the provider's rate-limiting signals, or it may have a static configuration that does not align with the provider's current quota.",
+          "basis": "historical_memory",
+          "evidenceIds": [
+            "fca0a2e1-b600-4ff4-9015-37538140ac76",
+            "738c1c4b-603a-41fb-bde9-a45de962274e",
+            "1c84ffdf-ea72-43ee-8eed-23c2179a2002"
+          ]
+        }
+      ],
+      "checks": [
+        "Verify Retry-After header",
+        "Check outbound request logs",
+        "Compare current traffic against historical quotas"
+      ],
+      "avoid": [
+        "Restarting the service",
+        "Increasing resources",
+        "Unconditional flushing"
+      ],
+      "missing": []
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 43102,
+      "output_tokens": 1416,
+      "total_tokens": 44518,
+      "cached_tokens": 17377,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The payments service is receiving HTTP 429 (Too Many Requests) errors from an upstream provider, while the local database pool remains idle, indicating an external quota limit rather than local resource exhaustion.",
+      "hypotheses": [
+        {
+          "title": "Upstream Quota Limit Exceeded",
+          "reasoning": "The external payment provider has enforced a rate or volume quota, resulting in HTTP 429 responses. The idle state of the database pool indicates that local traffic is being throttled before reaching the database.",
+          "basis": "current_observations",
+          "evidenceIds": []
+        },
+        {
+          "title": "Misconfiguration of Upstream Client Throttling",
+          "reasoning": "The payments service may be misinterpreting or failing to handle the provider's rate-limiting signals, or it may have a static configuration that does not align with the provider's current quota.",
+          "basis": "historical_memory",
+          "evidenceIds": [
+            "fca0a2e1-b600-4ff4-9015-37538140ac76",
+            "738c1c4b-603a-41fb-bde9-a45de962274e",
+            "1c84ffdf-ea72-43ee-8eed-23c2179a2002"
+          ]
+        }
+      ],
+      "checks": [
+        "Verify Retry-After header",
+        "Check outbound request logs",
+        "Compare current traffic against historical quotas"
+      ],
+      "avoid": [
+        "Restarting the service",
+        "Increasing resources",
+        "Unconditional flushing"
+      ],
+      "missing": []
+    },
+    "facts": [
+      {
+        "id": "fca0a2e1-b600-4ff4-9015-37538140ac76",
+        "text": "The payments service experienced a production incident due to an upstream quota limit being exceeded. | When: 2026-10-18 | Where: production | External payment provider returned HTTP 429 and Retry-After errors.",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-18T00:00:00+00:00",
+        "occurred_end": "2026-10-18T23:59:59+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+        "document_id": "HIST-PAY-QUOTA",
+        "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+        "tags": [
+          "recall-incident",
+          "service:payments"
+        ],
+        "metadata": {
+          "incident_id": "HIST-PAY-QUOTA",
+          "service": "payments",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      },
+      {
+        "id": "738c1c4b-603a-41fb-bde9-a45de962274e",
+        "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue. | When: 2026-10-18 | Where: production",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+        "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+        "document_id": "HIST-PAY-QUOTA",
+        "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+        "tags": [
+          "recall-incident",
+          "service:payments"
+        ],
+        "metadata": {
+          "incident_id": "HIST-PAY-QUOTA",
+          "service": "payments",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      },
+      {
+        "id": "1c84ffdf-ea72-43ee-8eed-23c2179a2002",
+        "text": "Traffic was restored by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate. | When: 2026-10-18 | Where: production",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+        "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+        "document_id": "HIST-PAY-QUOTA",
+        "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+        "tags": [
+          "recall-incident",
+          "service:payments"
+        ],
+        "metadata": {
+          "incident_id": "HIST-PAY-QUOTA",
+          "service": "payments",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      }
+    ],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "fca0a2e1-b600-4ff4-9015-37538140ac76",
+          "text": "The payments service experienced a production incident due to an upstream quota limit being exceeded. | When: 2026-10-18 | Where: production | External payment provider returned HTTP 429 and Retry-After errors.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00+00:00",
+          "occurred_end": "2026-10-18T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "738c1c4b-603a-41fb-bde9-a45de962274e",
+          "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue. | When: 2026-10-18 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "1c84ffdf-ea72-43ee-8eed-23c2179a2002",
+          "text": "Traffic was restored by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate. | When: 2026-10-18 | Where: production",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": "HIST-PAY-QUOTA",
+          "chunk_id": "recall-eval-20261107-v1_HIST-PAY-QUOTA_0",
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": {
+            "incident_id": "HIST-PAY-QUOTA",
+            "service": "payments",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "62315849-1387-4885-93b5-707f54825da7",
+          "text": "Restarting the service provided only temporary relief on 2026-10-09, and raising the pool limit failed to repair the connection leak.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-09T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-09T00:00:00.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "1207bf42-1f75-4fae-90a1-919dd63aa116",
+          "text": "Restarting the local application and increasing database capacity were ineffective at resolving the upstream quota issue on 2026-10-18.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.020000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.020000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.361000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "17444104-1a04-4ab6-a193-a6589720953b",
+          "text": "The payments service experienced a production incident on 2026-10-18 due to an upstream quota limit being exceeded.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00+00:00",
+          "occurred_end": "2026-10-18T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.341000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "4289663f-c15e-4f57-8fad-2d769c1a1345",
+          "text": "Traffic was restored on 2026-10-18 by respecting the Retry-After header, implementing bounded retries with jitter, and reducing the request rate.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-18T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-18T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.351000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:payments"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    }
+  }
+}

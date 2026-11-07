@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-11-07T14:51:55.726Z",
+  "passed": true,
+  "incidentId": "acef0ecc-2bc0-4088-8e2a-b6516f10a6c8",
+  "evidenceStatus": "insufficient_evidence",
+  "hypotheses": 0,
+  "linkedFacts": 0,
+  "note": "Additional live API integration check, excluded from the 30-case accuracy score."
+}

@@ -1,0 +1,136 @@
+
+> recall-incident-intelligence@0.1.0 test
+> node --experimental-transform-types --test tests/core.test.ts
+
+TAP version 13
+# (node:11858) ExperimentalWarning: Transform Types is an experimental feature and might change at any time
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: new incidents apply explicit safe defaults
+ok 1 - new incidents apply explicit safe defaults
+  ---
+  duration_ms: 1.15025
+  type: 'test'
+  ...
+# Subtest: invalid reports and unverified resolutions are rejected
+ok 2 - invalid reports and unverified resolutions are rejected
+  ---
+  duration_ms: 0.5165
+  type: 'test'
+  ...
+# Subtest: webhook events require a stable provider and event ID
+ok 3 - webhook events require a stable provider and event ID
+  ---
+  duration_ms: 0.245292
+  type: 'test'
+  ...
+# Subtest: retained documents preserve failed-action context and verified outcomes
+ok 4 - retained documents preserve failed-action context and verified outcomes
+  ---
+  duration_ms: 0.120584
+  type: 'test'
+  ...
+# Subtest: common credentials are redacted without dropping diagnostic context
+ok 5 - common credentials are redacted without dropping diagnostic context
+  ---
+  duration_ms: 0.300042
+  type: 'test'
+  ...
+# Subtest: missing configuration fails before any network call
+ok 6 - missing configuration fails before any network call
+  ---
+  duration_ms: 0.307083
+  type: 'test'
+  ...
+# Subtest: retain uses a stable source document and synchronous processing
+ok 7 - retain uses a stable source document and synchronous processing
+  ---
+  duration_ms: 9.266625
+  type: 'test'
+  ...
+# Subtest: queued or unsuccessful retain is never marked completed
+ok 8 - queued or unsuccessful retain is never marked completed
+  ---
+  duration_ms: 0.358833
+  type: 'test'
+  ...
+# Subtest: recall returns actual provider facts
+ok 9 - recall returns actual provider facts
+  ---
+  duration_ms: 0.651959
+  type: 'test'
+  ...
+# Subtest: reflect requests source facts using the documented object schema
+ok 10 - reflect requests source facts using the documented object schema
+  ---
+  duration_ms: 0.486792
+  type: 'test'
+  ...
+# Subtest: empty reflection fails rather than fabricating an answer
+ok 11 - empty reflection fails rather than fabricating an answer
+  ---
+  duration_ms: 0.2305
+  type: 'test'
+  ...
+# Subtest: provider errors never expose response bodies or credentials
+ok 12 - provider errors never expose response bodies or credentials
+  ---
+  duration_ms: 0.146416
+  type: 'test'
+  ...
+# Subtest: network errors become actionable failures
+ok 13 - network errors become actionable failures
+  ---
+  duration_ms: 0.214167
+  type: 'test'
+  ...
+# Subtest: only evidence actually linked to a hypothesis is presented
+ok 14 - only evidence actually linked to a hypothesis is presented
+  ---
+  duration_ms: 0.270042
+  type: 'test'
+  ...
+# Subtest: fabricated historical fact IDs cannot substantiate a hypothesis
+ok 15 - fabricated historical fact IDs cannot substantiate a hypothesis
+  ---
+  duration_ms: 0.1935
+  type: 'test'
+  ...
+# Subtest: an explicit insufficient-evidence result cannot retain ranked guesses
+ok 16 - an explicit insufficient-evidence result cannot retain ranked guesses
+  ---
+  duration_ms: 0.070792
+  type: 'test'
+  ...
+# Subtest: current-observation hypotheses do not require fabricated historical evidence
+ok 17 - current-observation hypotheses do not require fabricated historical evidence
+  ---
+  duration_ms: 0.0645
+  type: 'test'
+  ...
+# Subtest: invalid structured output is not silently passed as validated output
+ok 18 - invalid structured output is not silently passed as validated output
+  ---
+  duration_ms: 0.243875
+  type: 'test'
+  ...
+# Subtest: the production query contains observations, redacts credentials and defines uncertainty
+ok 19 - the production query contains observations, redacts credentials and defines uncertainty
+  ---
+  duration_ms: 0.105916
+  type: 'test'
+  ...
+# Subtest: exact returned source-document references resolve to actual fact IDs
+ok 20 - exact returned source-document references resolve to actual fact IDs
+  ---
+  duration_ms: 0.060167
+  type: 'test'
+  ...
+1..20
+# tests 20
+# suites 0
+# pass 20
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 119.042916

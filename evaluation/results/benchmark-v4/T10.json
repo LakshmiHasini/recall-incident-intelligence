@@ -1,0 +1,378 @@
+{
+  "id": "T10",
+  "category": "recurrence",
+  "stage": "single",
+  "input": {
+    "id": "T10",
+    "title": "Consumers retry a single payload",
+    "service": "events",
+    "environment": "production",
+    "description": "New producer payloads fail compatibility checks at one offset and do not advance.",
+    "logs": "validation error: missing required field; repeated offset=1201"
+  },
+  "events": [],
+  "queryHash": "b29832561b5638fd364bae9f81381db23610ad5b44224e5074fb41beb2f7c6ae",
+  "promptHash": "7514881018310d6bd8b6c4ba7311c2eda05e85053e29651d4ebd9e4025457185",
+  "startedAt": "2026-11-07T14:42:17.133Z",
+  "success": true,
+  "durationMs": 7960,
+  "schemaValid": true,
+  "result": {
+    "text": "### Evidence Assessment\n\n**evidenceStatus:** supported_hypothesis\n\n#### Observed\nThe current production incident (T10) involves a consumer retry loop occurring on a single partition offset (1201) in the events service. Logs explicitly identify the failure as a `validation error: missing required field`. The consumer is failing to advance past this specific offset, indicating that the payload at offset 1201 is consistently failing validation checks.\n\n#### Historical Match\nThis behavior matches the pattern of a \"poison event\" incident observed on 2026-10-22 (HIST-QUEUE-POISON). In that incident, a producer schema change introduced a payload that failed validation, causing the consumer to repeatedly retry the same partition offset. Historical evidence confirms that adding more consumers does not resolve a single-event retry loop caused by schema incompatibility.\n\n#### Unverified Details\nWhile the current logs point to a missing required field, the root cause (e.g., specific producer version, deployment timing, or schema registry state) remains unverified. It is unknown if this is due to a recent schema registry update or a producer service emitting non-compliant messages. Speculating on the mechanism beyond the observed validation failure is unsupported.\n\n### Hypothesis\n\n*   **Hypothesis:** A poison event exists at partition offset 1201 due to a schema incompatibility between the producer and the consumer, causing a validation failure that blocks partition progression.\n*   **Basis:** historical_memory\n*   **EvidenceIds:** [\"c941bc33-4c69-4c93-bc6c-33f68e74e850\", \"ac8306d9-abc8-4d71-a9c9-3cf424ecb39b\"]\n\n### Recommended Non-Destructive Checks\n\n1.  **Inspect Payload:** Retrieve the raw payload at partition offset 1201 to verify the missing field against the current expected schema.\n2.  **Schema Registry Comparison:** Compare the schema version used by the producer for this payload against the schema version enforced by the consumer.\n3.  **Consumer Logs:** Examine consumer logs for the specific schema ID associated with offset 1201 to confirm the exact validation mismatch.\n\n### Cautions\n\n*   **Avoid Over-Scaling:** Do not attempt to resolve the retry loop by adding more consumers; historical evidence shows this does not clear a poison event.\n*   **Avoid Destructive Clears:** Do not perform unconditional deletes or manual partition resets without first isolating and preserving the problematic payload.\n*   **Verify Schema:** Ensure any schema changes are validated against the production payload before applying manual remediation steps.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "c941bc33-4c69-4c93-bc6c-33f68e74e850",
+          "text": "A production incident occurred where a poison event caused a retry loop on partition offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "ac8306d9-abc8-4d71-a9c9-3cf424ecb39b",
+          "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment, events service | Adding consumers failed to resolve the retry loop.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "d6886ac9-cddb-45b1-985a-350ebcbc4285",
+          "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "f642a8bf-df12-4d9a-816e-8ad36831bebb",
+          "text": "The incident involved a poison event causing a retry loop on partition offset 418 due to schema validation failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "898aa84e-4bb8-4b38-ab9c-702d15c0f48e",
+          "text": "Adding consumers failed to resolve the retry loop.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d08f275e-4af1-4830-b93c-fabab7165332",
+          "text": "A production incident occurred in the production environment's events service on 2026-10-22.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "A production incident (T10) is caused by a poison event at partition offset 1201 in the events service, where a validation error regarding a missing required field is triggering a continuous consumer retry loop, mirroring a historical incident from 2026-10-22.",
+      "hypotheses": [
+        {
+          "title": "A poison event exists at partition offset 1201 due to a schema incompatibility between the producer and the consumer, causing a validation failure that blocks partition progression.",
+          "reasoning": "The consumer is failing to advance past offset 1201 due to a consistent validation error, which matches the pattern of a known historical poison event incident.",
+          "basis": "historical_memory",
+          "evidenceIds": [
+            "c941bc33-4c69-4c93-bc6c-33f68e74e850",
+            "ac8306d9-abc8-4d71-a9c9-3cf424ecb39b"
+          ]
+        }
+      ],
+      "checks": [
+        "Inspect the raw payload at partition offset 1201 to verify the missing field against the current expected schema.",
+        "Compare the schema version used by the producer for this payload against the schema version enforced by the consumer.",
+        "Examine consumer logs for the specific schema ID associated with offset 1201 to confirm the exact validation mismatch."
+      ],
+      "avoid": [
+        "Do not attempt to resolve the retry loop by adding more consumers.",
+        "Do not perform unconditional deletes or manual partition resets without first isolating and preserving the problematic payload.",
+        "Ensure any schema changes are validated against the production payload before applying manual remediation steps."
+      ],
+      "missing": [
+        "Specific producer version information.",
+        "Deployment timing details.",
+        "Current state of the schema registry.",
+        "Confirmation of whether the issue stems from a recent schema registry update or a producer service emitting non-compliant messages."
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 42985,
+      "output_tokens": 1233,
+      "total_tokens": 44218,
+      "cached_tokens": 17382,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "A production incident (T10) is caused by a poison event at partition offset 1201 in the events service, where a validation error regarding a missing required field is triggering a continuous consumer retry loop, mirroring a historical incident from 2026-10-22.",
+      "hypotheses": [
+        {
+          "title": "A poison event exists at partition offset 1201 due to a schema incompatibility between the producer and the consumer, causing a validation failure that blocks partition progression.",
+          "reasoning": "The consumer is failing to advance past offset 1201 due to a consistent validation error, which matches the pattern of a known historical poison event incident.",
+          "basis": "historical_memory",
+          "evidenceIds": [
+            "c941bc33-4c69-4c93-bc6c-33f68e74e850",
+            "ac8306d9-abc8-4d71-a9c9-3cf424ecb39b"
+          ]
+        }
+      ],
+      "checks": [
+        "Inspect the raw payload at partition offset 1201 to verify the missing field against the current expected schema.",
+        "Compare the schema version used by the producer for this payload against the schema version enforced by the consumer.",
+        "Examine consumer logs for the specific schema ID associated with offset 1201 to confirm the exact validation mismatch."
+      ],
+      "avoid": [
+        "Do not attempt to resolve the retry loop by adding more consumers.",
+        "Do not perform unconditional deletes or manual partition resets without first isolating and preserving the problematic payload.",
+        "Ensure any schema changes are validated against the production payload before applying manual remediation steps."
+      ],
+      "missing": [
+        "Specific producer version information.",
+        "Deployment timing details.",
+        "Current state of the schema registry.",
+        "Confirmation of whether the issue stems from a recent schema registry update or a producer service emitting non-compliant messages."
+      ]
+    },
+    "facts": [
+      {
+        "id": "c941bc33-4c69-4c93-bc6c-33f68e74e850",
+        "text": "A production incident occurred where a poison event caused a retry loop on partition offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-22T00:00:00+00:00",
+        "occurred_end": "2026-10-22T00:00:00+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+        "document_id": "HIST-QUEUE-POISON",
+        "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+        "tags": [
+          "recall-incident",
+          "service:events"
+        ],
+        "metadata": {
+          "incident_id": "HIST-QUEUE-POISON",
+          "service": "events",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      },
+      {
+        "id": "ac8306d9-abc8-4d71-a9c9-3cf424ecb39b",
+        "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment, events service | Adding consumers failed to resolve the retry loop.",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+        "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+        "document_id": "HIST-QUEUE-POISON",
+        "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+        "tags": [
+          "recall-incident",
+          "service:events"
+        ],
+        "metadata": {
+          "incident_id": "HIST-QUEUE-POISON",
+          "service": "events",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      }
+    ],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "c941bc33-4c69-4c93-bc6c-33f68e74e850",
+          "text": "A production incident occurred where a poison event caused a retry loop on partition offset 418 due to schema validation failures. | When: 2026-10-22 | Where: production environment, events service | A producer schema change introduced a poison event that blocked progress.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "ac8306d9-abc8-4d71-a9c9-3cf424ecb39b",
+          "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility. | When: 2026-10-22 | Where: production environment, events service | Adding consumers failed to resolve the retry loop.",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": "HIST-QUEUE-POISON",
+          "chunk_id": "recall-eval-20261107-v1_HIST-QUEUE-POISON_0",
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": {
+            "incident_id": "HIST-QUEUE-POISON",
+            "service": "events",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "d6886ac9-cddb-45b1-985a-350ebcbc4285",
+          "text": "The incident was resolved by quarantining the failed event and correcting schema compatibility.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "f642a8bf-df12-4d9a-816e-8ad36831bebb",
+          "text": "The incident involved a poison event causing a retry loop on partition offset 418 due to schema validation failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "898aa84e-4bb8-4b38-ab9c-702d15c0f48e",
+          "text": "Adding consumers failed to resolve the retry loop.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "d08f275e-4af1-4830-b93c-fabab7165332",
+          "text": "A production incident occurred in the production environment's events service on 2026-10-22.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-22T00:00:00+00:00",
+          "occurred_end": "2026-10-22T00:00:00.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:events"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    }
+  }
+}

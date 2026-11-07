@@ -1,0 +1,358 @@
+{
+  "id": "T05",
+  "category": "recurrence",
+  "stage": "single",
+  "input": {
+    "id": "T05",
+    "title": "Search cache writes fail",
+    "service": "search",
+    "environment": "production",
+    "description": "Search workers receive explicit cache memory errors. Used Redis memory equals its configured limit.",
+    "logs": "OOM command not allowed when used memory > maxmemory"
+  },
+  "events": [],
+  "queryHash": "4a425784381b23e5dbc51f04d026fce33c96f7b3707328f0e8a5d9958a6b12fa",
+  "promptHash": "7514881018310d6bd8b6c4ba7311c2eda05e85053e29651d4ebd9e4025457185",
+  "startedAt": "2026-11-07T14:41:58.954Z",
+  "success": true,
+  "durationMs": 8293,
+  "schemaValid": true,
+  "result": {
+    "text": "### Incident Assessment: Search Cache Write Failures\n\n**evidenceStatus**: supported_hypothesis\n\n#### Hypothesis\nRedis memory exhaustion has reached the configured `maxmemory` limit, causing the cache to reject new write operations with an `OOM command not allowed` error.\n\n*   **Basis**: current_observations\n*   **Evidence IDs**: [d408283a-b89a-43ab-b253-ce5cddc30a88]\n\n#### Reasoning\n\n*   **Observed**: The search service in production is experiencing cache write failures. Logs explicitly state `OOM command not allowed when used memory > maxmemory`, and current metrics confirm that used Redis memory is equal to the configured limit.\n*   **Historical match**: This incident mirrors historical incident `HIST-SEARCH-OOM` (2026-10-16), which involved identical symptoms: Redis memory exceeding `maxmemory`, resulting in `OOM` errors and write failures. In that instance, the incident was addressed by inspecting current memory usage, reviewing eviction policies, and reducing nonessential cache utilization.\n*   **Unverified details**: The specific cause of the memory pressure (e.g., a sudden traffic spike, a shift in cache item sizes, or a failure in the eviction process) remains unobserved. No architectural changes or recent deployments have been confirmed as the root cause of this memory growth.\n\n#### Cautions\n1.  **Do not use `FLUSHALL`**: Unconditional use of the `FLUSHALL` command is prohibited to prevent complete data loss.\n2.  **Avoid reactive restarts**: Restarting the service may provide only temporary relief and does not resolve underlying memory accumulation patterns.\n\n#### Recommended Non-Destructive Checks\n1.  **Inspect Cache Metrics**: Analyze current eviction rates and the composition of cached keys to identify if specific key types are dominating memory usage.\n2.  **Review Eviction Policy**: Verify that the current Redis eviction policy (e.g., `allkeys-lru` or `volatile-lru`) is active and correctly configured for the current workload.\n3.  **Analyze Cache TTLs**: Examine the time-to-live settings for cached search results to determine if items are persisting longer than necessary.",
+    "based_on": {
+      "memories": [
+        {
+          "id": "d408283a-b89a-43ab-b253-ce5cddc30a88",
+          "text": "Production incident HIST-SEARCH-OOM occurred due to Redis memory exceeding maxmemory, causing OOM errors and search cache write failures. | When: 2026-10-16 | Where: production environment | Redis memory limit reached",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": "HIST-SEARCH-OOM",
+          "chunk_id": "recall-eval-20261107-v1_HIST-SEARCH-OOM_0",
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": {
+            "incident_id": "HIST-SEARCH-OOM",
+            "service": "search",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "ac99f1c6-b907-4cca-89f0-f020cf6f97b7",
+          "text": "Incident HIST-SEARCH-OOM was mitigated by inspecting memory, reviewing eviction policies, and reducing nonessential cache usage. | When: 2026-10-16 | Where: production environment",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-16T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": "HIST-SEARCH-OOM",
+          "chunk_id": "recall-eval-20261107-v1_HIST-SEARCH-OOM_0",
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": {
+            "incident_id": "HIST-SEARCH-OOM",
+            "service": "search",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "5d2dbd6b-c7cf-4d6c-aa0e-b4798041f620",
+          "text": "Unconditional FLUSHALL is prohibited for Redis memory issues to prevent data loss. | Avoid data deletion",
+          "type": "world",
+          "context": null,
+          "occurred_start": null,
+          "occurred_end": null,
+          "mentioned_at": "2026-11-07T14:35:08.362000+00:00",
+          "document_id": "HIST-SEARCH-OOM",
+          "chunk_id": "recall-eval-20261107-v1_HIST-SEARCH-OOM_0",
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": {
+            "incident_id": "HIST-SEARCH-OOM",
+            "service": "search",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "b5f5b837-b4ef-45c3-9be8-c309daf3d7fe",
+          "text": "Production incident HIST-SEARCH-OOM occurred on 2026-10-16 due to Redis memory exceeding maxmemory, causing OOM errors and search cache write failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "9b031ef8-4c19-428e-8d70-0eb1746748f6",
+          "text": "Unconditional FLUSHALL is prohibited for Redis memory issues to prevent data loss.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": null,
+          "occurred_end": null,
+          "mentioned_at": "2026-11-07T14:35:08.362000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "100078fe-0c96-4dc8-9f05-990a4c29c7a7",
+          "text": "Incident HIST-SEARCH-OOM was mitigated by inspecting memory, reviewing eviction policies, and reducing nonessential cache usage.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-16T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    },
+    "structured_output": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The search service is experiencing cache write failures due to Redis memory exhaustion, as indicated by OOM errors and metrics showing memory at the maxmemory limit.",
+      "hypotheses": [
+        {
+          "title": "Redis memory exhaustion has reached the configured maxmemory limit",
+          "reasoning": "Logs confirm OOM errors and metrics show used memory equals the limit. This mirrors historical incident HIST-SEARCH-OOM.",
+          "basis": "current_observations",
+          "evidenceIds": [
+            "d408283a-b89a-43ab-b253-ce5cddc30a88"
+          ]
+        }
+      ],
+      "checks": [
+        "Inspect Cache Metrics",
+        "Review Eviction Policy",
+        "Analyze Cache TTLs"
+      ],
+      "avoid": [
+        "Do not use FLUSHALL",
+        "Avoid reactive restarts"
+      ],
+      "missing": [
+        "Specific cause of memory pressure (e.g., traffic spike, cache item size shift, or eviction process failure)",
+        "Confirmation of architectural changes or recent deployments as root cause"
+      ]
+    },
+    "structured_output_error": null,
+    "usage": {
+      "input_tokens": 42935,
+      "output_tokens": 972,
+      "total_tokens": 43907,
+      "cached_tokens": 17383,
+      "thoughts_tokens": 0
+    },
+    "trace": null
+  },
+  "presented": {
+    "structured": {
+      "evidenceStatus": "supported_hypothesis",
+      "summary": "The search service is experiencing cache write failures due to Redis memory exhaustion, as indicated by OOM errors and metrics showing memory at the maxmemory limit.",
+      "hypotheses": [
+        {
+          "title": "Redis memory exhaustion has reached the configured maxmemory limit",
+          "reasoning": "Logs confirm OOM errors and metrics show used memory equals the limit. This mirrors historical incident HIST-SEARCH-OOM.",
+          "basis": "current_observations",
+          "evidenceIds": [
+            "d408283a-b89a-43ab-b253-ce5cddc30a88"
+          ]
+        }
+      ],
+      "checks": [
+        "Inspect Cache Metrics",
+        "Review Eviction Policy",
+        "Analyze Cache TTLs"
+      ],
+      "avoid": [
+        "Do not use FLUSHALL",
+        "Avoid reactive restarts"
+      ],
+      "missing": [
+        "Specific cause of memory pressure (e.g., traffic spike, cache item size shift, or eviction process failure)",
+        "Confirmation of architectural changes or recent deployments as root cause"
+      ]
+    },
+    "facts": [
+      {
+        "id": "d408283a-b89a-43ab-b253-ce5cddc30a88",
+        "text": "Production incident HIST-SEARCH-OOM occurred due to Redis memory exceeding maxmemory, causing OOM errors and search cache write failures. | When: 2026-10-16 | Where: production environment | Redis memory limit reached",
+        "type": "world",
+        "context": null,
+        "occurred_start": "2026-10-16T00:00:00+00:00",
+        "occurred_end": "2026-10-16T23:59:59+00:00",
+        "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+        "document_id": "HIST-SEARCH-OOM",
+        "chunk_id": "recall-eval-20261107-v1_HIST-SEARCH-OOM_0",
+        "tags": [
+          "recall-incident",
+          "service:search"
+        ],
+        "metadata": {
+          "incident_id": "HIST-SEARCH-OOM",
+          "service": "search",
+          "environment": "production",
+          "revision": "1"
+        },
+        "attachments": null
+      }
+    ],
+    "basedOn": {
+      "memories": [
+        {
+          "id": "d408283a-b89a-43ab-b253-ce5cddc30a88",
+          "text": "Production incident HIST-SEARCH-OOM occurred due to Redis memory exceeding maxmemory, causing OOM errors and search cache write failures. | When: 2026-10-16 | Where: production environment | Redis memory limit reached",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T23:59:59+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.342000+00:00",
+          "document_id": "HIST-SEARCH-OOM",
+          "chunk_id": "recall-eval-20261107-v1_HIST-SEARCH-OOM_0",
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": {
+            "incident_id": "HIST-SEARCH-OOM",
+            "service": "search",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "ac99f1c6-b907-4cca-89f0-f020cf6f97b7",
+          "text": "Incident HIST-SEARCH-OOM was mitigated by inspecting memory, reviewing eviction policies, and reducing nonessential cache usage. | When: 2026-10-16 | Where: production environment",
+          "type": "world",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-16T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": "HIST-SEARCH-OOM",
+          "chunk_id": "recall-eval-20261107-v1_HIST-SEARCH-OOM_0",
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": {
+            "incident_id": "HIST-SEARCH-OOM",
+            "service": "search",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "5d2dbd6b-c7cf-4d6c-aa0e-b4798041f620",
+          "text": "Unconditional FLUSHALL is prohibited for Redis memory issues to prevent data loss. | Avoid data deletion",
+          "type": "world",
+          "context": null,
+          "occurred_start": null,
+          "occurred_end": null,
+          "mentioned_at": "2026-11-07T14:35:08.362000+00:00",
+          "document_id": "HIST-SEARCH-OOM",
+          "chunk_id": "recall-eval-20261107-v1_HIST-SEARCH-OOM_0",
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": {
+            "incident_id": "HIST-SEARCH-OOM",
+            "service": "search",
+            "environment": "production",
+            "revision": "1"
+          },
+          "attachments": null
+        },
+        {
+          "id": "b5f5b837-b4ef-45c3-9be8-c309daf3d7fe",
+          "text": "Production incident HIST-SEARCH-OOM occurred on 2026-10-16 due to Redis memory exceeding maxmemory, causing OOM errors and search cache write failures.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00+00:00",
+          "occurred_end": "2026-10-16T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "9b031ef8-4c19-428e-8d70-0eb1746748f6",
+          "text": "Unconditional FLUSHALL is prohibited for Redis memory issues to prevent data loss.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": null,
+          "occurred_end": null,
+          "mentioned_at": "2026-11-07T14:35:08.362000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": null,
+          "attachments": null
+        },
+        {
+          "id": "100078fe-0c96-4dc8-9f05-990a4c29c7a7",
+          "text": "Incident HIST-SEARCH-OOM was mitigated by inspecting memory, reviewing eviction policies, and reducing nonessential cache usage.",
+          "type": "observation",
+          "context": null,
+          "occurred_start": "2026-10-16T00:00:00.010000+00:00",
+          "occurred_end": "2026-10-16T23:59:59.010000+00:00",
+          "mentioned_at": "2026-11-07T14:35:08.352000+00:00",
+          "document_id": null,
+          "chunk_id": null,
+          "tags": [
+            "recall-incident",
+            "service:search"
+          ],
+          "metadata": null,
+          "attachments": null
+        }
+      ],
+      "mental_models": [],
+      "directives": []
+    }
+  }
+}
