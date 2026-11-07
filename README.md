@@ -125,3 +125,7 @@ Publish the clean source to the team's GitHub repository, record the working pro
 ## Visual design
 
 The interface adapts the airy lavender, glass orb, ripple effects and navy typography of the user-supplied Nexa Talent reference. The orb is an original SVG/CSS implementation. No paid MotionSites prompt or source code is included. Desktop and mobile layouts support reduced motion.
+
+## Liquid-glass landing page
+
+The root URL routes to a standalone vanilla HTML/CSS/JS landing page from `public/landing/`. It uses the supplied looping video at full opacity, the supplied SVG refraction filter, a viewport-aligned 2D canvas duplicate, and an accessible slide-in menu. The five standalone files are `index.html`, `styles.css`, `glass-card.js`, `ui.js`, and `serve.mjs`. Run `node public/landing/serve.mjs` for a visual-only static preview at localhost:8123. The integrated app serves the working incident workspace at `/workspace`; its menu and CTA preserve that route. No Hindsight calls run on the landing page.
