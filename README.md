@@ -4,6 +4,12 @@
 
 Recall helps engineers investigate incidents using their team's previous experience. It uses real Hindsight Retain, Recall and Reflect operations and makes supporting memory visible. Original reports, timelines and verified outcomes persist in a SQL database.
 
+Live app: https://recall-incident-memory.lakshmihasini8.chatgpt.site
+
+Source: https://github.com/LakshmiHasini/recall-incident-intelligence
+
+The app and repository currently have private access. The hosted application’s sign-in and live Hindsight connection have been verified.
+
 ## Features
 
 - Create, search and filter incidents across services and environments.
@@ -102,6 +108,7 @@ Private hosting additionally requires platform service access. A generic receive
 - [Architecture](docs/ARCHITECTURE.md)
 - [Hindsight implementation](docs/HINDSIGHT.md)
 - [Live walkthrough and submission checklist](docs/DEMO-SCRIPT.md)
+- [Submission drafts and project links](docs/SUBMISSION.md)
 - [Starter-specific tooling notes](docs/STARTER.md)
 
 ## Remaining submission work
