@@ -16,5 +16,9 @@ assert.equal(destination.searchParams.get("return_to"), "/workspace");
 
 const api = await fetch(new URL("/api/incidents", base), { redirect: "manual" });
 assert.equal(api.status, 401, `Anonymous incident API should reject access, got ${api.status}.`);
-console.log("Passed: anonymous workspace redirects to sign-in; anonymous incident API returns 401.");
+const write = await fetch(new URL("/api/incidents", base), {
+  method: "POST", headers: { "Content-Type": "application/json" }, body: "{}", redirect: "manual",
+});
+assert.equal(write.status, 401, `Anonymous incident creation should reject access, got ${write.status}.`);
+console.log("Passed: anonymous workspace redirects to sign-in; incident API reads and writes return 401.");
 console.log("This checks the local Worker only; hosted sign-in and sign-out require a browser test.");
