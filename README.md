@@ -125,3 +125,14 @@ The full website shares one premium glass material system: the supplied iridesce
 ## Liquid-glass landing page
 
 The root URL routes to a standalone vanilla HTML/CSS/JS landing page from `public/landing/`. It uses the supplied looping video at full opacity, the supplied SVG refraction filter, a viewport-aligned 2D canvas duplicate, and an accessible slide-in menu. The five standalone files are `index.html`, `styles.css`, `glass-card.js`, `ui.js`, and `serve.mjs`. Run `node public/landing/serve.mjs` for a visual-only static preview at localhost:8123. The integrated app serves the working incident workspace at `/workspace`; its menu and CTA preserve that route. No Hindsight calls run on the landing page.
+
+
+## Hosted sign-in verification
+
+To check the hosted authentication flow without using Hindsight credits:
+
+1. Open the live workspace and sign in with ChatGPT.
+2. Select **Sign out** in the workspace header and confirm the landing page appears.
+3. Open the workspace again and confirm that ChatGPT asks you to sign in.
+
+The browser can remember your ChatGPT account after Recall signs out; the account chooser may therefore offer it again.
