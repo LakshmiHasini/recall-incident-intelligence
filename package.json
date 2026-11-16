@@ -15,6 +15,7 @@
     "test": "node --experimental-transform-types --test tests/core.test.ts",
     "typecheck": "tsc --noEmit",
     "test:local": "node scripts/verify-local.mjs",
+    "test:auth": "node scripts/test-auth.mjs",
     "test:api": "node scripts/test-api.mjs",
     "eval:calibration": "node --experimental-transform-types scripts/evaluate-agent.mjs calibration",
     "eval:benchmark": "node --experimental-transform-types scripts/evaluate-agent.mjs benchmark",
