@@ -116,6 +116,7 @@ Private hosting additionally requires platform service access. A generic receive
 - [Live walkthrough and submission checklist](docs/DEMO-SCRIPT.md)
 - [Submission drafts and project links](docs/SUBMISSION.md)
 - [Accuracy evaluation and limitations](evaluation/REPORT.md)
+- [Signed-out access testing](docs/AUTH-TESTING.md)
 - [Starter-specific tooling notes](docs/STARTER.md)
 
 ## Visual design
